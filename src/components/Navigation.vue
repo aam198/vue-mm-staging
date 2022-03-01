@@ -7,13 +7,14 @@
           <router-link to="/about"><i class="fa fa-upload" aria-hidden="true"></i>Encode Video Files</router-link>
           <router-link to="/search"><i class="fas fa-search" aria-hidden="true"></i>Search Archive</router-link>
           <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload Videos</router-link>
-          
+          <!-- Do we need s3 Bucket Link? -->
           <!-- <a href="demo/s3.html" id="s3">
             <i class="fas fa-photo-video" aria-hidden="true"></i>
            S3 Bucket
           </a>
            -->
           
+          <!-- Need to add dynamic description -->
           <div class="description">
             <p><i class="fas fa-info-circle"></i>List of all the files that have been restored from the Archive (AWS Deep Glacier) and are now available to download to your local machine. These files were copied from their original location and are available for 30 days.</p>
             <p>Please refresh the page if files do not show right away.</p>
@@ -70,7 +71,7 @@ aside a i, aside i {
 }
 
 
-aside a:hover, aside a:active {
+aside a:hover, aside a:active{
   font-weight: 600;
   color: #000657;
   background: var(--orange);

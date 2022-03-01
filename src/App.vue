@@ -7,10 +7,15 @@
 </template>
 
 <style lang="scss">
-$navy: rgba(45 68 105 / 100%);
+$blue-med: rgba(45 68 105 / 100%);
+$blue-dark:#1c2c62;
 $header-font-color: #F6F7F9;
 $header-login-border-color: rgba(249 250 251 /80%);
 $nav-font-color: #F6F7F9;
+$font-clr: #F6F7F9;
+$font-dark: #000657;
+$card-bg-color:rgba( 48 72 106 / 20%);
+$border-color: rgba(113 119 144 / 25%);
 $orange: #ff9900;
 $white: #F6F7F9;
 $gray: rgba( 48 72 106 / 20%);
@@ -24,12 +29,17 @@ $dark-gray: #92b0b3;
 
 
 :root {
-  --header-background-color: #{$navy};
+  --header-background-color: #{$blue-med};
   --header-font-color: #{$header-font-color};
   --header-login-border-color: #{$header-login-border-color};
   --nav-font-color: #{$nav-font-color};
+  --font-clr: #{$font-clr};
+  --font-dark: #{$font-dark};
+  --card-bg-color: #{$card-bg-color};
+  --border-color: #{$border-color};
+  --blue-dark: #{$blue-dark};
   --orange: #{$orange};
-  --navy: #{$navy};
+  --navy: #{$blue-med};
   --white: #{$white};
   --gray: #{$gray};
   --dark-gray: #{$dark-gray};
@@ -135,6 +145,7 @@ h5{font-size: 1.25rem;}
 import { Options, Vue } from 'vue-class-component';
 import Header from '@/components/Header.vue'; // @ is an alias to /src
 import Navigation from '@/components/Navigation.vue';
+
 
 @Options({
   components: {
