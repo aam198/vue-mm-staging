@@ -31,9 +31,9 @@
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-// import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
-// import {Auth} from 'aws-amplify';
-// import HumanReadable from '../human-readable';
+import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
+import {Auth} from 'aws-amplify';
+import HumanReadable from '../human-readable';
 
 declare interface ArchiveFile {
     name: string,
@@ -105,7 +105,7 @@ export default defineComponent({
         /* Handles if user scrolls to the bottom */
         window.addEventListener('scroll', this.monitorScroll);
 
-        //console.log(items);
+      console.log(items);
 
         //     return data;    
     },

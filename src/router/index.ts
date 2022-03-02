@@ -21,11 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'upload',
     component: () => import('../views/Upload.vue')
   },
-  // {
-  //   path: '/search',
-  //   name: 'search',
-  //   component: () => import('../views/Search.vue')
-  // },
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('../views/Search.vue')
+  }
 ]
 
 const router = createRouter({

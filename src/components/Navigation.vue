@@ -71,7 +71,7 @@ aside a i, aside i {
 }
 
 
-aside a:hover, aside a:active{
+aside a:hover, aside a:active, .router-link-active, .router-link-exact-active{
   font-weight: 600;
   color: #000657;
   background: var(--orange);
