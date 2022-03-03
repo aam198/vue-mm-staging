@@ -1,15 +1,15 @@
 <template>
 
-  <div class="available">
+  <div class="home">
     <MainCard>
-      <img alt="Vue logo" src="../assets/logo.png">
+      <div>
+     <img alt="Vue logo" src="../assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+      </div>
+
     </MainCard>
-    <div class="continue-container">
-    <button class= "dl-button btn">
-      Download File(s)
-    </button>
-    </div>
+     <img alt="Vue logo" src="../assets/logo.png">
+      <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
 </template>
 
@@ -25,5 +25,5 @@ import MainCard from '@/components/MainCard.vue';
     MainCard
   },
 })
-export default class Available extends Vue {}
+export default class Home extends Vue {}
 </script>

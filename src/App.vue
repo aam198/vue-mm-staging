@@ -58,11 +58,6 @@ $dark-gray: #92b0b3;
 }
 
 
-header {
-  display: block;
-}
-
-
 html{
     scrollbar-color: #666 #201c29; 
     font-size: 100%;
@@ -75,6 +70,11 @@ body {
   background-color: #f8f9fa;
   font-weight: 400;
   line-height: 1.2;
+}
+
+
+header {
+  display: block;
 }
 
 .flex-center{
@@ -145,6 +145,7 @@ h5{font-size: 1.25rem;}
 import { Options, Vue } from 'vue-class-component';
 import Header from '@/components/Header.vue'; // @ is an alias to /src
 import Navigation from '@/components/Navigation.vue';
+
 
 
 @Options({

@@ -13,10 +13,12 @@
           <h2 class="file-name-check">File Name </h2>
           <h2 class="file-type-check">File Type</h2>
           <h2 class="file-size-check">File Size</h2>
+          <h2 class="file-size-check">Storage Class</h2>
           <h2 class="status-check">Status</h2>
         </div>
 
         <div class="card-content">
+          <UploadBox />
         </div>
       </div>
     </div>
@@ -56,7 +58,6 @@ section{
   align-items: center;
   flex-shrink: 0;
   height: 55px;
-  width: 100%;
   border-bottom: 1px solid var(--border-color);
   padding: 0 20px;
   white-space: nowrap;
@@ -69,6 +70,7 @@ section{
 .card-header h2{
   color: var(--font-dark); 
   font-size: 1.1em;
+  font-weight: 700;
 }
 
 
@@ -103,5 +105,23 @@ section{
   justify-content: flex-start;
   width: 5%;
 }
+.card-content{
+  font-family: var(--font-body);
+  padding: 0 1.5rem 0 0.7rem;
+  margin: 1rem 0px;
+}
 
 </style>
+
+<script lang="ts">
+import {Vue, Options} from 'vue-class-component';
+import UploadBox from '@/components/UploadBox.vue';
+
+@Options({
+  components: {
+    UploadBox
+  },
+})
+
+export default class UploadCard extends Vue {}
+</script>

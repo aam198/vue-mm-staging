@@ -5,7 +5,7 @@
             <div></div>
             <div class="width-40">{{upload.name}}</div>
             <div class="">{{upload.type}}</div>
-            <div class="">{{upload.hsize}}</div>
+            <div class="">{{upload.size}}</div>
             <div class="">{{upload.status}}</div>
         </div>
     </main>

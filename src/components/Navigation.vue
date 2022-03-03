@@ -4,9 +4,10 @@
           <h2><i class="fab fa-aws" aria-hidden="true"></i> MM Services </h2>
           
           <router-link to="/"><i class="fab fa-buffer" aria-hidden="true"></i>Available Files</router-link> 
-          <router-link to="/about"><i class="fa fa-upload" aria-hidden="true"></i>Encode Video Files</router-link>
+          <router-link to="/encode"><i class="fa fa-upload" aria-hidden="true"></i>Encode Video Files</router-link>
+           <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload to Archive</router-link>
           <router-link to="/search"><i class="fas fa-search" aria-hidden="true"></i>Search Archive</router-link>
-          <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload Videos</router-link>
+         
           <!-- Do we need s3 Bucket Link? -->
           <!-- <a href="demo/s3.html" id="s3">
             <i class="fas fa-photo-video" aria-hidden="true"></i>
@@ -70,7 +71,6 @@ aside a i, aside i {
   margin-right: 5px;
 }
 
-
 aside a:hover, aside a:active, .router-link-active, .router-link-exact-active{
   font-weight: 600;
   color: #000657;
@@ -107,16 +107,6 @@ aside a:hover::before {
   box-shadow: 0 -20px 0 0 #ffa500;
 }
 
-.active {
-  font-weight: 600;
-  color: #000657;
-  background: var(--orange);
-  outline: none;
-  position: relative;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-}
-
 aside .description{
   font-family: 'Noto Sans', sans-serif;
   font-size: 0.9em;
@@ -128,7 +118,6 @@ aside .description{
   padding-bottom: 1rem;
   line-height: 1.5;
 }
-
 
 </style>
 

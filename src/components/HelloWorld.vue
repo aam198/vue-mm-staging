@@ -33,6 +33,43 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import {Amplify,Auth,Storage} from 'aws-amplify';
+import config from '../amplify-config';
+import AWS from '@aws-sdk/client-s3';
+import { S3Client, ListBucketsCommand} from "@aws-sdk/client-s3";
+
+
+Amplify.configure(config);
+
+Auth.currentAuthenticatedUser({bypassCache: false})
+  .then(user => {
+    console.log(user);
+    Auth.currentCredentials().then(data=>{
+      console.log(data);
+    })
+    // Auth.currentCredentials().then(data=>{ 
+    //   AWS.config.credentials = data;})
+    // // Auth.currentCredentials().then(data=>{
+    // //   console.log(data);
+    // //   return data;
+    // // });
+  })
+  .catch(err => {
+    console.log(err);
+    Auth.federatedSignIn();
+  }
+);
+
+// Storage.put("test.txt","Private Content");
+
+
+// const client = new S3Client({ region: "us-east-1",credentials: credentials });
+// const command = new ListBucketsCommand({});
+// client.send(command)
+//   .then(data=>console.log('HEY THIS FIRED FLAWLESSLY'))
+//   .catch(err=>{
+//     console.error("SHIT THIS DIDN'T WORK");
+//     console.error(err)});
 
 @Options({
   props: {

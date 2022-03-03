@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import {Vue,Options} from 'vue-class-component';
+import {Vue, Options} from 'vue-class-component';
 
 
 declare interface ComponentData {
