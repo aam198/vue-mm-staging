@@ -9,6 +9,7 @@
 import { Options, Vue } from 'vue-class-component';
 import UploadBox from '@/components/UploadBox.vue'; // @ is an alias to /src
 
+
 @Options({
   components: {
     UploadBox

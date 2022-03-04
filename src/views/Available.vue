@@ -6,8 +6,8 @@
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
     </MainCard>
     <div class="continue-container">
-    <button class= "dl-button btn">
-      Download File(s)
+      <button class= "dl-button btn">
+        Download File(s)
     </button>
     </div>
   </div>
@@ -15,11 +15,13 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import HelloWorld from '@/components/HelloWorld.vue';
 import MainCard from '@/components/MainCard.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
+
  // @ is an alias to /src
 
 @Options({
+  name: "Available",
   components: {
     HelloWorld,
     MainCard

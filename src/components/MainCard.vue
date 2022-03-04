@@ -16,9 +16,7 @@
           <h2 class="status-check">Status</h2>
         </div>
 
-        <div class="card-content">
-      
-        </div>
+        <div class="card-content"> </div>
       </div>
     </div>
   </section>
