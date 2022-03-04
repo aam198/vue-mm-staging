@@ -3,7 +3,8 @@
         <aside id="sidenav-open">
           <h2><i class="fab fa-aws" aria-hidden="true"></i> MM Services </h2>
           
-          <router-link to="/"><i class="fab fa-buffer" aria-hidden="true"></i>Available Files</router-link> 
+           <router-link to="/"><i class="fab fa-buffer" aria-hidden="true"></i>Home</router-link> 
+          <router-link to="/available"><i class="fab fa-buffer" aria-hidden="true"></i>Available Files</router-link> 
           <router-link to="/encode"><i class="fa fa-upload" aria-hidden="true"></i>Encode Video Files</router-link>
            <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload to Archive</router-link>
           <router-link to="/search"><i class="fas fa-search" aria-hidden="true"></i>Search Archive</router-link>

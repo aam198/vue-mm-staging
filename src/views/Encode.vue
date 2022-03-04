@@ -1,7 +1,6 @@
 <template>
   <div class="encode">
       <UploadCard/>
-      <button class="uploadfile__button" type="submit">Upload</button>
   </div>
 </template>
 

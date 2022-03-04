@@ -1,22 +1,21 @@
 <template>
 
-  <div class="available">
-    <MainCard>
+    <MainCard />
       <img alt="Vue logo" src="../assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-    </MainCard>
     <div class="continue-container">
       <button class= "dl-button btn">
         Download File(s)
-    </button>
+       </button>
     </div>
-  </div>
+
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import MainCard from '@/components/MainCard.vue';
 import HelloWorld from '@/components/HelloWorld.vue';
+import Button from '@/components/Button.vue';
 
  // @ is an alias to /src
 
@@ -24,7 +23,8 @@ import HelloWorld from '@/components/HelloWorld.vue';
   name: "Available",
   components: {
     HelloWorld,
-    MainCard
+    MainCard,
+    Button
   },
 })
 export default class Available extends Vue {}

@@ -13,7 +13,6 @@
           <h2 class="file-name-check">File Name </h2>
           <h2 class="file-type-check">File Type</h2>
           <h2 class="file-size-check">File Size</h2>
-          <h2 class="file-size-check">Storage Class</h2>
           <h2 class="status-check">Status</h2>
         </div>
 
@@ -73,7 +72,6 @@ section{
   font-weight: 700;
 }
 
-
 .file-location-check{
   display:flex;
   justify-content: center;
@@ -109,7 +107,10 @@ section{
   font-family: var(--font-body);
   padding: 0 1.5rem 0 0.7rem;
   margin: 1rem 0px;
+  display: flex;
+  flex-direction: column;
 }
+
 
 </style>
 

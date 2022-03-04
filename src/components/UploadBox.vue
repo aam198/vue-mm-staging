@@ -23,7 +23,7 @@
     <div>
         <ProgressBar ref="progress" v-for="(item,index) in uploads"  :key="item.key"  :index="index" :loaded="item.loaded" :total="item.total" />
     </div>
-  <button class="uploadfile__button" type="submit">Upload</button>
+  <button class="uploadfile__button" type="submit">Encode</button>
 </template>
 
 <style scoped lang="scss">
@@ -106,6 +106,8 @@
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+  width: 20%;
+  align-self: flex-end;
 }
 
 .uploadbox.advanced {

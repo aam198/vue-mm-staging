@@ -2,8 +2,7 @@
   <section>
     <div class="main-area">
       <div class="card">
-        <div class="card-header">
-                
+        <div class="card-header">  
           <label class="checkbox-container">
             <input type="checkbox">
             <span class="checkmark"></span>
@@ -13,10 +12,11 @@
           <h2 class="file-name-check">File Name </h2>
           <h2 class="file-type-check">File Type</h2>
           <h2 class="file-size-check">File Size</h2>
+          <h2 class="file-size-check">Storage Class</h2>
           <h2 class="status-check">Status</h2>
         </div>
-
-        <div class="card-content"> </div>
+       
+       
       </div>
     </div>
   </section>
@@ -67,8 +67,8 @@ section{
 .card-header h2{
   color: var(--font-dark); 
   font-size: 1.1em;
+  font-weight: 700;
 }
-
 
 .file-location-check{
   display:flex;
@@ -105,8 +105,15 @@ section{
 </style>
 
 <script lang="ts">
-import {Vue} from 'vue-class-component';
+import {Options, Vue} from 'vue-class-component';
+import Button from '@/components/Button.vue';
 
+@Options({
+  name: "Available",
+  components: {
+    Button
+  },
+})
 
 export default class MainCard extends Vue {}
 </script>

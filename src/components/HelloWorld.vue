@@ -39,11 +39,13 @@ import AWS from '@aws-sdk/client-s3';
 import { S3Client, ListBucketsCommand} from "@aws-sdk/client-s3";
 
 
+
 Amplify.configure(config);
 
 Auth.currentAuthenticatedUser({bypassCache: false})
   .then(user => {
     console.log(user);
+    console.log(user.username);
     Auth.currentCredentials().then(data=>{
       console.log(data);
     })
