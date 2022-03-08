@@ -1,14 +1,13 @@
 <template>
-
+ <div class="available">
     <MainCard />
       <img alt="Vue logo" src="../assets/logo.png">
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-    <div class="continue-container">
-      <button class= "dl-button btn">
-        Download File(s)
-       </button>
-    </div>
+    
+      <Button text="Download File(s)" />
+       
 
+  </div> 
 </template>
 
 <script lang="ts">

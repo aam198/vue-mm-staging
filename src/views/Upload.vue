@@ -1,18 +1,21 @@
 <template>
-    <section>
+  <div class="upload">
         <upload-box/>
-    </section>
+        <Button text="Upload File(s)"  />
+  </div> 
 </template>
 
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import UploadBox from '@/components/UploadBox.vue'; // @ is an alias to /src
+import Button from '@/components/Button.vue'; // @ is an alias to /src
 
 
 @Options({
   components: {
-    UploadBox
+    UploadBox,
+    Button
   },
 })
 export default class Upload extends Vue {}
