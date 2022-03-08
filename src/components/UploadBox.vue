@@ -25,7 +25,7 @@
               
             <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
-            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4" v-on:change="performUpload" />
+            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" />
 
               <label for="uploadfile">
                 <h2 id="select-file">
@@ -50,9 +50,9 @@
      </div>
     </div>
     <!-- End of main-area -->
-
+  <!--  -->
   <div class="continue-container">
-    <button class="btn uploadfile__button" id="encodeBtn" disabled >Encode File(s)</button>
+    <button class="btn uploadfile__button" id="encodeBtn" v-bind:disabled='!isDisabled'><i class="fa fa-upload" aria-hidden="true"></i>Encode File(s)</button>
     
     <div id="gallery"></div>
 
@@ -158,8 +158,11 @@
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
-  width: 20%;
   height: 4rem;
+  width: 17rem;
+}
+.uploadfile__button i{
+  margin-right: 8px;
 }
 
 .uploadbox.advanced {
@@ -183,6 +186,11 @@
   opacity: 0;
 }
 
+.btn:disabled, .btn[disabled], .btn[disabled]:hover, .btn[disabled]:active {
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+  border: 1px dashed #292929;
+}
 
 /* Drag and Drop Area Modal Styles */
 .modal{
@@ -241,7 +249,7 @@
   text-align: center;
   font-size: 1.2rem;
   font-family:var(--font-body);
-  line-spacing: 1.6;
+  line-height: 1.6;
 }
 
 .modal-box .navigation{
@@ -304,7 +312,6 @@ declare interface BaseComponentData {
     /*files?:  FileList,*/
     /*error_msg?: string,*/
     uploads: Ref<Array<Upload>>,
-
 }
 
 declare interface Upload {
@@ -321,10 +328,67 @@ export default defineComponent({
     components: {'ProgressBar': ProgressBar},
     props: {},
     emits: ["update-progress"],
+    computed: {
+      isDisabled() {
+        return this.listFile.length <= 0;
+      }
+    },
     methods: {
         isAdvanced(): boolean {
             const div = document.createElement('div');
             return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
+        },
+        listFile(index: number, file: File): void{
+          // Get File information
+          const key: string = file.name;
+          const size = file.size;
+          const file_name_array = key.split(".");
+          console.log(key, size, file_name_array)
+          const file_name= file_name_array[0];
+          const file_type = file_name_array[file_name_array.length-1];
+          console.log(file_name, file_type)
+          const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
+          let fSize = size;
+          var i=0;
+          while(fSize>900){fSize/=1024;i++;}
+          const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
+          // Create elements for listing
+          const fileDetails = document.getElementById('fileDetails');
+          const fileList= document.createElement('div');
+          const listItem = document.createElement('div');
+          const checkboxContain = document.createElement('label');
+          const inputCheck = document.createElement('input');
+          const checkmark = document.createElement('span');
+          const close = document.createElement('i');
+
+          let  nodesString = "";
+
+          nodesString += "<div class='file-location'>" + "</div>" + "<div class='file-name'>" + file_name + "</div>"  +"<div class='file-type'>" + file_type + "</div>" + "<div class='file-size'>" + file_size + "</div>" ; 
+           fileList.classList.add('fadeIn');
+          fileList.classList.add('fileList');
+          listItem.classList.add('verify');
+          checkboxContain.classList.add('checkbox-container');
+          inputCheck.type="checkbox";
+          checkmark.classList.add('checkmark');
+
+       
+          fileList.appendChild(listItem);
+          listItem.appendChild(checkboxContain);
+          checkboxContain.appendChild(inputCheck);
+          checkboxContain.appendChild(checkmark);
+          fileList.innerHTML += nodesString;
+
+          fileList.appendChild(close);
+          close.className="fas fa-times remove";
+
+          console.log(size);
+        
+          close.addEventListener("click", () =>{
+            setTimeout(function(){
+            }, 1000);
+            fileList.classList.remove('fadeIn');
+            fileList.classList.add('fadeOut');
+    });
         },
         upload(index: number,file: File): void {
             const key: string = file.name;
@@ -345,12 +409,12 @@ export default defineComponent({
         performUpload(event: Event): void {
             const input = event.target as HTMLInputElement;
             const files = input.files as FileList;
+            // Uncomment 3 lines below to send files to upload function
             for (let i=0; i< files.length; i++) {
-                this.upload(i,files[i]);
+            //     this.upload(i,files[i]);
+                  this.listFile(i, files[i]);
             }
-        },
-       
-        
+        }, 
     }
 })
 

@@ -72,6 +72,7 @@ html{
 
 body {
   width: 100%;
+  max-width: 1755px;
   height: 100vh;
   margin: 0;
   background-color: #f8f9fa;
@@ -126,6 +127,9 @@ h5{font-size: 1.25rem;}
   justify-content: flex-end;
   gap:10px;
   margin: 1rem 0px;
+  width: 100%;
+  max-width: 1400px;
+  min-width: 700px;
 }
 
 section{

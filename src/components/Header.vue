@@ -12,31 +12,36 @@
 <style scoped lang="scss">
 
 #header {
-    grid-area: header;
-    height: 13rem;
-    width: 100%;
-    min-width: 700px;
-    color: var(--header-font-color);
-    margin-bottom: 0.5rem;
-    background-color: var(--header-background-color);
-    box-shadow: 0 4px 30px rgb(0 0 0 / 50%);
+  grid-area: header;
+  height: 13rem;
+  width: 100%;
+  max-width: 1800px;
+  min-width: 700px;
+  color: var(--header-font-color);
+  margin-bottom: 0.5rem;
+  background-color: var(--header-background-color);
+  box-shadow: 0 4px 30px rgb(0 0 0 / 50%);
 }
 
 #headerContainer {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  min-width: 700px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+ 
 }
 
 .header-login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: absolute;
-    right: 20px;
-    padding: 0 16px 0 40px;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  right: 1.5rem;
+  padding: 0 16px 0 40px;
+  cursor: pointer;
 }
 
 .profile-img {
@@ -49,13 +54,18 @@
     object-fit: cover;
     box-shadow: rgb(0 0 0 / 50%) 0px 3px 20px;
 }
-
 .profile-img:hover{
     border: 2px solid #f9fafb;
 }
 
 .login-title{
     font-family: var(--font-body);
+}
+
+@media (min-width: 1800px) {
+  #header{
+     border-bottom-right-radius: 1rem;
+  }
 }
 </style>
 
