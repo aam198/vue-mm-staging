@@ -1,5 +1,27 @@
+<template>
+    <div id ="myModal" class="modal">
+      <div class="modal-box">
+        <h2>Encode Video Files</h2>
+        <span class="close"><i class="fas fa-times"></i></span>
+        <div class="content">
+          Videos will be encoded into 3 different formats (low, med, high)
+          Would you like to encode these video files? 
+            </div>
+        <div class="navigation">
+            <button class="btn-sm" id="upload-s3">Yes, Encode!</button>
+          <button class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
+        </div>    
+
+      </div>
+    </div>
+</template>
 
 
+<script>
+  export default{
+    name: 'Modal'
+  }
+</script>
 
 <style>
 
