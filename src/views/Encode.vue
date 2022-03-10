@@ -1,22 +1,21 @@
 <template>
   <div class="encode">
-      <UploadBox/>
-      <Button text="Encode File(s)" />
+      <EncodeBox/>
   </div>
 </template>
 
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import UploadBox from '@/components/UploadBox.vue'; // @ is an alias to /src
-import Button from '@/components/Button.vue'; 
+import EncodeBox from '@/components/EncodeBox.vue'; // @ is an alias to /src
+
 
 
 @Options({
   components: {
-    UploadBox,
-    Button
+    EncodeBox,
+    },
   },
-})
+)
 export default class Encode extends Vue {}
 </script>

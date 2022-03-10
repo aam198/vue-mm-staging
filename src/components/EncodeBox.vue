@@ -29,7 +29,7 @@
        
               <label for="uploadfile">
                 <h2 id="select-file">
-                  Drag & Drop Assets to Upload to Archive
+                  Drag & Drop Assets to Encode
                 </h2>
                 <span>or</span>
                 <div class="btn">Browse Files</div>
@@ -50,12 +50,11 @@
      </div>
     </div>
     <!-- End of main-area -->
-
-  
+  <!--  -->
   <div class="continue-container">
-    <button class="btn uploadfile__button" id="archiveBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Upload File(s)</button>
+    <button class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File(s)</button>
+    
 
-<!-- Modal Pop-up  -->
     <div id ="myModal" class="modal">
       <div class="modal-box">
         <h2>Encode Video Files</h2>

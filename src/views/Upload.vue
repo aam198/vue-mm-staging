@@ -1,7 +1,6 @@
 <template>
   <div class="upload">
         <upload-box/>
-        <Button text="Upload File(s)"  />
   </div> 
 </template>
 
