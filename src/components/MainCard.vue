@@ -16,6 +16,9 @@
           <h2 class="status-check">Status</h2>
         </div>
        
+       <div class="card-content">
+         <slot></slot>
+       </div>
        
       </div>
     </div>

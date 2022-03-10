@@ -196,11 +196,12 @@ declare interface BaseComponentData {
     /*files?:  FileList,*/
     /*error_msg?: string,*/
     uploads: Ref<Array<Upload>>,
+    showModal: false
 }
 
 declare interface Upload {
     loaded: number,
-    total: number
+    total: number,
     key: string
 }
 
@@ -208,7 +209,9 @@ export default defineComponent({
     name: "UploadBox",
    
     data: () => {
-        return { uploads: ref([]),showModal:false,
+        return { 
+          showModal: false,
+          uploads: ref([]), 
         }  as BaseComponentData;
        
     },
@@ -218,13 +221,14 @@ export default defineComponent({
     computed: {
       isDisabled() {
         return this.listFile.length < 0;
-      }
+      },
+      
     },
     methods: {
-      openModal():void{
-        this.showModal = true;
-       },
-
+        openModal(): void {
+        console.log('this would open modal');
+        showModal: 'true';
+          },
         isAdvanced(): boolean {
             const div = document.createElement('div');
             return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
@@ -298,13 +302,13 @@ export default defineComponent({
 //         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
 //     };
 
-//     selectFiles(event: Event): void {
-//         const input = event.target as HTMLInputElement;
-//         if (!input.files?.length) {
-//             return
-//         }
-//         this.file_list=input.files;
-//         alert('hello, this fired');
-//     }
+    // selectFiles(event: Event): void {
+    //     const input = event.target as HTMLInputElement;
+    //     if (!input.files?.length) {
+    //         return
+    //     }
+    //     this.file_list=input.files;
+    //     alert('hello, this fired');
+    // }
 // }
 </script>

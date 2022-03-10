@@ -28,7 +28,7 @@
 /* Drag and Drop Area Modal Styles */
 .modal{
   display: flex;
-  display: none; /* Hidden by default */
+  /* display: none; Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   padding-top: 200px; /* Location of the box */

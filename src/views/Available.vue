@@ -1,12 +1,12 @@
 <template>
  <div class="available">
-    <MainCard />
-      <img alt="Vue logo" src="../assets/logo.png">
-      <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-    
-      <Button text="Download File(s)" />
-       
-
+    <MainCard>
+      
+        <img alt="Vue logo" src="../assets/logo.png">
+        <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+     
+    </MainCard>   
+    <Button text="Download File(s)" />
   </div> 
 </template>
 
@@ -28,3 +28,10 @@ import Button from '@/components/Button.vue';
 })
 export default class Available extends Vue {}
 </script>
+
+<style scoped>
+  img {
+    height: 350px;
+    width: 350px;
+  }
+</style>
