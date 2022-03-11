@@ -3,11 +3,13 @@
    <div class="main-area">
     <div class="card">
 
-     <div class="card-header">          
+     <div class="card-header">     
+
       <label class="checkbox-container">
         <input type="checkbox">
           <span class="checkmark"></span>
       </label>
+
       <h2 class="file-location-check">File Location</h2>
       <h2 class="file-name-check">File Name </h2>
       <h2 class="file-type-check">File Type</h2>
@@ -17,50 +19,50 @@
     <!-- End of Card Header -->
       <div class="card-content">
     
-        <form class="uploadbox" id="drop-area" v-on:drop.stop v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.stop v-on:dragleave.stop :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
+       <form class="uploadbox" id="drop-area" v-on:drop.stop v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.stop v-on:dragleave.stop :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
         
-          <div id="fileDetails" class="file-details" ref="fileDetails"></div>    
+        <div id="fileDetails" class="file-details" ref="fileDetails"></div>    
 
-           <div class="uploadbox__input drag-area">
+        <div class="uploadbox__input drag-area">
               
-            <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
-            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" />
+        <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" />
        
-              <label for="uploadfile">
-                <h2 id="select-file">
-                  Drag & Drop Assets to Encode
-                </h2>
-                <span>or</span>
-                <div class="btn">Browse Files</div>
-              </label>
+        <label for="uploadfile">
+          <h2 id="select-file">
+            Drag & Drop Assets to Encode
+          </h2>
+          <span>or</span>
+          <div class="btn">Browse Files</div>
+        </label>
 
-            </div>
+     
 
-            <div class="uploadfile__uploading">Uploading...</div>
-            <div class="uploadfile__success">Done!</div>
-            <!-- <div class="uploadfile__error">{{errmsg}}</div> -->
-          </form>
-          <!-- Form End -->
-        <!-- Progress Bar -->
-          <div>
-              <ProgressBar ref="progress" v-for="(item,index) in uploads"  :key="item.key"  :index="index" :loaded="item.loaded" :total="item.total" />
-          </div>
+        <div class="uploadfile__uploading">Uploading...</div>
+        <div class="uploadfile__success">Done!</div>
+      <!-- <div class="uploadfile__error">{{errmsg}}</div> -->
       </div>
-     </div>
+    </form>
+    <!-- Form End -->
+    <!-- Progress Bar -->
+    <div>
+        <ProgressBar ref="progress" v-for="(item,index) in uploads"  :key="item.key"  :index="index" :loaded="item.loaded" :total="item.total" />
     </div>
+   </div>
+  </div>
+
     <!-- End of main-area -->
   <!--  -->
   <div class="continue-container">
     <button class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File(s)</button>
 
-    
-  <Modal v-if="showModal"></Modal>
+    <Modal v-if="showModal"></Modal>
 
-  <button @click="openModal" v-if="!showModal" class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Test Modal</button>
-
-  </div> 
-  
+    <button @click="openModal" v-if="!showModal" class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Test Modal</button>
+   </div> 
+   
+  </div>
  </section>
 </template>
 

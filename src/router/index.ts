@@ -4,11 +4,7 @@ import Home from '../views/Home.vue'
 
 const routes: Array<RouteRecordRaw> = [
   
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
+ 
   {
     path: '/available',
     name: 'available',
@@ -31,15 +27,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/Encode.vue')
   },
   {
-    path: '/search',
-    name: 'search',
-    component: () => import('../views/Search.vue')
-  },
-  {
     path: '/upload',
     name: 'upload',
     component: () => import('../views/Upload.vue')
+  },
+  {
+    path: '/s3',
+    name: 's3',
+    component: () => import('../views/StandardStorage.vue')
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('../views/Search.vue')
   }
+  
 ]
 
 const router = createRouter({

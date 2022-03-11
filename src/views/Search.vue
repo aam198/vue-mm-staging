@@ -1,23 +1,31 @@
 <template>
   <div class="search">
-    <main>
+    <MainCard>
         <div v-for="upload in uploads" :key="upload.key" class="upload">
-            <div></div>
+          <label class="checkbox-container">
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+            <div class="width-40"></div>
             <div class="width-40">{{upload.name}}</div>
             <div class="">{{upload.type}}</div>
             <div class="">{{upload.size}}</div>
             <div class="">{{upload.status}}</div>
         </div>
-    </main>
+    </MainCard>
+    <div class="continue-container">
+      <button class="btn" id="restore-12">12-Hour Restore</button>
+      <button class="btn" id="restore-48">48-Hour Restore</button>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .upload {
-    display: flex; 
-    font-family: Open Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
-    border: 1px solid black;
-    border-radius: 3px;
+  display: flex; 
+  font-family: Open Sans,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+  border: 1px solid black;
+  border-radius: 3px;
 }
 .upload > div { flex-grow: 1; text-align: left;text-overflow: clip; padding: 2px;}
 .align-self-center {align-self: center !important;}
@@ -27,6 +35,7 @@
 .width-10 {width: 10% !important;}
 .width-5 {width: 5% !important;}
 
+
 </style>
 
 <script lang="ts">
@@ -34,6 +43,7 @@ import {defineComponent} from 'vue';
 import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
 import {Auth} from 'aws-amplify';
 import HumanReadable from '../human-readable';
+import MainCard from '@/components/MainCard.vue';
 
 declare interface ArchiveFile {
     name: string,
@@ -144,6 +154,9 @@ export default defineComponent({
 
         }
 
+    },
+    components:{
+      MainCard
     }
 })
 
