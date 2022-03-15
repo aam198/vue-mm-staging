@@ -2,8 +2,11 @@
  <div class="available">
     <MainCard SearchDisplay = "none">
       
-        <img alt="Vue logo" style="height: 250px; width: 250px; margin: 0 auto;" src="../assets/logo.png">
-        <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+      <img alt="Vue logo" style="height: 250px; width: 250px; margin: 0 auto;" src="../assets/logo.png">
+      <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+
+      <Modal />
+
      
     </MainCard>   
     <Button text="Download File(s)" />
@@ -15,6 +18,7 @@ import { Options, Vue } from 'vue-class-component';
 import MainCard from '@/components/MainCard.vue';
 import HelloWorld from '@/components/HelloWorld.vue';
 import Button from '@/components/Button.vue';
+import Modal from '@/components/Modal.vue';
 
  // @ is an alias to /src
 
@@ -23,7 +27,8 @@ import Button from '@/components/Button.vue';
   components: {
     HelloWorld,
     MainCard,
-    Button
+    Button,
+    Modal
   },
 })
 export default class Available extends Vue {}
