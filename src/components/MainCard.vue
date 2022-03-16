@@ -1,5 +1,5 @@
 <template>
-  <section>
+ 
     <div class="main-area">
       <div class="card">
         <!-- Card Search -->
@@ -29,7 +29,7 @@
        
       </div>
     </div>
-  </section>
+ 
 
 </template>
 

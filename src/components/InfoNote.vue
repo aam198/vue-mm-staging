@@ -1,6 +1,6 @@
 <template>
   <div class="file-info-note">
-    <div class="title"><span class="material-icons icon-color">info</span> Check File Names Before Encoding</div>
+    <div class="title"><span class="material-icons icon-color">info</span> Please Check File Names Before Processing Encode</div>
     
     <p class="details">Before you choose video files to encode through AWS, please make sure all file name conventions are correct (see example below) in order for encoded videos to transfer into the correct COURSES folder after completion.
       </p>

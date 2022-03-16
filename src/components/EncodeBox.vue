@@ -88,6 +88,7 @@
   z-index: -1;
 }
 
+
 .uploadbox__file + label {
   cursor: pointer;
   display: flex;
@@ -203,7 +204,7 @@
   }
 
 /* Create a custom checkbox */
-  .checkmark {
+.checkmark {
     position: absolute;
     top: 0;
     left: 0;
@@ -213,7 +214,7 @@
     box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
   }
 
-  .checkbox-container:hover input ~ .checkmark {
+.checkbox-container:hover input ~ .checkmark {
    border: 1px solid var(--blue-med);
    border-color: var(--blue-med);
   }
@@ -221,14 +222,12 @@
 .checkbox-container input:checked ~ .checkmark {
     background-color: var(--blue-dark);
   }
-  
   /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
     content: "";
     position: absolute;
     display: none;
   }
-
 
 .checkbox-container input:checked ~ .checkmark:after {
     display: block;
@@ -247,7 +246,6 @@
     transform: rotate(45deg);
   }
   
-
 </style>
 
 <script lang="ts">

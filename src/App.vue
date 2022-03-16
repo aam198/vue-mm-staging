@@ -221,7 +221,7 @@ section{
   flex-direction: column;
 }
 
-.btn{
+.btn, button.btn{
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -242,7 +242,7 @@ section{
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
   }
 
-.btn:hover
+.btn:hover, button.btn:hover
 {
   background-color: var(--blue-dark);
   transform: translate3d(0px,-1px,0px);

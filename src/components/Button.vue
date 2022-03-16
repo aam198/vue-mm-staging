@@ -1,9 +1,8 @@
 <template>
   <div class="continue-container">
-    <button @click="onClick()" :style="{ background: color }" class="btn"><i class="fa fa-upload" aria-hidden="true"></i>
+    <button @click="onClick()" :style="{ background: color }" class="btn">
     {{ text }}
     </button>
-    <button class ="btn"><slot>Button</slot></button>
   </div>
 </template>
 
@@ -23,3 +22,20 @@
 }
 
 </script>
+
+<style scoped>
+.continue-container{
+  display: flex;
+  justify-content: flex-end;
+  gap:10px;
+  margin: 0.5rem 0px;
+  width: 100%;
+  max-width: 1400px;
+  min-width: 700px;
+}
+
+.btn{
+
+}
+
+</style>
