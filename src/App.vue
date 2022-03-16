@@ -248,6 +248,51 @@ section{
   box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 }
 
+/* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+  }
+
+  .checkbox-container:hover input ~ .checkmark {
+   border: 1px solid var(--blue-med);
+   border-color: var(--blue-med);
+  }
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--blue-dark);
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
 @media (max-width: 860px){
     .container_grid{
         display:grid;
