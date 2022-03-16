@@ -6,6 +6,7 @@
            
           <router-link to="/available"><i class="fab fa-buffer" aria-hidden="true"></i>Available Files</router-link> 
           <router-link to="/encode"><i class="fa fa-upload" aria-hidden="true"></i>Encode Video Files</router-link>
+          <router-link to="/s3"><i class="fas fa-photo-video" aria-hidden="true"></i>S3 Bucket</router-link>
            <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload to Archive</router-link>
           <router-link to="/search"><i class="fas fa-search" aria-hidden="true"></i>Search Archive</router-link>
          
