@@ -55,11 +55,11 @@
     <!-- End of main-area -->
   <!--  -->
   <div class="continue-container">
-    <button class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File(s)</button>
+    <!-- <button class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File(s)</button> -->
 
     <Modal v-if="showModal"></Modal>
 
-    <button @click="openModal" v-if="!showModal" class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Test Modal</button>
+    <button @click="openModal" v-if="!showModal" class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File</button>
    </div> 
    
   </div>
