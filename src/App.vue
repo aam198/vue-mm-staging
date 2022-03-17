@@ -25,6 +25,8 @@ $clr-white: #ffffff;
 $gray: rgba( 48 72 106 / 20%);
 $dark-gray: #92b0b3;
 $red-clr: #c35353;
+$green-clr: #58b957;
+$warn-clr: #f2ae43;
 
 
 @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
@@ -55,6 +57,8 @@ $red-clr: #c35353;
   --gray: #{$gray};
   --dark-gray: #{$dark-gray};
   --red-clr: #{$red-clr};
+  --green-clr: #{$green-clr};
+  --warn-crl: #{$warn-clr};
 }
 
 * {

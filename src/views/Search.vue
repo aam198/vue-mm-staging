@@ -8,12 +8,13 @@
             <span class="checkmark"></span>
           </label>
 
-      <div class="width-25">COURSES/ACCT/ACCT490</div>
+      <div class="width-20">COURSES/ACCT/ACCT490</div>
       <div class="width-25">{{upload.name}}</div>
       <div class="width-15">{{upload.type}}</div>
       <div class="width-15">{{upload.size}}</div>
-      <div class="width-20">{{upload.storage}}</div>
-      <div class="width-5">Status</div>
+      <div class="width-15">{{upload.storage}}</div>
+      <div class="status"> <div :class="[upload.status === 'success' ? '' : 'circle' ]"></div></div>
+      <!-- <div :class="[upload.status === 'success' ? 'circle' : '' ]">{{upload.status}}</div> -->
      </div>
     </MainCard>
     <div class="continue-container">
@@ -28,36 +29,48 @@
 .upload {
   display: flex; 
   font-family: var(--font-body);
-  border: 1px solid black;
   border-radius: 3px;
 }
-.upload > div { flex-grow: 1; text-align: center; text-overflow: clip; padding: 5px;}
+.upload > div {   text-overflow: clip; padding: 10px;}
 .align-self-center {align-self: center !important;}
-.width-10{
-  display:flex;
+
+.status{
+  width: 10%;
+  display: flex;
   justify-content: center;
-  min-width: 10%;
 }
 .width-15 { 
   display:flex;
-  justify-content: center;
-  max-width: 15%;
+  max-width: 11%;
+  flex-grow: 1;
 }
 .width-20 {
   display:flex;
-  justify-content: center;
-  width: 20%;
+  max-width: 20%;
+  flex-grow: 1;
   }
 .width-25{
   display:flex;
+  flex-grow: 1;
   width: 20%;
-  max-width: 30%;
+  max-width: 25%;
 }
 
+.width-30{
+  display:flex;
+  flex-grow: 1;
+  max-width: 25%;
+  height: auto;
+}
 
-
-.width-10 {width: 10% !important;}
-.width-5 {width: 5% !important;}
+.status .circle{
+  margin-top: 5px;
+  margin-left: 20px;
+  height: 10px;
+  width: 10px;
+  background: var(--green-clr);
+  border-radius: 50%;
+}
 
 .continue-container{
   display: flex;
@@ -94,7 +107,8 @@
 .checkbox-container {
   position: relative;
   margin-bottom: 20px;
-  padding: 0px 13px;
+  margin-top: 8px;
+  padding: 10px 13px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -163,30 +177,32 @@ import MainCard from '@/components/MainCard.vue';
 
 declare interface ArchiveFile {
     name: string,
-    size: number,
+    size: string,
     type: string,
     storage: string,
+    status: string,
     key: string,
 }
 
 declare interface BaseComponentData {
-    /*files?:  FileList,*/
+    // files?:  FileList,
     /*error_msg?: string,*/
     uploads: Array<ArchiveFile>,
     nextToken?: string
 }
 
 
-
 const mapper = function(file: {[key: string]: AttributeValue}): ArchiveFile {
     return { 
-                name: file.filename.S || "", 
-                size: parseInt(file.filesize.S || "0"), 
-                key: file.requestID.S || "", 
-                type: file.filetype?.S || "", 
-                storage: file.storageclass.S || ""
+      name: file.filename.S || "", 
+      size: file.filesize.S || "0", 
+      key: file.requestID.S || "", 
+      type: file.filetype?.S || "", 
+      storage: file.storageclass.S || "",
+      status: file.transferStatus.S || ""
     }
 };
+
 
 const REGION = "us-east-1";
 const RECORD_LIMIT = 50;
@@ -202,19 +218,21 @@ export default defineComponent({
         
         const params: ScanCommandInput = {
             TableName: "MediaArchive",
-            ProjectionExpression: "requestID, filename, filesize, filetype, storageclass",
+            ProjectionExpression: "requestID, filename, filesize, filetype, storageclass, transferStatus",
             Limit: RECORD_LIMIT
         };
+       
 
         let credentials = await Auth.currentCredentials();
         
         const ddbClient = new DynamoDBClient({ 
-                region: REGION,
-                credentials: Auth.essentialCredentials(credentials) });
+          region: REGION,
+          credentials: Auth.essentialCredentials(credentials) });
             
         const data = await ddbClient.send(new ScanCommand(params));
 
         console.log(data);
+
 
         /* loads the items into the array */
         const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
@@ -222,20 +240,44 @@ export default defineComponent({
         /* store the last requestId */
         
         this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
-            
-        items.forEach((x) => this.uploads.push(x));
+        
+        // Iterating through the array and formatting 
+        items.map(item => {
+          // Taking out the extension that is connected to the whole name
+          const fName= item.name;
+          const fArr= fName.split(".");
+          const file_name = fArr[0];
+          item.name = file_name; 
+          // console.log(item.name);
+          // Formatting file size Adding byte size
+          const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
+          // Parse fSize to Integer 
+          let fSize = parseInt(item.size);
+          var i=0;
+            while(fSize>900){fSize/=1024;i++;}
+          const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
+          console.log(typeof file_size);
+          
+          item.size = file_size;
+        });
+        // Send each item to uploads
+        items.forEach((item) => {
+          this.uploads.push(item)
+          });
         
         console.log(data.LastEvaluatedKey);
-
-
+        
+        
         /* Handles if user scrolls to the bottom */
         window.addEventListener('scroll', this.monitorScroll);
 
       console.log(items);
+     
 
-        //     return data;    
+          // return data;    
     },
     methods: {
+
         monitorScroll: async function() {
             if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
                 console.log('scrolled to the bottom')
@@ -245,7 +287,7 @@ export default defineComponent({
         loadNextBatch: async function() {
             const params: ScanCommandInput = {
                 TableName: "MediaArchive",
-                ProjectionExpression: "requestID, filename, filesize, filetype, storageclass",
+                ProjectionExpression: "requestID, filename, filesize, filetype, storageclass, transferStatus",
                 Limit: RECORD_LIMIT,
                 ExclusiveStartKey:  { "requestID": {"S": this.nextToken || ""}},
             };
@@ -262,12 +304,30 @@ export default defineComponent({
 
             /* loads the items into the array */
             const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
+            // Iterating through the array and formatting 
+            items.map(item => {
+              // Taking out the extension that is connected to the whole name
+              const fName= item.name;
+              const fArr= fName.split(".");
+              const file_name = fArr[0];
+              item.name = file_name; 
+              // console.log(item.name);
+              // Formatting file size Adding byte size
+              const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
+              // Parse fSize to Integer 
+              let fSize = parseInt(item.size);
+              var i=0;
+                while(fSize>900){fSize/=1024;i++;}
+              const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
+              console.log(typeof file_size);
+              
+              item.size = file_size;
+             });
 
             this.uploads = this.uploads.concat(items);
 
             /* store the last requestId */
             this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
-
         }
 
     },

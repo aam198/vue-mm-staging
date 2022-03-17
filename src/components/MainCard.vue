@@ -46,7 +46,7 @@ section{
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-width: 700px;
+  min-width: 1200px;
   margin-right: 4%;
   min-height: 50rem;
   width: 100%;
@@ -66,7 +66,8 @@ section{
   flex-shrink: 1;
   height: 55px;
   border-bottom: 1px solid var(--border-color);
-  padding: 0 1rem;
+  padding-left: 10px;
+  padding-right: 1rem;
   white-space: nowrap;
   color: var(--font-dark); 
   text-transform: uppercase;   
@@ -81,14 +82,11 @@ section{
 }
 
 .file-location-check{
-  display:flex;
-  justify-content: center;
-  min-width: 10%;
+  max-width: 20%;
 }
 .file-name-check{
   display:flex;
   justify-content: center;
-  width: 25%;
   max-width: 25%;
 }
 .file-type-check{
