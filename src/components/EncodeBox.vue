@@ -57,9 +57,14 @@
   <div class="continue-container">
     <!-- <button class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File(s)</button> -->
 
-    <Modal v-if="showModal"></Modal>
 
-    <button @click="openModal" v-if="!showModal" class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File</button>
+    <button @click="openModal"  class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File</button>
+    
+    <Modal v-if="showModal" @close-click="closeModal">
+        Videos will be encoded into 3 different formats <strong>(low, med, high)</strong>
+          Would you like to encode these video files? 
+    </Modal>
+    
    </div> 
    
   </div>
@@ -261,13 +266,13 @@ declare interface BaseComponentData {
     /*files?:  FileList,*/
     /*error_msg?: string,*/
     uploads: Ref<Array<Upload>>,
-    showModal: false
+    showModal: boolean,
 }
 
 declare interface Upload {
     loaded: number,
     total: number,
-    key: string
+    key: string,
 }
 
 export default defineComponent({
@@ -280,7 +285,10 @@ export default defineComponent({
         }  as BaseComponentData;
        
     },
-    components: {'ProgressBar': ProgressBar, Modal},
+    components: {
+      'ProgressBar': ProgressBar, 
+        Modal
+    },
     props: {},
     emits: ["update-progress"],
     computed: {
@@ -291,9 +299,13 @@ export default defineComponent({
     },
     methods: {
         openModal(): void {
-        console.log('this would open modal');
-        showModal: 'true';
+          console.log('this would open modal');
+           this.showModal = !this.showModal;
           },
+        closeModal(): void {
+          console.log('this would close');
+          this.showModal = !this.showModal;
+        },
         isAdvanced(): boolean {
             const div = document.createElement('div');
             return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 

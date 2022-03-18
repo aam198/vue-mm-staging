@@ -1,7 +1,8 @@
 <template>
   <div class="encode">
-    <InfoNote />
-      <EncodeBox/>
+  
+      <InfoNote v-if="hideNote" @got-it="closeNote" />
+    <EncodeBox/>
   </div>
 </template>
 
@@ -14,10 +15,22 @@ import InfoNote from '@/components/InfoNote.vue';
 
 
 @Options({
+  name: "Encode",
   components: {
     EncodeBox,
     InfoNote
     },
+    data: ()=> {
+      return{
+        hideNote: true
+      }
+    },
+    methods: {
+      closeNote(): void {
+        this.hideNote = !this.hideNote;
+        console.log(this.hideNote)
+      }
+    }
   },
 )
 export default class Encode extends Vue {}

@@ -11,7 +11,13 @@
     </MainCard>   
     
     <div class="continue-container">
-      <button class="btn download_btn" id="downloadBtn" ><i class="fa fa-download" aria-hidden="true"></i>Download File(s)</button>
+      <button @click="toggleModalState" class="btn download_btn" id="downloadBtn" ><i class="fa fa-download" aria-hidden="true"></i>Download File(s)</button>
+      <div v-if="modalOpen">
+        <Modal>
+         Videos will be encoded into 3 different formats (low, med, high)
+          Would you like to encode these video files? 
+        </Modal>
+      </div>
     </div>
    </section> 
   </div> 
@@ -34,7 +40,19 @@ import Modal from '@/components/Modal.vue';
     Button,
     Modal
   },
+  
+  data: () => {
+    return {
+      modalOpen: false
+    }
+  },
+  methods: {
+    toggleModalState() {
+      this.modalOpen = !this.modalOpen;
+    }
+  }
 })
+
 export default class Available extends Vue {}
 </script>
 

@@ -46,7 +46,7 @@ section{
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-width: 1200px;
+  min-width: 1100px;
   margin-right: 4%;
   min-height: 50rem;
   width: 100%;
@@ -213,7 +213,6 @@ section{
     position: absolute;
     display: none;
   }
-
 
 .checkbox-container input:checked ~ .checkmark:after {
     display: block;

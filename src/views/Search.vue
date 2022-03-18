@@ -103,6 +103,12 @@
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
   }
 
+  .btn:hover, button.btn:hover{
+    background-color: var(--blue-dark);
+    transform: translate3d(0px, -1px, 0px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+  }
+
 /* Check Mark Styling */
 .checkbox-container {
   position: relative;

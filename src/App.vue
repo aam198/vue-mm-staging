@@ -7,6 +7,13 @@
 </template>
 
 <style lang="scss">
+
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
 $blue-med: rgba(45 68 105 / 100%);
 $blue-dark:#1c2c62;
 $header-font-color: #F6F7F9;
@@ -27,13 +34,6 @@ $dark-gray: #92b0b3;
 $red-clr: #c35353;
 $green-clr: #58b957;
 $warn-clr: #f2ae43;
-
-
-@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
 
 :root {

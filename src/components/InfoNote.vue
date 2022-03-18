@@ -1,6 +1,6 @@
 <template>
   <div class="file-info-note">
-    <div class="title"><span class="material-icons icon-color">info</span> Please Check File Names Before Processing Encode</div>
+    <div class="title"><span class="material-icons icon-color">info</span> <span class="info">Please Check File Names Before Processing Encode </span><span class="close-info" @click="closeOut()">Got it!</span></div>
     
     <p class="details">Before you choose video files to encode through AWS, please make sure all file name conventions are correct (see example below) in order for encoded videos to transfer into the correct COURSES folder after completion.
       </p>
@@ -9,9 +9,24 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'InfoNote',
+  methods: {
+    closeOut() {
+      console.log('will close')
+      this.$emit('got-it')
+    }
+  }
+}
+
+</script>
+
+
+
 <style>
 .file-info-note{
-  min-width: 400px;
+  min-width: 650px;
   width: 80%;
   height: auto;
   border-left-color: var(--orange);
@@ -30,6 +45,7 @@
  .file-info-note > .title{
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 0 -.6rem;
   padding: .5rem .6rem .5rem .6rem;
   border-bottom: .05rem solid var(--orange);
@@ -46,8 +62,25 @@
   font-size: 1rem;
 }
 .icon-color{
-  color: #ff9900;
+  color: var(--orange);
   margin-right: 6px;
+}
+
+.title > .info {
+  width: 90%;
+  align-self: flex-start;
+}
+
+.title > .close-info{
+  display: flex;
+  align-self: flex-end;
+  color:  #F08C00;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.title > .close-info:hover {
+  color: #d57c00;
 }
 
 .file-info-note p {
@@ -64,7 +97,6 @@
 .file-info-note .file-name-convention{
   position: relative;
   font-weight: bold;
-
 }
 
 span.file-name-convention::before {
@@ -106,4 +138,15 @@ span.file-name-convention::before {
   /* Support for IE. */
   font-feature-settings: 'liga';
 }
+
+@media (max-width: 1320px){
+  .file-info-note p:nth-child(3){
+    line-height: 1.8;
+  }
+  .title > .info {
+  width: 85%;
+  align-self: flex-start;
+}
+}
+
 </style>

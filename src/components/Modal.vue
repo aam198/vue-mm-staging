@@ -1,15 +1,15 @@
 <template>
     <div id ="myModal" class="modal">
       <div class="modal-box">
-        <h2>Encode Video Files</h2>
-        <span class="close"><i class="fas fa-times"></i></span>
+        <h2>Confirmation to Upload</h2>
+        <span class="close"><i class="fas fa-times" @click="closeClick()"></i></span>
         <div class="content">
-          Videos will be encoded into 3 different formats (low, med, high)
-          Would you like to encode these video files? 
+          <slot></slot>
+         
             </div>
         <div class="navigation">
-            <button class="btn-sm" id="upload-s3">Yes, Encode!</button>
-          <button class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
+            <button @click="onClick()" class="btn-sm" id="upload-encode">Yes, Please!</button>
+          <button @click="closeClick()" class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
         </div>    
 
       </div>
@@ -19,7 +19,21 @@
 
 <script>
   export default{
-    name: 'Modal'
+    name: 'Modal',
+    props: {
+      text: String
+    },
+    methods: {
+      onClick() {
+        console.log('click')
+        // Sending up click event
+        this.$emit('btn-click')
+      },
+      closeClick() {
+        console.log('close')
+        this.$emit('close-click')
+      }
+    }
   }
 </script>
 
