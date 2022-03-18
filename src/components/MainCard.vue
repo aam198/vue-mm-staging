@@ -46,7 +46,7 @@ section{
   display: flex;
   flex-direction: column;
   max-width: 1400px;
-  min-width: 1100px;
+  min-width: 800px;
   margin-right: 4%;
   min-height: 50rem;
   width: 100%;
@@ -126,7 +126,6 @@ section{
   display: flex;
   width: 100%;
   padding-left: 16px;
-  border-radius: 4px;
   padding: 0 30px;
   margin-top: 1rem;
   }
@@ -136,7 +135,7 @@ section{
   height: 100%;
   border: none;
   background-color:  #fff;
-  border-radius: 8px;
+  border-radius:1.6rem;
   font-family: 'Libre Franklin', sans-serif;
   font-size: 1rem;
   font-weight: 500;

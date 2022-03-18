@@ -21,6 +21,7 @@
   margin-bottom: 0.5rem;
   background-color: var(--header-background-color);
   box-shadow: 0 4px 30px rgb(0 0 0 / 50%);
+  border-bottom-right-radius: 1rem;
 }
 
 #headerContainer {
