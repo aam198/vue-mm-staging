@@ -1,10 +1,11 @@
 <template>
   <div class="file-info-note">
-    <div class="title"><span class="material-icons icon-color">info</span> <span class="info"><slot name="title"> </slot></span><span class="close-info" @click="closeOut()">Got it!</span></div>
-    <p class="details">    <slot name="details">
-      </slot>
-    </p>
-     
+    <div class="title"><span class="material-icons icon-color">info</span> <span class="info">Please Check File Names Before Processing Encode </span><span class="close-info" @click="closeOut()">Got it!</span></div>
+    
+    <p class="details">Before you choose video files to encode through AWS, please make sure all file name conventions are correct (see example below) in order for encoded videos to transfer into the correct COURSES folder after completion.
+      </p>
+      <p>
+    Correct file name: <span class="file-name-convention">COMM428D_Sampling.mp4</span>,  which will transfer to COURSES/COMM/COMM428D folder.</p>
   </div>
 </template>
 
@@ -89,9 +90,9 @@ export default {
   font-size: 1.1rem;
 }
 
-/* .file-info-note p:nth-child(2){
+.file-info-note p:nth-child(2){
   padding-bottom: 0.1rem;
-} */
+}
 
 .file-info-note .file-name-convention{
   position: relative;

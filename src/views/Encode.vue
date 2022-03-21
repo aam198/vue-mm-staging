@@ -1,39 +1,33 @@
 <template>
   <div class="encode">
-  
-      <InfoNote v-if="hideNote" @got-it="closeNote" />
-    <EncodeBox/>
+      <WarnNote v-if="hideNote" @got-it="closeNote" />
+    <EncodeBox />
   </div>
 </template>
 
 
-<script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+<script>
 import EncodeBox from '@/components/EncodeBox.vue'; // @ is an alias to /src
-import InfoNote from '@/components/InfoNote.vue';
+import WarnNote from '@/components/InfoNote.vue';
 
-
-
-@Options({
+export default {
   name: "Encode",
   components: {
     EncodeBox,
-    InfoNote
+    WarnNote
     },
-    data: ()=> {
+    data() {
       return{
         hideNote: true
       }
     },
     methods: {
-      closeNote(): void {
+      closeNote() {
         this.hideNote = !this.hideNote;
         console.log(this.hideNote)
       }
     }
-  },
-)
-export default class Encode extends Vue {}
+  }
 </script>
 
 <style scoped>
