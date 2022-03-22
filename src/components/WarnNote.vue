@@ -1,17 +1,16 @@
 <template>
-  <div class="file-info-note">
-    <div class="title"><span class="material-icons icon-color">info</span> <span class="info">Please Check File Names Before Processing Encode </span><span class="close-info" @click="closeOut()">Got it!</span></div>
+  <div class="warn-info-note">
+    <div class="title"><span class="material-icons icon-color">info</span> <span class="info"><slot name ="title"></slot></span><span class="close-info" @click="closeOut()">Got it!</span></div>
     
-    <p class="details">Before you choose video files to encode through AWS, please make sure all file name conventions are correct (see example below) in order for encoded videos to transfer into the correct COURSES folder after completion.
-      </p>
-      <p>
-    Correct file name: <span class="file-name-convention">COMM428D_Sampling.mp4</span>,  which will transfer to COURSES/COMM/COMM428D folder.</p>
+    <p class="details"><slot name="details"></slot>
+    </p>
+    
   </div>
 </template>
 
 <script>
 export default {
-  name: 'InfoNote',
+  name: 'WarnNote',
   methods: {
     closeOut() {
       console.log('will close')
@@ -19,22 +18,21 @@ export default {
     }
   }
 }
-
 </script>
 
 
 
 <style>
-.file-info-note{
+.warn-info-note{
   min-width: 650px;
   width: 80%;
   height: auto;
-  border-left-color: var(--orange);
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
   position: relative;
   margin: 1rem auto;
   padding: 0 .6rem;
-  border-left: .2rem solid #fcbf49;
+  border-left-color: var(--orange);
+  border-left: .2rem solid var(--orange);
   border-radius: .1rem;
   font-size: 0.9rem;
   line-height: 1.4;
@@ -42,7 +40,7 @@ export default {
   position: relative;
 }
 
- .file-info-note > .title{
+ .warn-info-note > .title{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,7 +48,7 @@ export default {
   padding: .5rem .6rem .5rem .6rem;
   border-bottom: .05rem solid var(--orange);
   border-bottom-color: var(--orange);
-  background-color: rgba(252,191,73,.3);
+  background-color: var(--orange-light);
   font-family: var(--font-header);
   font-weight: 700;
   font-size: 1.3rem;
@@ -74,32 +72,35 @@ export default {
 .title > .close-info{
   display: flex;
   align-self: flex-end;
-  color:  #F08C00;
+  padding-right: 0.5rem;
+  color:  var(--orange-dark);
   font-style: italic;
   cursor: pointer;
+  transition: color 200ms ease-in, transform 200ms ease-in-out;
 }
 
 .title > .close-info:hover {
-  color: #d57c00;
+  color: var(--orange-darker);
+  transform: scale(1.1);
 }
 
-.file-info-note p {
+.warn-info-note p {
   font-family: var(--font-body);
   padding: 1rem 1rem;
   color: var(--font-dark);
   font-size: 1.1rem;
 }
 
-.file-info-note p:nth-child(2){
+.warn-info-note p:nth-child(2){
   padding-bottom: 0.1rem;
 }
 
-.file-info-note .file-name-convention{
+.warn-info-note .warn-name-convention{
   position: relative;
   font-weight: bold;
 }
 
-span.file-name-convention::before {
+span.warn-name-convention::before {
   content: ""; 
   display: inline-block;
   position: absolute;
@@ -139,9 +140,9 @@ span.file-name-convention::before {
   font-feature-settings: 'liga';
 }
 
-@media (max-width: 1320px){
-  .file-info-note p:nth-child(3){
-    line-height: 1.8;
+@media (max-width: 1370px){
+  .warn-info-note p:nth-child(1){
+    line-height: 1.7;
   }
   .title > .info {
   width: 85%;

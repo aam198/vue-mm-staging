@@ -1,5 +1,11 @@
 <template>
  <div class="available">
+   <InfoNote>
+     <template v-slot:title>Available Files</template>
+     <template v-slot:details>List of all the files that have been restored from the Archive (AWS Deep Glacier) and are now available to download to your local machine. These files were copied from their original location and are available for 30 days.
+
+    <p>Please refresh the page if files do not show right away.</p></template>
+   </InfoNote>
   <section>
     <MainCard SearchDisplay = "none">
       
@@ -29,6 +35,7 @@ import MainCard from '@/components/MainCard.vue';
 import HelloWorld from '@/components/HelloWorld.vue';
 import Button from '@/components/Button.vue';
 import Modal from '@/components/Modal.vue';
+import InfoNote from '@/components/InfoNote.vue';
 
  // @ is an alias to /src
 
@@ -38,7 +45,8 @@ import Modal from '@/components/Modal.vue';
     HelloWorld,
     MainCard,
     Button,
-    Modal
+    Modal,
+    InfoNote
   },
   
   data: () => {

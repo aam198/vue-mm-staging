@@ -14,8 +14,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
 
-$blue-med: rgba(45 68 105 / 100%);
-$blue-dark:#1c2c62;
 $header-font-color: #F6F7F9;
 $header-login-border-color: rgba(249 250 251 /80%);
 $nav-font-color: #F6F7F9;
@@ -26,10 +24,16 @@ $font-body: 'Libre Franklin', sans-serif;
 $font-small: 'Noto Sans', sans-serif;
 $card-bg-color:rgba( 48 72 106 / 20%);
 $border-color: rgba(113 119 144 / 25%);
+$blue-med: rgba(45 68 105 / 100%);
+$blue-dark:#1c2c62;
+$blue-gray:rgba( 48 72 106 / 20%);
 $orange: #ff9900;
+$orange-light:rgba(252,191,73,.3);
+$orange-med:#F08C00;
+$orange-dark:#d57c00;
+$orange-darker: #8C5200;
 $white: #F6F7F9;
 $clr-white: #ffffff; 
-$gray: rgba( 48 72 106 / 20%);
 $dark-gray: #92b0b3;
 $red-clr: #c35353;
 $green-clr: #58b957;
@@ -50,12 +54,17 @@ $warn-clr: #f2ae43;
   --border-color: #{$border-color};
   --blue-dark: #{$blue-dark};
   --orange: #{$orange};
+  --orange-light: #{$orange-light};
+  --orange-med: #{$orange-med};
+  --orange-dark: #{$orange-dark};
+  --orange-darker: #{$orange-darker};
   --blue-med: #{$blue-med};
   --navy: #{$blue-med};
   --white: #{$white};
   --clr-white: #{$clr-white};
-  --gray: #{$gray};
+  --blue-gray: #{$blue-gray};
   --dark-gray: #{$dark-gray};
+  --light-gray: #{$border-color};
   --red-clr: #{$red-clr};
   --green-clr: #{$green-clr};
   --warn-crl: #{$warn-clr};
@@ -80,16 +89,18 @@ html{
 }
 
 body {
+  --bg-color: #f8f9fa;
   width: 100%;
   max-width: 1755px;
   height: 100vh;
   margin: 0;
-  background-color: #f8f9fa;
+  background-color: var(--bg-color);
   font-weight: 400;
-  line-height: 1.2;
 }
 
-
+strong {
+  font-weight: bold;
+}
 header {
   display: block;
 }
@@ -102,7 +113,7 @@ header {
 
 h1,h2,h3,h4,h5{
    color: var(--font-clr);
-   font-family: 'Archivo Narrow', sans-serif;
+   font-family: var(--font-header);
 }
 
 h1{font-size: 5rem;}
@@ -113,7 +124,7 @@ h5{font-size: 1.25rem;}
 
 .active {
   font-weight: 600;
-  color: #000657;
+  color: var(--font-dark);
   background: var(--orange);
 }
 
