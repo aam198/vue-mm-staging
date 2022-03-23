@@ -313,7 +313,7 @@ section{
 /* ---------------------------------- */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .4s ease;
+  transition: opacity .3s ease;
 }
 
 .fade-enter,

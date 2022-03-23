@@ -1,6 +1,6 @@
 <template>
-  <transition name="pop" appear>
     <div id ="myModal" class="modal">
+      <transition name="pop" appear>
       <div class="modal-box">
         <h2><strong>Confirmation to Upload</strong></h2>
         <span class="close"><i class="fas fa-times" @click="closeClick()"></i></span>
@@ -12,8 +12,8 @@
           <button @click="closeClick()" class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
         </div>    
       </div>
-    </div>
   </transition>
+    </div>
 </template>
 
 
