@@ -1,11 +1,11 @@
 <template>
  <div class="available">
-   <InfoNote>
+   <transition name="fade" appear>
+    <InfoNote v-if="hideNote" @got-it="hideNote = false" >
      <template v-slot:title>Available Files</template>
-     <template v-slot:details>List of all the files that have been restored from the Archive (AWS Deep Glacier) and are now available to download to your local machine. These files were copied from their original location and are available for 30 days.
-
-    <p>Please refresh the page if files do not show right away.</p></template>
-   </InfoNote>
+     <template v-slot:details>List of all the files that have been restored from the Archive (AWS Deep Glacier) and are now available to download to your local machine. These files were copied from their original location and are available for <strong> 30 days</strong>. Please <strong>refresh</strong> the page if files do not show right away.</template>
+     </InfoNote>
+  </transition>
   <section>
     <MainCard SearchDisplay = "none">
       
@@ -51,7 +51,8 @@ import InfoNote from '@/components/InfoNote.vue';
   
   data: () => {
     return {
-      modalOpen: false
+      modalOpen: false,
+      hideNote: true
     }
   },
   methods: {

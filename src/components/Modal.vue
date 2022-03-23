@@ -1,19 +1,19 @@
 <template>
+  <transition name="pop" appear>
     <div id ="myModal" class="modal">
       <div class="modal-box">
-        <h2>Confirmation to Upload</h2>
+        <h2><strong>Confirmation to Upload</strong></h2>
         <span class="close"><i class="fas fa-times" @click="closeClick()"></i></span>
         <div class="content">
-          <slot></slot>
-         
-            </div>
+         <slot></slot>
+        </div>
         <div class="navigation">
             <button @click="onClick()" class="btn-sm" id="upload-encode">Yes, Please!</button>
           <button @click="closeClick()" class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
         </div>    
-
       </div>
     </div>
+  </transition>
 </template>
 
 
@@ -44,8 +44,8 @@
   display: flex;
   /* display: none; Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 80px; /* Location of the box */
+  z-index: 100; /* Sit on top */
+  padding-top: 2rem; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -59,15 +59,15 @@
   margin: auto;
   padding: 30px;
   background: var(--clr-white);
-  border-radius: 5px;
+  border-radius: 1rem;
   width: 45%;
   min-width: 450px;
   position: relative;
   z-index: 10;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 .modal-box h2 {
-  margin-bottom: 5px;
   color: #333;
   font-family: Tahoma, Arial, sans-serif;
   font-size: 1.6rem;

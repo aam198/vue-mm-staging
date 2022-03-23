@@ -308,7 +308,30 @@ section{
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
-  
+
+// Animations - transition component
+/* ---------------------------------- */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .4s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.pop-enter-active,
+.pop-leave-active {
+  transition: transform 0.4s cubic-bezier(0.5, 0, 0.5, 1), opacity 0.4s linear;
+}
+
+.pop-enter,
+.pop-leave-to {
+  opacity: 0;
+  transform: scale(0.2) translateY(-50%);
+}
+
 @media (max-width: 860px){
     .container_grid{
         display:grid;
