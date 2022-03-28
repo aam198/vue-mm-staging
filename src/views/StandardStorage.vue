@@ -1,7 +1,7 @@
 <template>
   <div class="standard-storage">
    <transition name="fade" appear>
-    <InfoNote v-if="hideNote" @got-it="closeNote">
+    <InfoNote v-if="hideNote" @got-it="hideNote = false">
       <template v-slot:title>
         S3 Bucket Uploads
       </template>
@@ -30,10 +30,7 @@ export default{
     }
   },
   methods:{
-    closeNote() {
-      this.hideNote = !this.hideNote;
-      console.log(this.hideNote);
-    }
+    
   }
 }
 

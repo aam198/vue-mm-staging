@@ -8,7 +8,7 @@
             <span class="checkmark"></span>
           </label>
 
-      <div class="width-20">COURSES/ACCT/ACCT490</div>
+      <div class="width-20"> {{upload.path }} </div>
       <div class="width-25">{{upload.name}}</div>
       <div class="width-15">{{upload.type}}</div>
       <div class="width-15">{{upload.size}}</div>
@@ -184,6 +184,7 @@ import MainCard from '@/components/MainCard.vue';
 declare interface ArchiveFile {
     name: string,
     size: string,
+    path: string,
     type: string,
     storage: string,
     status: string,
@@ -202,6 +203,7 @@ const mapper = function(file: {[key: string]: AttributeValue}): ArchiveFile {
     return { 
       name: file.filename.S || "", 
       size: file.filesize.S || "0", 
+      path: file.originalSourcePath.S || "",
       key: file.requestID.S || "", 
       type: file.filetype?.S || "", 
       storage: file.storageclass.S || "",
@@ -224,7 +226,7 @@ export default defineComponent({
         
         const params: ScanCommandInput = {
             TableName: "MediaArchive",
-            ProjectionExpression: "requestID, filename, filesize, filetype, storageclass, transferStatus",
+            ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
             Limit: RECORD_LIMIT
         };
        
@@ -265,6 +267,13 @@ export default defineComponent({
           console.log(typeof file_size);
           
           item.size = file_size;
+
+          const fPath = item.path;
+          const fArrPath= fPath.split("/")
+          console.log(fArrPath);
+          const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
+          console.log(filePath)
+          item.path = filePath;
         });
         // Send each item to uploads
         items.forEach((item) => {
@@ -293,7 +302,7 @@ export default defineComponent({
         loadNextBatch: async function() {
             const params: ScanCommandInput = {
                 TableName: "MediaArchive",
-                ProjectionExpression: "requestID, filename, filesize, filetype, storageclass, transferStatus",
+                ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
                 Limit: RECORD_LIMIT,
                 ExclusiveStartKey:  { "requestID": {"S": this.nextToken || ""}},
             };
@@ -328,6 +337,13 @@ export default defineComponent({
               console.log(typeof file_size);
               
               item.size = file_size;
+
+              const fPath = item.path;
+              const fArrPath= fPath.split("/")
+          console.log(fArrPath);
+              const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
+              console.log(filePath)
+          item.path = filePath;
              });
 
             this.uploads = this.uploads.concat(items);

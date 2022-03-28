@@ -24,8 +24,8 @@ export default {
 
 <style>
 .warn-info-note{
-  min-width: 650px;
-  width: 75%;
+  min-width: 800px;
+  width: 85%;
   height: auto;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12),0 3px 1px -2px rgba(0,0,0,.2);
   position: relative;
@@ -34,7 +34,7 @@ export default {
   border-left-color: var(--orange);
   border-left: .2rem solid var(--orange);
   border-radius: .1rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   line-height: 1.4;
   color:var(--blue-font-clr);
   position: relative;
@@ -89,7 +89,7 @@ export default {
   font-family: var(--font-body);
   padding: 0.5rem 1rem 1rem 1rem;
   color: var(--font-dark);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
 .warn-info-note p:nth-child(2){
@@ -141,10 +141,19 @@ span.warn-name-convention::before {
   font-feature-settings: 'liga';
 }
 
-@media (max-width: 1450px){
+@media (max-width: 1292px){
   .warn-info-note p:nth-child(1){
     line-height: 1.7;
   }
+  .warn-info-note{
+    margin-left: 1rem;
+  }
 }
+
+@media (max-width: 400px){
+ .warn-info-note{
+    margin-left: 1rem;
+  }
+} 
 
 </style>

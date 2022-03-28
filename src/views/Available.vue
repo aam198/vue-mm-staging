@@ -6,8 +6,8 @@
      <template v-slot:details>List of all the files that have been restored from the Archive (AWS Deep Glacier) and are now available to download to your local machine. These files were copied from their original location and are available for <strong> 30 days</strong>. Please <strong>refresh</strong> the page if files do not show right away.</template>
      </InfoNote>
   </transition>
-  <section>
 
+  <section>
     <MainCard SearchDisplay = "none">
       
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
@@ -49,7 +49,8 @@ import InfoNote from '@/components/InfoNote.vue';
   
   data: () => {
     return {
-      showModal: false
+      showModal: false,
+      hideNote: true
     }
   },
   methods: {
