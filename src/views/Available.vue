@@ -7,23 +7,21 @@
      </InfoNote>
   </transition>
   <section>
+
     <MainCard SearchDisplay = "none">
       
-      
       <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
-
-      <!-- <Modal /> -->
      
     </MainCard>   
     
     <div class="continue-container">
-      <button @click="toggleModalState" class="btn download_btn" id="downloadBtn" ><i class="fa fa-download" aria-hidden="true"></i>Download File(s)</button>
-      <div v-if="modalOpen">
-        <Modal>
+      <button @click="openModal" class="btn download_btn" id="downloadBtn" ><i class="fa fa-download" aria-hidden="true"></i>Download File(s)</button>
+      <transition name="fade" appear>
+        <Modal  v-if="showModal" @close-click="closeModal">
          Videos will be encoded into 3 different formats (low, med, high)
           Would you like to encode these video files? 
         </Modal>
-      </div>
+      </transition>
     </div>
    </section> 
   </div> 
@@ -51,14 +49,18 @@ import InfoNote from '@/components/InfoNote.vue';
   
   data: () => {
     return {
-      modalOpen: false,
-      hideNote: true
+      showModal: false
     }
   },
   methods: {
-    toggleModalState() {
-      this.modalOpen = !this.modalOpen;
-    }
+    openModal(): void {
+      console.log('this would open modal');
+      this.showModal = !this.showModal;
+    },
+    closeModal(): void {
+      console.log('this would close');
+      this.showModal = !this.showModal;
+    },
   }
 })
 

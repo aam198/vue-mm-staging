@@ -2,7 +2,7 @@
     <div id ="myModal" class="modal">
       <transition name="pop" appear>
       <div class="modal-box">
-        <h2><strong>Confirmation to Upload</strong></h2>
+        <h2><strong>Confirmation: Upload to {{text}} </strong></h2>
         <span class="close"><i class="fas fa-times" @click="closeClick()"></i></span>
         <div class="content">
          <slot></slot>

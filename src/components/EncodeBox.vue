@@ -60,7 +60,7 @@
 
     <button @click="openModal"  class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File</button>
     <transition name="fade" appear>
-      <Modal v-if="showModal" @close-click="closeModal">
+      <Modal v-if="showModal" @close-click="closeModal" text="Encode">
         Videos will be encoded into 3 different formats: <strong>(low, med, high)</strong>
           Would you like to encode these video files? 
       </Modal>
@@ -295,7 +295,6 @@ export default defineComponent({
       isDisabled() {
         return this.listFile.length < 0;
       },
-      
     },
     methods: {
         openModal(): void {

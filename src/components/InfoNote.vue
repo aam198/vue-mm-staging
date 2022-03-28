@@ -65,8 +65,9 @@ export default {
 }
 
 .title > .info-title {
-  width: 90%;
+  width: 80%;
   align-self: flex-start;
+  padding-right: 2rem;
 }
 
 .title > .close-info{
@@ -121,14 +122,11 @@ export default {
   font-feature-settings: 'liga';
 }
 
-@media (max-width: 1390px){
+@media (max-width: 1450px){
   .info-note p:nth-child(3){
     line-height: 1.8;
   }
-  .title > .info-title {
-    width: 75%;
-    align-self: flex-start;
-}
+  
 }
 
 </style>
