@@ -1,6 +1,11 @@
 <template>
-  <div class="search">
+  <div class="search-page">
    <section>
+     <Pagination 
+      :totalPages="10"
+      :perPage="50"
+      :currentPage = "currentPage"
+      @pagechanged = "onPageChange"/>
     <MainCard>
         <div v-for="upload in uploads" :key="upload.key" class="upload">
           <label class="checkbox-container">
@@ -21,6 +26,7 @@
       <button class="btn" id="restore-12">12-Hour Restore</button>
       <button class="btn" id="restore-48">48-Hour Restore</button>
     </div>
+    
    </section>
   </div>
 </template>
@@ -180,6 +186,7 @@ import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@a
 import {Auth} from 'aws-amplify';
 import HumanReadable from '../human-readable';
 import MainCard from '@/components/MainCard.vue';
+import Pagination from '@/components/Pagination.vue';
 
 declare interface ArchiveFile {
     name: string,
@@ -195,7 +202,8 @@ declare interface BaseComponentData {
     // files?:  FileList,
     /*error_msg?: string,*/
     uploads: Array<ArchiveFile>,
-    nextToken?: string
+    nextToken?: string,
+    currentPage: number
 }
 
 
@@ -216,10 +224,16 @@ const REGION = "us-east-1";
 const RECORD_LIMIT = 50;
 
 export default defineComponent({
+    components:{
+      MainCard,
+      Pagination
+    },
+
     data: () => {
         return { 
             uploads: [] as Array<ArchiveFile>,
-            nextToken: undefined
+            nextToken: undefined,
+            currentPage: 1,
         }  as BaseComponentData;
     },
     mounted: async function() {
@@ -282,7 +296,6 @@ export default defineComponent({
         
         console.log(data.LastEvaluatedKey);
         
-        
         /* Handles if user scrolls to the bottom */
         window.addEventListener('scroll', this.monitorScroll);
 
@@ -292,7 +305,10 @@ export default defineComponent({
           // return data;    
     },
     methods: {
-
+      onPageChange(page) {
+        console.log(page)
+        this.currentPage = page;
+       },
         monitorScroll: async function() {
             if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
                 console.log('scrolled to the bottom')
@@ -353,9 +369,7 @@ export default defineComponent({
         }
 
     },
-    components:{
-      MainCard
-    }
+    
 })
 
 

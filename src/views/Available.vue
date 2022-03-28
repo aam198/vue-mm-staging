@@ -17,12 +17,17 @@
     <div class="continue-container">
       <button @click="openModal" class="btn download_btn" id="downloadBtn" ><i class="fa fa-download" aria-hidden="true"></i>Download File(s)</button>
       <transition name="fade" appear>
-        <Modal  v-if="showModal" @close-click="closeModal">
+        <Modal v-if="showModal" @close-click="closeModal">
          Videos will be encoded into 3 different formats (low, med, high)
           Would you like to encode these video files? 
         </Modal>
       </transition>
     </div>
+     <Pagination 
+      :totalPages="10"
+      :perPage="50"
+      :currentPage = "currentPage"
+      @pagechanged = "onPageChange"/>
    </section> 
   </div> 
 </template>
@@ -34,6 +39,7 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import Button from '@/components/Button.vue';
 import Modal from '@/components/Modal.vue';
 import InfoNote from '@/components/InfoNote.vue';
+import Pagination from '@/components/Pagination.vue';
 
  // @ is an alias to /src
 
@@ -44,13 +50,15 @@ import InfoNote from '@/components/InfoNote.vue';
     MainCard,
     Button,
     Modal,
-    InfoNote
+    InfoNote,
+    Pagination
   },
   
   data: () => {
     return {
       showModal: false,
-      hideNote: true
+      hideNote: true,
+      currentPage: 1,
     }
   },
   methods: {
@@ -62,6 +70,10 @@ import InfoNote from '@/components/InfoNote.vue';
       console.log('this would close');
       this.showModal = !this.showModal;
     },
+    onPageChange(page) {
+      console.log(page)
+      this.currentPage = page;
+    }
   }
 })
 

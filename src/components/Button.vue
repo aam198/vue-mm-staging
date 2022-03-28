@@ -34,8 +34,5 @@
   min-width: 700px;
 }
 
-.btn{
-
-}
 
 </style>
