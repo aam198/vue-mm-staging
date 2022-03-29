@@ -24,6 +24,7 @@ import Button from '@/components/Button.vue'; // @ is an alias to /src
 import InfoNote from '@/components/InfoNote.vue'; // @ is an alias to /src
 
 
+
 @Options({
   components: {
     UploadBox,

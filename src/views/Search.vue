@@ -1,17 +1,13 @@
 <template>
   <div class="search-page">
    <section>
-     <Pagination 
-      :totalPages="10"
-      :perPage="50"
-      :currentPage = "currentPage"
-      @pagechanged = "onPageChange"/>
+     
     <MainCard>
-        <div v-for="upload in uploads" :key="upload.key" class="upload">
-          <label class="checkbox-container">
-            <input type="checkbox">
-            <span class="checkmark"></span>
-          </label>
+    <div v-for="upload in uploads" :key="upload.key" class="upload">
+      <label class="checkbox-container">
+        <input type="checkbox">
+        <span class="checkmark"></span>
+      </label>
 
       <div class="width-20"> {{upload.path }} </div>
       <div class="width-25">{{upload.name}}</div>
@@ -21,6 +17,13 @@
       <div class="status"> <div :class="[upload.status === 'success' ? '' : 'circle' ]"></div></div>
       <!-- <div :class="[upload.status === 'success' ? 'circle' : '' ]">{{upload.status}}</div> -->
      </div>
+     <div class="paginate">
+      <Pagination 
+        :totalPages="10"
+        :perPage="50"
+        :currentPage = "currentPage"
+        @pagechanged = "onPageChange"/>
+      </div>
     </MainCard>
     <div class="continue-container">
       <button class="btn" id="restore-12">12-Hour Restore</button>
@@ -32,6 +35,13 @@
 </template>
 
 <style scoped lang="scss">
+
+.paginate{
+
+  display: flex;
+  align-self: flex-end;
+}
+
 .upload {
   display: flex; 
   font-family: var(--font-body);
@@ -244,7 +254,6 @@ export default defineComponent({
             Limit: RECORD_LIMIT
         };
        
-
         let credentials = await Auth.currentCredentials();
         
         const ddbClient = new DynamoDBClient({ 
@@ -297,7 +306,7 @@ export default defineComponent({
         console.log(data.LastEvaluatedKey);
         
         /* Handles if user scrolls to the bottom */
-        window.addEventListener('scroll', this.monitorScroll);
+        // window.addEventListener('scroll', this.monitorScroll);
 
       console.log(items);
      
@@ -337,6 +346,7 @@ export default defineComponent({
             const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
             // Iterating through the array and formatting 
             items.map(item => {
+              // Slice up the file path, similar to uploadBox utility function. https://stackoverflow.com/questions/63216973/slice-url-to-get-the-file-name-in-vue
               // Taking out the extension that is connected to the whole name
               const fName= item.name;
               const fArr= fName.split(".");

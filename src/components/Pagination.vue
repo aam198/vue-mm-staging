@@ -6,7 +6,7 @@
         @click="onClickFirstPage"
         :disabled="isInFirstPage"
       >
-        First
+       <i class="fa fa-angles-left"></i>First
       </button>
     </li>
 
@@ -146,9 +146,13 @@ export default {
 <style>
   .pagination {
     list-style: none;
+    height: 2rem;
+    display: flex;
+    align-items: center;
   }
   .pagination-item{
     display: inline-block;
+    
   }
 
   button{
@@ -160,7 +164,7 @@ export default {
   }
 
   .active{
-    background-color: #4AAE9B;
-    color: #fff;
+    background-color: var(--orange-med);
+    color: var(--font-dark);
   }
 </style>

@@ -5,7 +5,7 @@
         <!-- Card Search -->
         <div class="card-search" :style=" {display: SearchDisplay}">
           <div class="search-bar">
-            <input class="search" type="text" placeholder="Search files by prefix">
+            <input class="search" type="text"   placeholder="Search files by prefix">
           </div>
         </div>
         <!-- Card Header -->
@@ -241,7 +241,8 @@ export default defineComponent({
   name: "MainCard",
   props: {
     SearchDisplay: String
-  }
+  },
+
 })
 
 
