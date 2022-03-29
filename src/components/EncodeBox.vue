@@ -27,8 +27,11 @@
               
         <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
-        <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" />
+        <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png "  />
        
+       <!-- <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" /> -->
+
+
         <label for="uploadfile">
           <h2 id="select-file">
             Drag & Drop Assets to Encode
@@ -36,9 +39,7 @@
           <span>or</span>
           <div class="btn">Browse Files</div>
         </label>
-
      
-
         <div class="uploadfile__uploading">Uploading...</div>
         <div class="uploadfile__success">Done!</div>
       <!-- <div class="uploadfile__error">{{errmsg}}</div> -->
@@ -60,7 +61,7 @@
 
     <button @click="openModal"  class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File</button>
     <transition name="fade" appear>
-      <Modal v-if="showModal" @close-click="closeModal" text="Encode">
+      <Modal v-if="showModal" @confirm-click="performUpload" @close-click="closeModal" text="Encode">
         Videos will be encoded into 3 different formats: <strong>(low, med, high)</strong>
           Would you like to encode these video files? 
       </Modal>
@@ -310,7 +311,7 @@ export default defineComponent({
             return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
         },
         listFile(index: number, file: File): void{
-          // Get File information
+          // Splicing File information
           const key: string = file.name;
           const size = file.size;
           const file_name_array = key.split(".");
@@ -323,8 +324,8 @@ export default defineComponent({
           var i=0;
           while(fSize>900){fSize/=1024;i++;}
           const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-      
         },
+        
         upload(index: number,file: File): void {
             const key: string = file.name;
             //const bar: ProgressBar = new ProgressBar();
@@ -346,8 +347,8 @@ export default defineComponent({
             const files = input.files as FileList;
             // Uncomment 3 lines below to send files to upload function
             for (let i=0; i< files.length; i++) {
-            //     this.upload(i,files[i]);
-                  this.listFile(i, files[i]);
+             this.upload(i,files[i]);
+                  // this.listFile(i, files[i]);
             }
         }, 
     }

@@ -7,9 +7,12 @@
         <div class="content">
          <slot></slot>
         </div>
+
         <div class="navigation">
-            <button @click="onClick()" class="btn-sm" id="upload-encode">Yes, Please!</button>
+            <input type="submit" @click="confirmClick()" class="btn-sm" id="upload-encode" value="Yes, Please!" />
+
           <button @click="closeClick()" class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
+          
         </div>    
       </div>
   </transition>
@@ -24,10 +27,10 @@
       text: String
     },
     methods: {
-      onClick() {
+      confirmClick() {
         console.log('click')
         // Sending up click event
-        this.$emit('btn-click')
+        this.$emit('confirm-click')
       },
       closeClick() {
         console.log('close')

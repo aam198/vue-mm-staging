@@ -3,6 +3,7 @@
    <section>
      
     <MainCard>
+      
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
         <input type="checkbox">
@@ -37,9 +38,9 @@
 <style scoped lang="scss">
 
 .paginate{
-
   display: flex;
-  align-self: flex-end;
+  align-self: center;
+  justify-content: flex-end;
 }
 
 .upload {
@@ -244,6 +245,7 @@ export default defineComponent({
             uploads: [] as Array<ArchiveFile>,
             nextToken: undefined,
             currentPage: 1,
+            paginate:[],
         }  as BaseComponentData;
     },
     mounted: async function() {
@@ -307,7 +309,7 @@ export default defineComponent({
         
         /* Handles if user scrolls to the bottom */
         // window.addEventListener('scroll', this.monitorScroll);
-
+        
       console.log(items);
      
 
@@ -317,6 +319,7 @@ export default defineComponent({
       onPageChange(page) {
         console.log(page)
         this.currentPage = page;
+        this.loadNextBatch()
        },
         monitorScroll: async function() {
             if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
@@ -341,6 +344,7 @@ export default defineComponent({
             const data = await ddbClient.send(new ScanCommand(params));
 
             console.log(data);
+
 
             /* loads the items into the array */
             const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
@@ -372,7 +376,10 @@ export default defineComponent({
           item.path = filePath;
              });
 
+            // this.uploads = this.uploads.concat(items);
             this.uploads = this.uploads.concat(items);
+            
+            
 
             /* store the last requestId */
             this.nextToken = data.LastEvaluatedKey?.requestID.S || "";

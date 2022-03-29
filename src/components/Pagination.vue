@@ -1,22 +1,24 @@
 <template>
   <ul class = "pagination">
     <li class = "pagination-item">
-      <button
+      <button 
+        class="control"
         type="button"
         @click="onClickFirstPage"
         :disabled="isInFirstPage"
       >
-       <i class="fa fa-angles-left"></i>First
+       <i class="fa fa-angles-left"></i>
       </button>
     </li>
 
     <li class = "pagination-item">
-      <button
+      <button 
+        class="control"
         type="button"
         @click="onClickPreviousPage"
         :disabled="isInFirstPage"
       >
-        Previous
+       <i class="fa fa-angle-left"></i>
       </button>
     </li>
 
@@ -28,6 +30,7 @@
       class = "pagination-item"
     >
       <button
+        class="control"
         type="button"
         @click="onClickPage(page.name)"
         :disabled="page.isDisabled"
@@ -42,23 +45,25 @@
 
     <li class = "pagination-item">
       <button
+        class="control"
         type="button"
         @click="onClickNextPage"
         :disabled="isInLastPage"
       >
-        Next
+       <i class="fa fa-angle-right"></i>
       </button>
     </li>
 
-    <li class = "pagination-item">
+    <!-- <li class = "pagination-item">
       <button
+        class="control"
         type="button"
-        @click="onClickNextPage"
+        @click="onClickLastPage"
         :disabled="isInLastPage"
       >
-        Last
+       <i class="fa fa-angles-right"></i>
       </button>
-    </li>
+    </li> -->
   </ul>
 </template>
 
@@ -143,20 +148,30 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
   .pagination {
-    list-style: none;
-    height: 2rem;
+    list-style-type: none;
     display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
     align-items: center;
+    margin: 0;
+    padding: 0;
   }
   .pagination-item{
-    display: inline-block;
-    
+    display:flex;
+    align-items: center;
+    font-size: 1.5rem;
   }
 
-  button{
+  .control{
     cursor: pointer;
+    position: relative;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    margin: 0 5px;
+    background: transparent;
   }
 
   button:is(:disabled, :disabled:active){
@@ -164,7 +179,10 @@ export default {
   }
 
   .active{
+    border-radius: 50%;
+    cursor: pointer;
     background-color: var(--orange-med);
     color: var(--font-dark);
+    transition: background-color 0.2s ease-in-out;
   }
 </style>
