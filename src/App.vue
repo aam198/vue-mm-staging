@@ -244,7 +244,7 @@ section{
   height: 2.5rem;
   padding: 0.8rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-right: 0px;
   background: rgba(45 68 105 / 100%);
   color: var(--font-clr);

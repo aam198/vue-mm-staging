@@ -30,7 +30,7 @@
 
       
      <div class="load_more-container">
-       <button @click="loadMore"  class="load-more btn" ><i class="fa fa-angle-down" aria-hidden="true"></i>show more (50)</button>
+       <button @click="loadMore"  class="load-more" ><i class="fa fa-angle-down" aria-hidden="true"></i>load more (50)</button>
       </div> 
     </MainCard>
     <div class="continue-container">
@@ -112,11 +112,11 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 18.5rem;
+  width: 18rem;
   height: 4rem;
   padding: 1rem 2rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-right: 1rem;
   background: rgba(45 68 105 / 100%);
   color: var(--font-clr);
@@ -127,24 +127,39 @@
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
-  }
+}
 
 .btn:hover, button.btn:hover{
   background-color: var(--blue-dark);
   transform: translate3d(0px, -1px, 0px);
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
 }
-button .load-more{
+button.load-more{
+  cursor: pointer;
   text-transform: uppercase;
   border-radius: 0px;
+  display: inline-flex;
+  justify-content: center;
+  align-items:center;
+  background: transparent;
+  border: 3px solid var(--blue-dark);
+  padding: 0.8rem 1rem;
+  width: 15.5rem;
+  transition: background 0.3s ease-in-out, color 0.2s ease-in-out;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .load-more i{
-  margin-right: 5px;
+  margin-right: 8px;
   font-size: 2rem;
   transition: color 0.2s ease-in;
 }
 
+.load-more:hover {
+  background: var(--blue-dark);
+  color: var(--font-clr);
+}
 .load-more:hover > i {
   color: var(--orange);
 }
