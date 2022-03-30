@@ -1,8 +1,17 @@
 <template>
   <div class="search-page">
+   <transition name="fade" appear>
+    <InfoNote v-if="hideNote" @got-it="hideNote = false">
+      <template v-slot:title>
+        Search Archive
+      </template>
+     <template v-slot:details>
+       Search for files you would like to download to local computer. <strong>12-Hour Restore</strong> : choose for an immediate need (i.e. impacting students in live lessons. <strong>48-Hour Restore</strong>: anything else. After selection, check for files in <strong>Available Files</strong>
+     </template>
+    </InfoNote> 
+   </transition>
    <section>
-     
-    <MainCard>
+   <MainCard>
       
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -18,13 +27,11 @@
       <div class="status"> <div :class="[upload.status === 'success' ? '' : 'circle' ]"></div></div>
       <!-- <div :class="[upload.status === 'success' ? 'circle' : '' ]">{{upload.status}}</div> -->
      </div>
-     <div class="paginate">
-      <Pagination 
-        :totalPages="10"
-        :perPage="50"
-        :currentPage = "currentPage"
-        @pagechanged = "onPageChange"/>
-      </div>
+
+      
+     <div class="load_more-container">
+       <button @click="loadMore"  class="load-more btn" ><i class="fa fa-angle-down" aria-hidden="true"></i>show more (50)</button>
+      </div> 
     </MainCard>
     <div class="continue-container">
       <button class="btn" id="restore-12">12-Hour Restore</button>
@@ -37,18 +44,14 @@
 
 <style scoped lang="scss">
 
-.paginate{
-  display: flex;
-  align-self: center;
-  justify-content: flex-end;
-}
 
 .upload {
   display: flex; 
   font-family: var(--font-body);
   border-radius: 3px;
 }
-.upload > div {   text-overflow: clip; padding: 10px;}
+.upload > div {   
+  text-overflow: clip; padding: 10px;}
 .align-self-center {align-self: center !important;}
 
 .status{
@@ -99,6 +102,12 @@
   min-width: 700px;
 }
 
+.load_more-container{
+  display: flex;
+  align-self: center;
+  justify-content: flex-end;
+}
+
 .btn, button.btn{
   display: inline-flex;
   justify-content: center;
@@ -120,11 +129,25 @@
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
   }
 
-  .btn:hover, button.btn:hover{
-    background-color: var(--blue-dark);
-    transform: translate3d(0px, -1px, 0px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-  }
+.btn:hover, button.btn:hover{
+  background-color: var(--blue-dark);
+  transform: translate3d(0px, -1px, 0px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+button .load-more{
+  text-transform: uppercase;
+  border-radius: 0px;
+}
+
+.load-more i{
+  margin-right: 5px;
+  font-size: 2rem;
+  transition: color 0.2s ease-in;
+}
+
+.load-more:hover > i {
+  color: var(--orange);
+}
 
 /* Check Mark Styling */
 .checkbox-container {
@@ -141,54 +164,54 @@
 
 /* To hide the browser's default checkbox */
 .checkbox-container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
 
 /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
-  }
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+}
 
-  .checkbox-container:hover input ~ .checkmark {
-   border: 1px solid var(--blue-med);
-   border-color: var(--blue-med);
-  }
+.checkbox-container:hover input ~ .checkmark {
+  border: 1px solid var(--blue-med);
+  border-color: var(--blue-med);
+}
 
 .checkbox-container input:checked ~ .checkmark {
-    background-color: var(--blue-dark);
-  }
+  background-color: var(--blue-dark);
+}
   /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
+  content: "";
+  position: absolute;
+  display: none;
+}
 
 .checkbox-container input:checked ~ .checkmark:after {
-    display: block;
-  }
+  display: block;
+}
   /* Style the checkmark/indicator */
 .checkbox-container .checkmark:after {
-    left: 6px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 </style>
 
 <script lang="ts">
@@ -197,7 +220,8 @@ import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@a
 import {Auth} from 'aws-amplify';
 import HumanReadable from '../human-readable';
 import MainCard from '@/components/MainCard.vue';
-import Pagination from '@/components/Pagination.vue';
+import Button from '@/components/Button.vue';
+import InfoNote from '@/components/InfoNote.vue';
 
 declare interface ArchiveFile {
     name: string,
@@ -214,7 +238,7 @@ declare interface BaseComponentData {
     /*error_msg?: string,*/
     uploads: Array<ArchiveFile>,
     nextToken?: string,
-    currentPage: number
+    hideNote: boolean,
 }
 
 
@@ -237,15 +261,15 @@ const RECORD_LIMIT = 50;
 export default defineComponent({
     components:{
       MainCard,
-      Pagination
+      Button,
+      InfoNote,
     },
 
     data: () => {
         return { 
             uploads: [] as Array<ArchiveFile>,
             nextToken: undefined,
-            currentPage: 1,
-            paginate:[],
+            hideNote: true
         }  as BaseComponentData;
     },
     mounted: async function() {
@@ -312,13 +336,10 @@ export default defineComponent({
         
       console.log(items);
      
-
           // return data;    
     },
     methods: {
-      onPageChange(page) {
-        console.log(page)
-        this.currentPage = page;
+       loadMore() {
         this.loadNextBatch()
        },
         monitorScroll: async function() {
@@ -378,8 +399,6 @@ export default defineComponent({
 
             // this.uploads = this.uploads.concat(items);
             this.uploads = this.uploads.concat(items);
-            
-            
 
             /* store the last requestId */
             this.nextToken = data.LastEvaluatedKey?.requestID.S || "";

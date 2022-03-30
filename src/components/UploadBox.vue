@@ -63,6 +63,7 @@
 <!-- Modal Pop-up  -->
 
    <button @click="openModal"  class="btn uploadfile__button" id="archiveBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Upload File(s)</button>
+   
     <transition name="fade" appear>
       <Modal v-if="showModal" @close-click="closeModal" text="Archive">
         Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.

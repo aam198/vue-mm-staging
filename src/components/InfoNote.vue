@@ -43,7 +43,6 @@ export default {
  .info-note > .title{
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin: 0 -.6rem;
   padding: .5rem .6rem .5rem .6rem;
   border-bottom: .05rem solid var(--blue-dark);
@@ -71,8 +70,7 @@ export default {
 }
 
 .title > .close-info{
-  display: flex;
-  align-self: flex-end;
+  margin-left: auto;
   padding-right: 0.5rem;
   color:  var(--orange-dark);
   font-style: italic;
@@ -122,11 +120,6 @@ export default {
   font-feature-settings: 'liga';
 }
 
-@media (max-width: 1450px){
-  .info-note p:nth-child(3){
-    line-height: 1.8;
-  }
-  
-}
+
 
 </style>

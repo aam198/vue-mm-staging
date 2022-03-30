@@ -43,7 +43,6 @@ export default {
  .warn-info-note > .title{
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin: 0 -.6rem;
   padding: .5rem .6rem .5rem .6rem;
   border-bottom: .05rem solid var(--orange);
@@ -71,8 +70,7 @@ export default {
 }
 
 .title > .close-info{
-  display: flex;
-  align-self: flex-end;
+  margin-left:auto;
   padding-right: 0.5rem;
   color:  var(--orange-dark);
   font-style: italic;
