@@ -1,5 +1,5 @@
 <template>
-    <div id ="myModal" class="modal">
+    <div id ="modalConfirmation" class="modal">
       <transition name="pop" appear>
       <div class="modal-box">
         <h2><strong>Confirmation: Upload to {{text}} </strong></h2>
@@ -9,8 +9,9 @@
         </div>
 
         <div class="navigation">
-            <input type="submit" @click="confirmClick()" class="btn-sm" id="upload-encode" value="Yes, Please!" />
-
+         
+            <button type="submit" class="btn-sm" id="upload-encode" @click="confirmClick()">Yes, Please!"</button>
+         
           <button @click="closeClick()" class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
           
         </div>    
@@ -28,12 +29,12 @@
     },
     methods: {
       confirmClick() {
-        console.log('click')
+        console.log('Confirm click')
         // Sending up click event
         this.$emit('confirm-click')
       },
       closeClick() {
-        console.log('close')
+        console.log('close click')
         this.$emit('close-click')
       }
     }

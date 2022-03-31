@@ -65,10 +65,14 @@
    <button @click="openModal"  class="btn uploadfile__button" id="archiveBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Upload File(s)</button>
    
     <transition name="fade" appear>
-      <Modal v-if="showModal" @close-click="closeModal" text="Archive">
-        Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
-          Would you like to continue to upload? 
-      </Modal>
+
+        <Modal v-if="showModal"
+        @confirmClick="upload" 
+      @closeClick="closeModal"  text="Archive">
+          Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
+            Would you like to continue to upload? 
+        </Modal>
+
     </transition>
   </div> 
   
@@ -76,12 +80,10 @@
 </template>
 
 <style scoped lang="scss">
-
 .uploadbox__dragndrop,
 .uploadbox__uploading {
     display: none;
 }
-
 .uploadfile__error,
 .uploadfile__uploading,
 .uploadfile__success {
@@ -274,6 +276,7 @@ import {PropType} from 'vue';
 // May not need next 2 lines
 import useFileList from '@/compositions/fileList'
 const { files, addFiles, removeFile } = useFileList()
+import { formatSize, sliceString } from "../helpers.js"
 
 
 
@@ -304,20 +307,9 @@ export default defineComponent({
     props: {},
     emits: ["update-progress"],
     methods: {
-      sliceString(value): void {
-        const file_name_array = value.split(".");
-        const file_name= file_name_array[0];
-        return (file_name)
-      },
-      formatSize(value): string{
-        console.log(value)
-        const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
-        let fSize = value;
-        var i=0;
-        while(fSize>900){fSize/=1024;i++;}
-        const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-        return (file_size)
-      },
+      formatSize,
+      sliceString,
+    
       openModal(): void {
         console.log('this would open modal');
         this.showModal = !this.showModal;
@@ -330,6 +322,7 @@ export default defineComponent({
         const div = document.createElement('div');
         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
         },
+
       addFiles(index: number, file: File): void{
         // Get File information
         const key: string = file.name;
@@ -340,9 +333,11 @@ export default defineComponent({
         const file_type = file_name_array[file_name_array.length-1];
         console.log(file_name, file_type)
         const path: string = file_type;
+
         const fileList : Upload =  reactive({loaded:0, total: file.size, key: file.name, path: file_type});
         let uindex = this.uploads.push(fileList);
         },
+
       upload(index: number,file: File): void {
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
@@ -356,16 +351,19 @@ export default defineComponent({
                     console.log(progress);
             }
         };
+         console.log('Will send to the s3!');
             // initiate the upload
-            // Storage.put(key,file,config);
+            Storage.put(key,file,config);
         },
+
         performUpload(event: Event): void {
+            event.preventDefault();
             const input = event.target as HTMLInputElement;
             const files = input.files as FileList;
             // Uncomment 3 lines below to send files to upload function
             for (let i=0; i< files.length; i++) {
-                // this.upload(i,files[i]);
                 this.addFiles(i, files[i]);
+                // this.upload(i,files[i]);
             }
         }, 
     }

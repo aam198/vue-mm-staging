@@ -9,8 +9,7 @@
 
   <section>
     <MainCard SearchDisplay = "none">
-      
-      <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    
      
     </MainCard>   
     
@@ -23,11 +22,6 @@
         </Modal>
       </transition>
     </div>
-     <Pagination 
-      :totalPages="10"
-      :perPage="50"
-      :currentPage = "currentPage"
-      @pagechanged = "onPageChange"/>
    </section> 
   </div> 
 </template>
@@ -39,7 +33,7 @@ import HelloWorld from '@/components/HelloWorld.vue';
 import Button from '@/components/Button.vue';
 import Modal from '@/components/Modal.vue';
 import InfoNote from '@/components/InfoNote.vue';
-import Pagination from '@/components/Pagination.vue';
+
 
  // @ is an alias to /src
 
@@ -51,7 +45,6 @@ import Pagination from '@/components/Pagination.vue';
     Button,
     Modal,
     InfoNote,
-    Pagination
   },
   
   data: () => {
@@ -70,10 +63,7 @@ import Pagination from '@/components/Pagination.vue';
       console.log('this would close');
       this.showModal = !this.showModal;
     },
-    onPageChange(page) {
-      console.log(page)
-      this.currentPage = page;
-    }
+   
   }
 })
 

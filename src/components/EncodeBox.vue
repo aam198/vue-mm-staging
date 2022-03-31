@@ -60,6 +60,7 @@
 
 
     <button @click="openModal"  class="btn uploadfile__button" id="encodeBtn" ><i class="fa fa-upload" aria-hidden="true"></i>Encode File</button>
+    
     <transition name="fade" appear>
       <Modal v-if="showModal" @confirm-click="performUpload" @close-click="closeModal" text="Encode">
         Videos will be encoded into 3 different formats: <strong>(low, med, high)</strong>

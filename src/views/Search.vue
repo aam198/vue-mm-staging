@@ -66,14 +66,19 @@
 }
 .width-20 {
   display:flex;
-  max-width: 20%;
+  max-width: 25%;
+  width: 20%;
   flex-grow: 1;
+  overflow-wrap: break-word;
+  word-break: break-all;
   }
 .width-25{
   display:flex;
   flex-grow: 1;
-  width: 20%;
-  max-width: 25%;
+  width: 15%;
+  max-width: 20%;
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 .width-30{
@@ -144,6 +149,7 @@ button.load-more{
   background: transparent;
   border: 3px solid var(--blue-dark);
   padding: 0.8rem 1rem;
+  margin: 0.7rem 0;
   width: 15.5rem;
   transition: background 0.3s ease-in-out, color 0.2s ease-in-out;
   font-size: 1.2rem;
@@ -237,6 +243,7 @@ import HumanReadable from '../human-readable';
 import MainCard from '@/components/MainCard.vue';
 import Button from '@/components/Button.vue';
 import InfoNote from '@/components/InfoNote.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
 
 declare interface ArchiveFile {
     name: string,
@@ -278,6 +285,7 @@ export default defineComponent({
       MainCard,
       Button,
       InfoNote,
+      HelloWorld,
     },
 
     data: () => {
