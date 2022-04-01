@@ -67,7 +67,7 @@
     <transition name="fade" appear>
 
         <Modal v-if="showModal"
-        @confirmClick="upload" 
+        @confirmClick.stop="confirm" 
       @closeClick="closeModal"  text="Archive">
           Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
             Would you like to continue to upload? 
@@ -315,9 +315,16 @@ export default defineComponent({
         this.showModal = !this.showModal;
       },
       closeModal(): void {
-        console.log('this would close');
+        console.log('this will close');
         this.showModal = !this.showModal;
       },
+      confirm(): void{
+        console.log('confirm event is firing');
+        this.showModal = !this.showModal;
+        // Add in Function to run upload(index:number, file: File)
+      },
+      // REMOVE FILE FUNCTION
+
       isAdvanced(): boolean {
         const div = document.createElement('div');
         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
@@ -336,9 +343,11 @@ export default defineComponent({
 
         const fileList : Upload =  reactive({loaded:0, total: file.size, key: file.name, path: file_type});
         let uindex = this.uploads.push(fileList);
+        console.log('line 344 ' + fileList.key + fileList.path)
+        
         },
 
-      upload(index: number,file: File): void {
+      upload(file: File): void {
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
         let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, path: ''});
