@@ -31,7 +31,7 @@
               
             <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
-            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" />
+            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple  v-on:change="performUpload" accept=".mp3,.mp4,.png "  />
        
               <label for="uploadfile">
                 <h2 id="select-file">
@@ -67,7 +67,7 @@
     <transition name="fade" appear>
 
         <Modal v-if="showModal"
-        @confirmClick.stop="confirm" 
+        @confirmClick="confirm(upload)" 
       @closeClick="closeModal"  text="Archive">
           Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
             Would you like to continue to upload? 
@@ -318,12 +318,26 @@ export default defineComponent({
         console.log('this will close');
         this.showModal = !this.showModal;
       },
-      confirm(): void{
+      confirm(uploads): void{
         console.log('confirm event is firing');
-        this.showModal = !this.showModal;
         // Add in Function to run upload(index:number, file: File)
+
+        // console.log(uploads[i]);
+        
+        // Close modal after confirm
+        this.showModal = !this.showModal;
+        // Clear uploads in list
+        this.uploads = [];
+        
       },
       // REMOVE FILE FUNCTION
+      removeFile(fileName) {
+      const index = this.uploads.findIndex(
+        file => file.key === fileName
+      );
+      // If file is in uploaded files remove it
+      if (index > -1) this.uploads.splice(index, 1);
+    },
 
       isAdvanced(): boolean {
         const div = document.createElement('div');
@@ -362,7 +376,7 @@ export default defineComponent({
         };
          console.log('Will send to the s3!');
             // initiate the upload
-            Storage.put(key,file,config);
+            // Storage.put(key,file,config);
         },
 
         performUpload(event: Event): void {
@@ -372,7 +386,8 @@ export default defineComponent({
             // Uncomment 3 lines below to send files to upload function
             for (let i=0; i< files.length; i++) {
                 this.addFiles(i, files[i]);
-                // this.upload(i,files[i]);
+                console.log(files[i]);
+                // this.upload(i, files[i]);
             }
         }, 
     }
