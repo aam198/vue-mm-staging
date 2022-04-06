@@ -36,6 +36,7 @@ $white: #F6F7F9;
 $clr-white: #ffffff; 
 $dark-gray: #92b0b3;
 $red-clr: #c35353;
+$red-hover:  #de3838;
 $green-clr: #58b957;
 $warn-clr: #f2ae43;
 
@@ -66,6 +67,7 @@ $warn-clr: #f2ae43;
   --dark-gray: #{$dark-gray};
   --light-gray: #{$border-color};
   --red-clr: #{$red-clr};
+  --red-hover: #{red-hover};
   --green-clr: #{$green-clr};
   --warn-crl: #{$warn-clr};
 }

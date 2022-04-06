@@ -10,7 +10,7 @@
 
         <div class="navigation">
          
-            <button type="submit" class="btn-sm" id="upload-encode" @click="confirmClick()">Yes, Please!"</button>
+            <button type="submit" class="btn-sm" id="upload-encode" @click="confirmClick()">Yes, Please!</button>
          
           <button @click="closeClick()" class="btn-sm remove-btn" id="backBtn">No, Take me back</button>
           

@@ -19,9 +19,11 @@
        
          <ul>
           <li id="fileDetails" class="file-details" ref="fileDetails" v-for="upload in uploads" :key="upload.key">
-              <div>{{sliceString(upload.key)}}</div>
-              <div>{{upload.path}}</div> 
-              <div>{{formatSize(upload.total)}}</div> 
+            <div class="width-20"></div>
+            <div class="width-25">{{sliceString(upload.key)}}</div>
+            <div class="width-15">{{upload.type}}</div> 
+            <div class="width-15">{{formatSize(upload.total)}}</div> 
+            <i class="fas fa-times remove"></i>
           </li>
          </ul> 
 
@@ -67,7 +69,7 @@
     <transition name="fade" appear>
 
         <Modal v-if="showModal"
-        @confirmClick="confirm(upload)" 
+        @confirmClick="confirm(uploads.values)" 
       @closeClick="closeModal"  text="Archive">
           Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
             Would you like to continue to upload? 
@@ -175,7 +177,7 @@
 }
 
 .uploadbox.advanced .uploadbox__dragndrop {
-    display: inline;
+  display: inline;
 }
 
 .uploadbox.advanced .uploadbox__icon {
@@ -192,7 +194,6 @@
   background-color: #e0e0e0;
   border: 1px dashed #292929;
 }
-
 .checkbox-container {
   position: relative;
   margin-bottom: 20px;
@@ -214,49 +215,103 @@
   }
 
 /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
-  }
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+}
 
-  .checkbox-container:hover input ~ .checkmark {
-   border: 1px solid var(--blue-med);
-   border-color: var(--blue-med);
-  }
+.checkbox-container:hover input ~ .checkmark {
+  border: 1px solid var(--blue-med);
+  border-color: var(--blue-med);
+}
 
 .checkbox-container input:checked ~ .checkmark {
-    background-color: var(--blue-dark);
-  }
+   background-color: var(--blue-dark);
+}
   
   /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-
+  content: "";
+  position: absolute;
+  display: none;
+}
 
 .checkbox-container input:checked ~ .checkmark:after {
-    display: block;
-  }
+   display: block;
+}
 
   /* Style the checkmark/indicator */
 .checkbox-container .checkmark:after {
-    left: 6px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+  left: 6px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+//  Files listed
+.file-details{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.file-details > div {   
+  text-overflow: clip; padding: 10px;}
+
+.width-15 { 
+  display:flex;
+  max-width: 11%;
+  flex-grow: 1;
+}
+.width-20 {
+  display:flex;
+  max-width: 25%;
+  width: 20%;
+  flex-grow: 1;
+  overflow-wrap: break-word;
+  word-break: break-all;
   }
+.width-25{
+  display:flex;
+  flex-grow: 1;
+  width: 15%;
+  max-width: 20%;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+
+li i {
+  color: var(--red-clr);
+  cursor: pointer;
+  font-size: 25px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-right: 10px;
+  margin-left: 10px;
+  transition: color 0.2s ease;
+}
+
+li i:hover{
+  color: #de3838;
+}
+
+
+i.remove:hover{
+  color: var(--red-hover);
+}
+
+
 
 @media screen and (max-width: 700px){
   .modal-box{
@@ -291,7 +346,7 @@ declare interface Upload {
     loaded: number,
     total: number
     key: string,
-    path: string
+    type: string
 }
 
 export default defineComponent({
@@ -318,17 +373,15 @@ export default defineComponent({
         console.log('this will close');
         this.showModal = !this.showModal;
       },
-      confirm(uploads): void{
+      confirm(file): void{
         console.log('confirm event is firing');
-        // Add in Function to run upload(index:number, file: File)
+        // Add in Function to run upload(file: File)
 
-        // console.log(uploads[i]);
-        
+        this.upload(file);
         // Close modal after confirm
         this.showModal = !this.showModal;
         // Clear uploads in list
-        this.uploads = [];
-        
+        // this.uploads = []; 
       },
       // REMOVE FILE FUNCTION
       removeFile(fileName) {
@@ -353,18 +406,18 @@ export default defineComponent({
         const file_name= file_name_array[0];
         const file_type = file_name_array[file_name_array.length-1];
         console.log(file_name, file_type)
-        const path: string = file_type;
+        const type: string = file_type;
 
-        const fileList : Upload =  reactive({loaded:0, total: file.size, key: file.name, path: file_type});
+        const fileList: Upload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type});
         let uindex = this.uploads.push(fileList);
-        console.log('line 344 ' + fileList.key + fileList.path)
+        console.log('line 344 ' + fileList.key + fileList.type)
         
         },
 
       upload(file: File): void {
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
-        let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, path: ''});
+        let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, type: ''});
         // add the progress data to the array
         let uindex = this.uploads.push(progress_data);
         // on progress call back
@@ -376,7 +429,7 @@ export default defineComponent({
         };
          console.log('Will send to the s3!');
             // initiate the upload
-            // Storage.put(key,file,config);
+            Storage.put(key,file,config);
         },
 
         performUpload(event: Event): void {
