@@ -347,6 +347,15 @@ declare interface Upload {
     type: string
 }
 
+
+declare interface FileUpload {
+    loaded: number,
+    total: number,
+    key: string,
+    type: string,
+    file: File
+}
+
 export default defineComponent({
     name: "UploadBox",
     data: () => {
@@ -372,13 +381,17 @@ export default defineComponent({
         this.showModal = !this.showModal;
       },
 
-      confirm(file): void{
+      confirm(): void{
+        console.log(this.uploads[0].key);
+  
         console.log('confirm event is firing');
+        for (let i=0; i< this.uploads.length; i++) {
+          this.upload(i, FileList[i]);
+        }
 
-        this.upload(file);
         // Close modal after confirm
         this.showModal = !this.showModal;
-        console.log(this.uploads)
+        console.log(this.uploads);
         // Clear uploads in list
         // this.uploads = []; 
       },
@@ -403,16 +416,16 @@ export default defineComponent({
         const key: string = file.name;
         const size: number = file.size;
         const file_name_array = key.split(".");
-        console.log(key, size, file_name_array)
         const file_name= file_name_array[0];
         const file_type = file_name_array[file_name_array.length-1];
         const type: string = file_type;
 
-        const fileList: Upload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type});
+        const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type, file: file});
         let uindex = this.uploads.push(fileList);
+        console.log(fileList)
         },
 
-    upload(file: File): void {
+    upload(index: number, file: File): void {
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
         let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, type: ''});
@@ -436,6 +449,7 @@ export default defineComponent({
             const files = input.files as FileList;
             // Uncomment 3 lines below to send files to upload function
             for (let i=0; i< files.length; i++) {
+
                 this.addFiles(i, files[i]);
                 console.log(files[i]);
                 // this.upload(i, files[i]);
