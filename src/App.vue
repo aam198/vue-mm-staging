@@ -67,7 +67,7 @@ $warn-clr: #f2ae43;
   --dark-gray: #{$dark-gray};
   --light-gray: #{$border-color};
   --red-clr: #{$red-clr};
-  --red-hover: #{red-hover};
+  --red-hover: #{$red-hover};
   --green-clr: #{$green-clr};
   --warn-crl: #{$warn-clr};
 }

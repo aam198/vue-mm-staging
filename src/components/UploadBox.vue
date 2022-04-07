@@ -21,9 +21,9 @@
           <li id="fileDetails" class="file-details" ref="fileDetails" v-for="upload in uploads" :key="upload.key">
             <div class="width-20"></div>
             <div class="width-25">{{sliceString(upload.key)}}</div>
-            <div class="width-15">{{upload.type}}</div> 
+            <div class="width-10">{{upload.type}}</div> 
             <div class="width-15">{{formatSize(upload.total)}}</div> 
-            <i class="fas fa-times remove"></i>
+            <i class="fas fa-times remove" @click="removeFile(upload.key)"></i>
           </li>
          </ul> 
 
@@ -69,7 +69,7 @@
     <transition name="fade" appear>
 
         <Modal v-if="showModal"
-        @confirmClick="confirm(uploads.values)" 
+        @confirmClick="confirm" 
       @closeClick="closeModal"  text="Archive">
           Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
             Would you like to continue to upload? 
@@ -267,6 +267,12 @@
 .file-details > div {   
   text-overflow: clip; padding: 10px;}
 
+.width-10{
+  width: 10%;
+  display: flex;
+  justify-content: center;
+}
+
 .width-15 { 
   display:flex;
   max-width: 11%;
@@ -296,21 +302,15 @@ li i {
   font-size: 25px;
   display: flex;
   justify-content: flex-end;
-  align-items: flex-end;
-  margin-right: 10px;
+  align-items: center;
+  margin-right: 1rem;
   margin-left: 10px;
   transition: color 0.2s ease;
 }
 
 li i:hover{
-  color: #de3838;
-}
-
-
-i.remove:hover{
   color: var(--red-hover);
 }
-
 
 
 @media screen and (max-width: 700px){
@@ -329,8 +329,6 @@ import Modal from '@/components/Modal.vue';
 import {defineComponent,ComponentPropsOptions,Ref,ref,reactive} from 'vue';
 import {PropType} from 'vue';
 // May not need next 2 lines
-import useFileList from '@/compositions/fileList'
-const { files, addFiles, removeFile } = useFileList()
 import { formatSize, sliceString } from "../helpers.js"
 
 
@@ -373,31 +371,34 @@ export default defineComponent({
         console.log('this will close');
         this.showModal = !this.showModal;
       },
+
       confirm(file): void{
         console.log('confirm event is firing');
-        // Add in Function to run upload(file: File)
 
         this.upload(file);
         // Close modal after confirm
         this.showModal = !this.showModal;
+        console.log(this.uploads)
         // Clear uploads in list
         // this.uploads = []; 
       },
+
       // REMOVE FILE FUNCTION
-      removeFile(fileName) {
+    removeFile(fileName) {
       const index = this.uploads.findIndex(
         file => file.key === fileName
       );
       // If file is in uploaded files remove it
       if (index > -1) this.uploads.splice(index, 1);
+      
     },
 
-      isAdvanced(): boolean {
+    isAdvanced(): boolean {
         const div = document.createElement('div');
         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
         },
 
-      addFiles(index: number, file: File): void{
+    addFiles(index: number, file: File): void{
         // Get File information
         const key: string = file.name;
         const size: number = file.size;
@@ -405,16 +406,13 @@ export default defineComponent({
         console.log(key, size, file_name_array)
         const file_name= file_name_array[0];
         const file_type = file_name_array[file_name_array.length-1];
-        console.log(file_name, file_type)
         const type: string = file_type;
 
         const fileList: Upload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type});
         let uindex = this.uploads.push(fileList);
-        console.log('line 344 ' + fileList.key + fileList.type)
-        
         },
 
-      upload(file: File): void {
+    upload(file: File): void {
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
         let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, type: ''});
@@ -429,8 +427,8 @@ export default defineComponent({
         };
          console.log('Will send to the s3!');
             // initiate the upload
-            Storage.put(key,file,config);
-        },
+          Storage.put(key,file,config);
+      },
 
         performUpload(event: Event): void {
             event.preventDefault();
