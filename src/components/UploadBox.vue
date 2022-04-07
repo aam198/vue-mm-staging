@@ -383,15 +383,19 @@ export default defineComponent({
 
       confirm(): void{
         console.log(this.uploads[0].key);
-  
+
+       for(let i = 0; i < this.uploads.length; i++)
+       {
+          // this.upload(i, filesList[i])
+       }
         console.log('confirm event is firing');
-        for (let i=0; i< this.uploads.length; i++) {
-          this.upload(i, FileList[i]);
-        }
+        // for (upload in this.uploads) {
+        //   this.upload(i, upload.files);
+        // }
 
         // Close modal after confirm
         this.showModal = !this.showModal;
-        console.log(this.uploads);
+        console.log(this.uploads.length);
         // Clear uploads in list
         // this.uploads = []; 
       },
@@ -402,8 +406,7 @@ export default defineComponent({
         file => file.key === fileName
       );
       // If file is in uploaded files remove it
-      if (index > -1) this.uploads.splice(index, 1);
-      
+      if (index > -1) this.uploads.splice(index, 1); 
     },
 
     isAdvanced(): boolean {
@@ -422,7 +425,8 @@ export default defineComponent({
 
         const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type, file: file});
         let uindex = this.uploads.push(fileList);
-        console.log(fileList)
+        console.log("this is file list", fileList)
+
         },
 
     upload(index: number, file: File): void {
@@ -448,8 +452,7 @@ export default defineComponent({
             const input = event.target as HTMLInputElement;
             const files = input.files as FileList;
             // Uncomment 3 lines below to send files to upload function
-            for (let i=0; i< files.length; i++) {
-
+            for (let i=0; i < files.length; i++) {
                 this.addFiles(i, files[i]);
                 console.log(files[i]);
                 // this.upload(i, files[i]);
