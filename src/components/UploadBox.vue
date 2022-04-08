@@ -382,12 +382,29 @@ export default defineComponent({
       },
 
       confirm(): void{
-        console.log(this.uploads[0].key);
+       
+        // Uncomment 3 lines below to send files to upload function
+         
+        let uploads = this.uploads;
+        console.log(uploads);
+        const myTarget = JSON.parse(JSON.stringify(uploads));
+        console.log(myTarget[0]);
+        // for (let i=0; i < files.length; i++) {
+        //       this.upload(i, files[i]);
+        //        console.log('Line 457', files[i]);
+        //  }
 
-       for(let i = 0; i < this.uploads.length; i++)
-       {
-          // this.upload(i, filesList[i])
-       }
+        // const target_copy = Object.assign({}, uploads)
+        // console.log(target_copy[1]);
+        // for(let i = 0; i < this.uploads.length; i++)
+        // {
+        //   console.log(uploads[i].item);
+        // }
+       
+
+
+      //   //  this.upload(i, files[i]);
+      //  }
         console.log('confirm event is firing');
         // for (upload in this.uploads) {
         //   this.upload(i, upload.files);
@@ -421,15 +438,17 @@ export default defineComponent({
         const file_name_array = key.split(".");
         const file_name= file_name_array[0];
         const file_type = file_name_array[file_name_array.length-1];
-        const type: string = file_type;
+        const type: string = file.type;
 
         const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type, file: file});
         let uindex = this.uploads.push(fileList);
-        console.log("this is file list", fileList)
+        console.log("this is file list", fileList.file)
 
         },
 
     upload(index: number, file: File): void {
+      const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file.type, file: file});
+      console.log("Line 434", fileList.file)
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
         let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, type: ''});
@@ -444,7 +463,7 @@ export default defineComponent({
         };
          console.log('Will send to the s3!');
             // initiate the upload
-          Storage.put(key,file,config);
+          // Storage.put(key,file,config);
       },
 
         performUpload(event: Event): void {
@@ -454,7 +473,8 @@ export default defineComponent({
             // Uncomment 3 lines below to send files to upload function
             for (let i=0; i < files.length; i++) {
                 this.addFiles(i, files[i]);
-                console.log(files[i]);
+                console.log('Line 457', files[i]);
+                
                 // this.upload(i, files[i]);
             }
         }, 
