@@ -5,7 +5,7 @@
         <!-- Card Search -->
         <div class="card-search" :style=" {display: SearchDisplay}">
           <div class="search-bar">
-            <input class="search" type="text"   placeholder="Search files by prefix">
+            <input class="search" v-model="SearchValue" type="text" name="text" @keyup.enter="handleChange" placeholder="Search files by prefix - [Enter] to search">
           </div>
         </div>
         <!-- Card Header -->
@@ -131,7 +131,7 @@ section{
   }
    
 .search-bar input {
-  width: 15rem;
+  width: 17rem;
   height: 100%;
   border: none;
   background-color:  #fff;
@@ -240,9 +240,31 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: "MainCard",
   props: {
-    SearchDisplay: String
+    SearchDisplay: String,
   },
-
+  data() {
+    return {
+      SearchValue: '',
+    }
+  },
+  methods: {
+    handleChange(event) {
+      event.preventDefault()
+      if(!this.SearchValue){
+        alert('Please type something for search')
+        return
+      }
+      const newSearch = {
+        SearchValue: this.SearchValue,
+        //  SearchValue: this.$emit(event.target.value);
+      }
+      // console.log(searchText);
+      // console.log(this.SearchValue)
+      console.log(newSearch['SearchValue']);
+      this.$emit('search-text', newSearch);
+      this.SearchValue = '';
+    }
+  }
 })
 
 

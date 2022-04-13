@@ -10,8 +10,9 @@
      </template>
     </InfoNote> 
    </transition>
+   
    <section>
-   <MainCard>
+   <MainCard @search-text="searchText">
       
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -292,7 +293,8 @@ export default defineComponent({
         return { 
             uploads: [] as Array<ArchiveFile>,
             nextToken: undefined,
-            hideNote: true
+            hideNote: true,
+            searchText: '',
         }  as BaseComponentData;
     },
     mounted: async function() {
@@ -362,6 +364,8 @@ export default defineComponent({
           // return data;    
     },
     methods: {
+       searchText(){},
+
        loadMore() {
         this.loadNextBatch()
        },
@@ -388,7 +392,6 @@ export default defineComponent({
             const data = await ddbClient.send(new ScanCommand(params));
 
             console.log(data);
-
 
             /* loads the items into the array */
             const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
