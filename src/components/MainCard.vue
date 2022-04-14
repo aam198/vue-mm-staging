@@ -4,9 +4,13 @@
       <div class="card">
         <!-- Card Search -->
         <div class="card-search" :style=" {display: SearchDisplay}">
+         <form id="form">
           <div class="search-bar">
-            <input class="search" v-model="SearchValue" type="text" name="text" @keyup.enter="handleChange" placeholder="Search files by prefix - [Enter] to search">
+            <input class="search" 
+           v-model="SearchValue" type="text" name="text" @keyup.enter="handleChange" @submit="$emit('update:modelValue', $event.target)"
+            placeholder="Search files by prefix - [Enter] to search">
           </div>
+         </form>
         </div>
         <!-- Card Header -->
         <div class="card-header">  
@@ -249,7 +253,7 @@ export default defineComponent({
   },
   methods: {
     handleChange(event) {
-      event.preventDefault()
+      event.preventDefault();
       if(!this.SearchValue){
         alert('Please type something for search')
         return

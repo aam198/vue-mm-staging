@@ -12,7 +12,7 @@
    </transition>
    
    <section>
-   <MainCard @search-text="searchText">
+   <MainCard :search-text="searchText">
       
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -240,6 +240,7 @@ button.load-more{
 import {defineComponent} from 'vue';
 import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
 import {Auth} from 'aws-amplify';
+import {Storage, S3ProviderPutConfig} from '@aws-amplify/storage';
 import HumanReadable from '../human-readable';
 import MainCard from '@/components/MainCard.vue';
 import Button from '@/components/Button.vue';
@@ -262,6 +263,7 @@ declare interface BaseComponentData {
     uploads: Array<ArchiveFile>,
     nextToken?: string,
     hideNote: boolean,
+    searchText: string
 }
 
 
@@ -297,7 +299,8 @@ export default defineComponent({
             searchText: '',
         }  as BaseComponentData;
     },
-    mounted: async function() {
+    mounted: 
+       async function() {
         
         const params: ScanCommandInput = {
             TableName: "MediaArchive",
@@ -338,15 +341,15 @@ export default defineComponent({
           var i=0;
             while(fSize>900){fSize/=1024;i++;}
           const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-          console.log(typeof file_size);
+          // console.log(typeof file_size);
           
           item.size = file_size;
 
           const fPath = item.path;
           const fArrPath= fPath.split("/")
-          console.log(fArrPath);
+          console.log('Line349', fArrPath);
           const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
-          console.log(filePath)
+          console.log('Line 351', filePath)
           item.path = filePath;
         });
         // Send each item to uploads
@@ -363,8 +366,12 @@ export default defineComponent({
      
           // return data;    
     },
+    
     methods: {
-       searchText(){},
+      
+      searchText(event){
+       event.preventDefault();
+      },
 
        loadMore() {
         this.loadNextBatch()
@@ -390,8 +397,6 @@ export default defineComponent({
                 credentials: Auth.essentialCredentials(credentials) });
             
             const data = await ddbClient.send(new ScanCommand(params));
-
-            console.log(data);
 
             /* loads the items into the array */
             const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
