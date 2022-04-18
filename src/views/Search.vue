@@ -12,8 +12,8 @@
    </transition>
    
    <section>
-   <MainCard :search-text="searchText">
-      
+   <MainCard  :search="search">
+  <!-- <MainCard :search-text="searchText"> -->
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
         <input type="checkbox">
@@ -296,7 +296,6 @@ export default defineComponent({
             uploads: [] as Array<ArchiveFile>,
             nextToken: undefined,
             hideNote: true,
-            searchText: '',
         }  as BaseComponentData;
     },
     mounted: 
@@ -347,7 +346,7 @@ export default defineComponent({
 
           const fPath = item.path;
           const fArrPath= fPath.split("/")
-          console.log('Line349', fArrPath);
+          // console.log('Line349', fArrPath);
           const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
           console.log('Line 351', filePath)
           item.path = filePath;
@@ -362,27 +361,34 @@ export default defineComponent({
         /* Handles if user scrolls to the bottom */
         // window.addEventListener('scroll', this.monitorScroll);
         
-      console.log(items);
+      console.log('which one: ', items);
      
           // return data;    
     },
     
     methods: {
-      
-      searchText(event){
-       event.preventDefault();
-      },
+      search (term){
 
-       loadMore() {
+      console.log(term);
+      // Need to search all of dynamoDB, Right now it is only filtering what is available.
+       this.uploads = this.uploads.filter((upload) => {
+         return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
+       });
+      
+     
+    //  Prints to console
+      // this.uploads.forEach(upload => {
+      // if(upload.name.toLowerCase().includes(term.toLowerCase())){
+      //  console.log('line 377:', upload.name);
+      //  }
+      // });
+
+
+      },
+      loadMore() {
         this.loadNextBatch()
        },
-        monitorScroll: async function() {
-            if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
-                console.log('scrolled to the bottom')
-                this.loadNextBatch()
-            }
-        },
-        loadNextBatch: async function() {
+      loadNextBatch: async function() {
             const params: ScanCommandInput = {
                 TableName: "MediaArchive",
                 ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
