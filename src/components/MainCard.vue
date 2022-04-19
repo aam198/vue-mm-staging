@@ -7,7 +7,7 @@
          <form id="form">
           <div class="search-bar">
             <input class="search" id="search" 
-           v-model="term" type="text" name="text" @keyup="search(term)" @keyup.enter="search(term)" 
+           v-model="term" type="text" name="text" @keyup="search(term)" @keyup.enter="$emit(search)" 
             placeholder="Search files by prefix - [Enter] to search">
           </div>
          </form>
@@ -253,29 +253,29 @@ export default defineComponent({
       term: ''
     }
   },
-  // methods: {
-  //   handleChange(event) {
-  //     event.preventDefault();
-  //     // if(!this.SearchValue){
-  //     //   alert('Please type something for search')
-  //     //   return
-  //     // }
-  //     const newSearch = {
-  //       SearchValue: this.SearchValue,
-  //       //  SearchValue: this.$emit(event.target.value);
-  //     }
-  //     // console.log(searchText);
-  //     // console.log(this.SearchValue)
-  //     console.log(newSearch['SearchValue']);
-  //     this.$emit('search-text', newSearch);
-  //     // this.SearchValue = '';
-  //   },
+  //  methods: {
+  // //   handleChange(event) {
+  // //     event.preventDefault();
+  // //     // if(!this.SearchValue){
+  // //     //   alert('Please type something for search')
+  // //     //   return
+  // //     // }
+  // //     const newSearch = {
+  // //       SearchValue: this.SearchValue,
+  // //       //  SearchValue: this.$emit(event.target.value);
+  // //     }
+  // //     // console.log(searchText);
+  // //     // console.log(this.SearchValue)
+  // //     console.log(newSearch['SearchValue']);
+  // //     this.$emit('search-text', newSearch);
+  // //     // this.SearchValue = '';
+  // //   },
     
   //   inputFilter(event) {
-  //     event.preventDefault();
+  //    event.preventDefault();
   //     console.log(event.target.value);
-  //   }
-  // }
+  //    }
+  //  }
 })
 
 

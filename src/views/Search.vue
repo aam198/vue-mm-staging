@@ -31,7 +31,7 @@
 
       
      <div class="load_more-container">
-       <button @click="loadMore"  class="load-more" ><i class="fa fa-angle-down" aria-hidden="true"></i>load more (50)</button>
+       <button @click="loadNextBatch"  class="load-more" ><i class="fa fa-angle-down" aria-hidden="true"></i>load more (50)</button>
       </div> 
     </MainCard>
     <div class="continue-container">
@@ -348,7 +348,7 @@ export default defineComponent({
           const fArrPath= fPath.split("/")
           // console.log('Line349', fArrPath);
           const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
-          console.log('Line 351', filePath)
+          // console.log('Line 351', filePath)
           item.path = filePath;
         });
         // Send each item to uploads
@@ -361,19 +361,41 @@ export default defineComponent({
         /* Handles if user scrolls to the bottom */
         // window.addEventListener('scroll', this.monitorScroll);
         
-      console.log('which one: ', items);
+      console.log('Line 364: ', items);
      
-          // return data;    
+      // return data;    
     },
     
     methods: {
-      search (term){
+      search: async function(term){
+        if(term != ''){
+          const params: ScanCommandInput = {
+              TableName: "MediaArchive",
+              ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus"
+          };
+        
+          let credentials = await Auth.currentCredentials();
+          
+          const ddbClient = new DynamoDBClient({ 
+            region: REGION,
+            credentials: Auth.essentialCredentials(credentials) });
+              
+          const data = await ddbClient.send(new ScanCommand(params));
 
-      console.log(term);
-      // Need to search all of dynamoDB, Right now it is only filtering what is available.
-       this.uploads = this.uploads.filter((upload) => {
-         return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
-       });
+          console.log(data);
+
+          /* loads the items into the array */
+          const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
+          
+          console.log('Line 389:', items);
+          console.log(term);
+
+          // Need to search all of dynamoDB, Right now it is only filtering what is available.
+        
+        this.uploads = items.filter((upload) => {
+          return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
+        });
+      }
       
      
     //  Prints to console
@@ -383,11 +405,7 @@ export default defineComponent({
       //  }
       // });
 
-
       },
-      loadMore() {
-        this.loadNextBatch()
-       },
       loadNextBatch: async function() {
             const params: ScanCommandInput = {
                 TableName: "MediaArchive",
