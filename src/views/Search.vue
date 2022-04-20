@@ -12,11 +12,11 @@
    </transition>
    
    <section>
-   <MainCard  :search="search">
+   <MainCard @select-all="selectAll" v-model="allSelected"  :search="search">
   <!-- <MainCard :search-text="searchText"> -->
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
-        <input type="checkbox">
+        <input type="checkbox" v-model="selected" :value="upload.key">
         <span class="checkmark"></span>
       </label>
 
@@ -263,7 +263,9 @@ declare interface BaseComponentData {
     uploads: Array<ArchiveFile>,
     nextToken?: string,
     hideNote: boolean,
-    searchText: string
+    searchText: string,
+    allSelected: boolean,
+    selected: Array<string>,
 }
 
 
@@ -296,6 +298,8 @@ export default defineComponent({
             uploads: [] as Array<ArchiveFile>,
             nextToken: undefined,
             hideNote: true,
+            allSelected: false,
+            selected: [] as Array<string>
         }  as BaseComponentData;
     },
     mounted: 
@@ -325,32 +329,9 @@ export default defineComponent({
         
         this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
         
-        // Iterating through the array and formatting 
-        items.map(item => {
-          // Taking out the extension that is connected to the whole name
-          const fName= item.name;
-          const fArr= fName.split(".");
-          const file_name = fArr[0];
-          item.name = file_name; 
-          // console.log(item.name);
-          // Formatting file size Adding byte size
-          const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
-          // Parse fSize to Integer 
-          let fSize = parseInt(item.size);
-          var i=0;
-            while(fSize>900){fSize/=1024;i++;}
-          const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-          // console.log(typeof file_size);
-          
-          item.size = file_size;
 
-          const fPath = item.path;
-          const fArrPath= fPath.split("/")
-          // console.log('Line349', fArrPath);
-          const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
-          // console.log('Line 351', filePath)
-          item.path = filePath;
-        });
+        this.formatItem(items);
+        
         // Send each item to uploads
         items.forEach((item) => {
           this.uploads.push(item)
@@ -368,7 +349,7 @@ export default defineComponent({
     
     methods: {
       search: async function(term){
-        if(term != ''){
+        if(term != ' '){
           const params: ScanCommandInput = {
               TableName: "MediaArchive",
               ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus"
@@ -386,18 +367,21 @@ export default defineComponent({
 
           /* loads the items into the array */
           const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
+
+          this.formatItem(items);
           
           console.log('Line 389:', items);
           console.log(term);
 
-          // Need to search all of dynamoDB, Right now it is only filtering what is available.
+          items.forEach((item) => {
+           this.uploads.push(item)
+          });
+
         
         this.uploads = items.filter((upload) => {
           return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
         });
       }
-      
-     
     //  Prints to console
       // this.uploads.forEach(upload => {
       // if(upload.name.toLowerCase().includes(term.toLowerCase())){
@@ -407,58 +391,71 @@ export default defineComponent({
 
       },
       loadNextBatch: async function() {
-            const params: ScanCommandInput = {
-                TableName: "MediaArchive",
-                ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
-                Limit: RECORD_LIMIT,
-                ExclusiveStartKey:  { "requestID": {"S": this.nextToken || ""}},
-            };
+        const params: ScanCommandInput = {
+            TableName: "MediaArchive",
+            ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
+            Limit: RECORD_LIMIT,
+            ExclusiveStartKey:  { "requestID": {"S": this.nextToken || ""}},
+        };
 
-            let credentials = await Auth.currentCredentials();
+        let credentials = await Auth.currentCredentials();
+    
+        const ddbClient = new DynamoDBClient({ 
+            region: REGION,
+            credentials: Auth.essentialCredentials(credentials) });
         
-            const ddbClient = new DynamoDBClient({ 
-                region: REGION,
-                credentials: Auth.essentialCredentials(credentials) });
-            
-            const data = await ddbClient.send(new ScanCommand(params));
+        const data = await ddbClient.send(new ScanCommand(params));
 
-            /* loads the items into the array */
-            const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
-            // Iterating through the array and formatting 
-            items.map(item => {
-              // Slice up the file path, similar to uploadBox utility function. https://stackoverflow.com/questions/63216973/slice-url-to-get-the-file-name-in-vue
-              // Taking out the extension that is connected to the whole name
-              const fName= item.name;
-              const fArr= fName.split(".");
-              const file_name = fArr[0];
-              item.name = file_name; 
-              // console.log(item.name);
-              // Formatting file size Adding byte size
-              const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
-              // Parse fSize to Integer 
-              let fSize = parseInt(item.size);
-              var i=0;
-                while(fSize>900){fSize/=1024;i++;}
-              const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-              console.log(typeof file_size);
-              
-              item.size = file_size;
+        /* loads the items into the array */
+        const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
-              const fPath = item.path;
-              const fArrPath= fPath.split("/")
+        this.formatItem(items);
+
+        this.uploads = this.uploads.concat(items);
+
+        /* store the last requestId */
+        this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
+      },
+      
+      formatItem(items) {
+        // Iterating through the array and formatting 
+        items.map(item => {
+          // Slice up the file path https://stackoverflow.com/questions/63216973/slice-url-to-get-the-file-name-in-vue
+    
+          const fName= item.name;
+          const fArr= fName.split(".");
+          const file_name = fArr[0];
+          item.name = file_name; 
+          // console.log(item.name);
+          // Formatting file size Adding byte size
+          const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
+          // Parse fSize to Integer 
+          let fSize = parseInt(item.size);
+          var i=0;
+            while(fSize>900){fSize/=1024;i++;}
+          const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
+          console.log(typeof file_size);
+          
+          item.size = file_size;
+
+          const fPath = item.path;
+          const fArrPath= fPath.split("/");
           console.log(fArrPath);
-              const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
-              console.log(filePath)
+          const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
           item.path = filePath;
-             });
-
-            // this.uploads = this.uploads.concat(items);
-            this.uploads = this.uploads.concat(items);
-
-            /* store the last requestId */
-            this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
-        }
-
+        });
+        return items;
+      },
+    selectAll() {
+      if (this.allSelected){
+        console.log('select all pressed');
+        const selected = this.uploads.map((upload) => upload.key);
+        this.selected = selected;
+      }
+      else {
+        this.selected = [];
+      }
+    }
     },
     
 })

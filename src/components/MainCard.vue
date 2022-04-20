@@ -4,18 +4,21 @@
       <div class="card">
         <!-- Card Search -->
         <div class="card-search" :style=" {display: SearchDisplay}">
-         <form id="form">
+      
           <div class="search-bar">
             <input class="search" id="search" 
+           v-model="term" type="text" name="text" @keyup="search(term)"  
+            placeholder="Search files by prefix">
+            <!-- <input class="search" id="search" 
            v-model="term" type="text" name="text" @keyup="search(term)" @keyup.enter="$emit(search)" 
-            placeholder="Search files by prefix - [Enter] to search">
+            placeholder="Search files by prefix - [Enter] to search"> -->
           </div>
-         </form>
+
         </div>
         <!-- Card Header -->
         <div class="card-header">  
           <label class="checkbox-container">
-            <input type="checkbox">
+            <input type="checkbox" @change="selectAll()">
             <span class="checkmark"></span>
           </label>
 
@@ -250,32 +253,19 @@ export default defineComponent({
   
   data() {
     return {
-      term: ''
+      term: '',
     }
   },
-  //  methods: {
-  // //   handleChange(event) {
-  // //     event.preventDefault();
-  // //     // if(!this.SearchValue){
-  // //     //   alert('Please type something for search')
-  // //     //   return
-  // //     // }
-  // //     const newSearch = {
-  // //       SearchValue: this.SearchValue,
-  // //       //  SearchValue: this.$emit(event.target.value);
-  // //     }
-  // //     // console.log(searchText);
-  // //     // console.log(this.SearchValue)
-  // //     console.log(newSearch['SearchValue']);
-  // //     this.$emit('search-text', newSearch);
-  // //     // this.SearchValue = '';
-  // //   },
+  
+  methods: {
+    selectAll() {
+      console.log('press from Main card')
+      // Sending event up to Search.vue
+      this.$emit('select-all');
+    }
     
-  //   inputFilter(event) {
-  //    event.preventDefault();
-  //     console.log(event.target.value);
-  //    }
-  //  }
+
+   }
 })
 
 
