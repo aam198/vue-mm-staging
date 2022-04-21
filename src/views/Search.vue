@@ -12,7 +12,7 @@
    </transition>
    
    <section>
-   <MainCard @select-all="selectAll" v-model="allSelected"  :search="search">
+   <MainCard @select-all="selectAll" v-model="allSelected" :search="search">
   <!-- <MainCard :search-text="searchText"> -->
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -299,7 +299,7 @@ export default defineComponent({
             nextToken: undefined,
             hideNote: true,
             allSelected: false,
-            selected: [] as Array<string>
+            selected: [] as Array<string>,
         }  as BaseComponentData;
     },
     mounted: 
@@ -319,7 +319,7 @@ export default defineComponent({
             
         const data = await ddbClient.send(new ScanCommand(params));
 
-        console.log(data);
+        // console.log(data);
 
 
         /* loads the items into the array */
@@ -342,7 +342,7 @@ export default defineComponent({
         /* Handles if user scrolls to the bottom */
         // window.addEventListener('scroll', this.monitorScroll);
         
-      console.log('Line 364: ', items);
+      // console.log('Line 364: ', items);
      
       // return data;    
     },
@@ -352,7 +352,8 @@ export default defineComponent({
         if(term != ' '){
           const params: ScanCommandInput = {
               TableName: "MediaArchive",
-              ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus"
+              ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
+              Limit: RECORD_LIMIT,
           };
         
           let credentials = await Auth.currentCredentials();
@@ -363,15 +364,15 @@ export default defineComponent({
               
           const data = await ddbClient.send(new ScanCommand(params));
 
-          console.log(data);
+          // console.log(data);
 
           /* loads the items into the array */
           const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
           this.formatItem(items);
           
-          console.log('Line 389:', items);
-          console.log(term);
+          // console.log('Line 389:', items);
+          // console.log(term);
 
           items.forEach((item) => {
            this.uploads.push(item)
@@ -390,65 +391,65 @@ export default defineComponent({
       // });
 
       },
-      loadNextBatch: async function() {
-        const params: ScanCommandInput = {
-            TableName: "MediaArchive",
-            ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
-            Limit: RECORD_LIMIT,
-            ExclusiveStartKey:  { "requestID": {"S": this.nextToken || ""}},
-        };
+    loadNextBatch: async function() {
+      const params: ScanCommandInput = {
+          TableName: "MediaArchive",
+          ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
+          Limit: RECORD_LIMIT,
+          ExclusiveStartKey:  { "requestID": {"S": this.nextToken || ""}},
+      };
 
-        let credentials = await Auth.currentCredentials();
-    
-        const ddbClient = new DynamoDBClient({ 
-            region: REGION,
-            credentials: Auth.essentialCredentials(credentials) });
-        
-        const data = await ddbClient.send(new ScanCommand(params));
+      let credentials = await Auth.currentCredentials();
+  
+      const ddbClient = new DynamoDBClient({ 
+          region: REGION,
+          credentials: Auth.essentialCredentials(credentials) });
+      
+      const data = await ddbClient.send(new ScanCommand(params));
 
-        /* loads the items into the array */
-        const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
+      /* loads the items into the array */
+      const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
-        this.formatItem(items);
+      this.formatItem(items);
 
-        this.uploads = this.uploads.concat(items);
+      this.uploads = this.uploads.concat(items);
 
-        /* store the last requestId */
-        this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
+      /* store the last requestId */
+      this.nextToken = data.LastEvaluatedKey?.requestID.S || "";
       },
       
-      formatItem(items) {
-        // Iterating through the array and formatting 
-        items.map(item => {
-          // Slice up the file path https://stackoverflow.com/questions/63216973/slice-url-to-get-the-file-name-in-vue
-    
-          const fName= item.name;
-          const fArr= fName.split(".");
-          const file_name = fArr[0];
-          item.name = file_name; 
-          // console.log(item.name);
-          // Formatting file size Adding byte size
-          const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
-          // Parse fSize to Integer 
-          let fSize = parseInt(item.size);
-          var i=0;
-            while(fSize>900){fSize/=1024;i++;}
-          const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-          console.log(typeof file_size);
-          
-          item.size = file_size;
+    formatItem(items) {
+      // Iterating through the array and formatting 
+      items.map(item => {
+        // Slice up the file path https://stackoverflow.com/questions/63216973/slice-url-to-get-the-file-name-in-vue
+  
+        const fName= item.name;
+        const fArr= fName.split(".");
+        const file_name = fArr[0];
+        item.name = file_name; 
+        // console.log(item.name);
+        // Formatting file size Adding byte size
+        const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
+        // Parse fSize to Integer 
+        let fSize = parseInt(item.size);
+        var i=0;
+          while(fSize>900){fSize/=1024;i++;}
+        const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
+        
+        
+        item.size = file_size;
 
-          const fPath = item.path;
-          const fArrPath= fPath.split("/");
-          console.log(fArrPath);
-          const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
-          item.path = filePath;
-        });
-        return items;
+        const fPath = item.path;
+        const fArrPath= fPath.split("/");
+        // console.log(fArrPath);
+        const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
+        item.path = filePath;
+      });
+      return items;
       },
     selectAll() {
       if (this.allSelected){
-        console.log('select all pressed');
+        // console.log('select all pressed');
         const selected = this.uploads.map((upload) => upload.key);
         this.selected = selected;
       }

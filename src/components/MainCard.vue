@@ -18,7 +18,7 @@
         <!-- Card Header -->
         <div class="card-header">  
           <label class="checkbox-container">
-            <input type="checkbox" @change="selectAll()">
+            <input type="checkbox" @click="selectAll()">
             <span class="checkmark"></span>
           </label>
 
@@ -263,7 +263,6 @@ export default defineComponent({
       // Sending event up to Search.vue
       this.$emit('select-all');
     }
-    
 
    }
 })
