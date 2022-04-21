@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
   
  
   {
-    path: '/available',
+    path: '/',
     name: 'available',
     component: () => import('../views/Available.vue')
   },

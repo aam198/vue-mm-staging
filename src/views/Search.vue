@@ -12,7 +12,7 @@
    </transition>
    
    <section>
-   <MainCard @select-all="selectAll" v-model="allSelected" :search="search">
+   <MainCard @select-all="selectAll()" v-model="allSelected" :search="search">
   <!-- <MainCard :search-text="searchText"> -->
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -447,9 +447,10 @@ export default defineComponent({
       });
       return items;
       },
-    selectAll() {
+
+    selectAll(): void {
       if (this.allSelected){
-        // console.log('select all pressed');
+        console.log('select all pressed');
         const selected = this.uploads.map((upload) => upload.key);
         this.selected = selected;
       }

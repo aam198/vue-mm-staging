@@ -4,7 +4,7 @@
           <h2><i class="fab fa-aws" aria-hidden="true"></i> MM Services </h2>
           
            
-          <router-link to="/available"><i class="fab fa-buffer" aria-hidden="true"></i>Available Files</router-link> 
+          <router-link to="/"><i class="fab fa-buffer" aria-hidden="true"></i>Available Files</router-link> 
           <router-link to="/encode"><i class="fa fa-upload" aria-hidden="true"></i>Encode Video Files</router-link>
           <router-link to="/s3"><i class="fas fa-photo-video" aria-hidden="true"></i>S3 Bucket</router-link>
            <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload to Archive</router-link>

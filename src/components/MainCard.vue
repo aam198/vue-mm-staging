@@ -18,7 +18,7 @@
         <!-- Card Header -->
         <div class="card-header">  
           <label class="checkbox-container">
-            <input type="checkbox" @click="selectAll()">
+            <input type="checkbox"  @click="selectAll()">
             <span class="checkmark"></span>
           </label>
 
@@ -248,7 +248,7 @@ export default defineComponent({
   name: "MainCard",
   props: [
     'search',
-    'SearchDisplay',
+    'SearchDisplay'
   ],
   
   data() {
