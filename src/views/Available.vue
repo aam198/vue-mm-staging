@@ -10,7 +10,7 @@
   <section>
     <MainCard SearchDisplay = "none">
     
-     
+    
     </MainCard>   
     
     <div class="continue-container">

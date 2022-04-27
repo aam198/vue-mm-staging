@@ -12,7 +12,7 @@
    </transition>
    
    <section>
-   <MainCard @change="selectAll" v-model="allSelected" :search="search">
+   <MainCard v-model="allSelected" @selectAll = "selectAll()" :search="search">
   <!-- <MainCard :search-text="searchText"> -->
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -254,7 +254,7 @@ declare interface ArchiveFile {
     type: string,
     storage: string,
     status: string,
-    key: string,
+    key: string
 }
 
 declare interface BaseComponentData {
@@ -298,10 +298,11 @@ export default defineComponent({
             uploads: [] as Array<ArchiveFile>,
             nextToken: undefined,
             hideNote: true,
-            allSelected: false,
+            allSelected: true,
             selected: [] as Array<string>,
         }  as BaseComponentData;
     },
+    
     mounted: 
        async function() {
         
@@ -346,8 +347,27 @@ export default defineComponent({
      
       // return data;    
     },
-    
     methods: {
+     selectAll: function() {
+       
+      if (this.allSelected){
+        console.log('line 353', this.allSelected.valueOf())
+        console.log('select all pressed');
+        const selected = this.uploads.map((upload) => upload.key);
+        this.selected = selected;
+        console.log(selected);
+        console.log('line 358', this.allSelected.valueOf())
+        if(this.allSelected == true){
+          this.allSelected = !this.allSelected
+        }
+       }
+      else if (!this.allSelected) {
+        console.log('clicking');
+        this.selected = [];
+        this.allSelected = !this.allSelected;
+      }
+     
+     },
       search: async function(term){
         if(term != ' '){
           const params: ScanCommandInput = {
@@ -448,20 +468,6 @@ export default defineComponent({
       return items;
       },
 
-    selectAll(): void {
-
-      if (!this.allSelected){
-        console.log('select all pressed');
-        const selected = this.uploads.map((upload) => upload.key);
-        this.selected = selected;
-        console.log(selected);
-        this.allSelected = this.allSelected;
-      }
-      else {
-        this.selected = [];
-        console.log(this.selected);
-      }
-    }
     },
     
 })
