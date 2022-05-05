@@ -386,6 +386,15 @@ export default defineComponent({
 
           // console.log(data);
 
+      // TODO: TO SCAN MORE?
+          // continue scanning if we have more items
+          // https://www.codegrepper.com/code-examples/javascript/frameworks/vue/dynamodb+get+all+items+js
+          // if (typeof data.LastEvaluatedKey != "undefined") {
+          //     console.log("Scanning for more...");
+          //     params.ExclusiveStartKey = data.LastEvaluatedKey;
+          //     ddbClient.scan(params, search);
+          // }
+      //TODO: END OF TODO 
           /* loads the items into the array */
           const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
