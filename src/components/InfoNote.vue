@@ -49,7 +49,8 @@ export default {
   border-bottom-color: var(--blue-dark);
   background-color: var(--light-gray);
   font-family: var(--font-header);
-  font-weight: 700;
+  font-weight: bold;
+  letter-spacing: 0.5px;
   font-size: 1.35rem;
   color: var(--font-dark);
 }

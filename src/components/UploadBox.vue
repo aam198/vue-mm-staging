@@ -5,7 +5,7 @@
 
      <div class="card-header">          
        <label class="checkbox-container">
-        <input type="checkbox">
+        <input type="checkbox" v-model="allSelected" @click="selectAll()">
          <span class="checkmark"></span>
        </label>
       <h2 class="file-location-check">File Location</h2>
@@ -19,11 +19,15 @@
        
          <ul>
           <li id="fileDetails" class="file-details" ref="fileDetails" v-for="upload in uploads" :key="upload.key">
+            <label class="checkbox-container">
+              <input type="checkbox" v-model="selected" :value="upload.key">
+              <span class="checkmark checkUpload"></span>
+            </label>
             <div class="width-20"></div>
             <div class="width-25">{{sliceString(upload.key)}}</div>
             <div class="width-10">{{upload.type}}</div> 
             <div class="width-15">{{formatSize(upload.total)}}</div> 
-            <i class="fas fa-times remove" @click="removeFile(upload.key)"></i>
+            <div class="width-10"><i class="fas fa-times remove" @click="removeFile(upload.key)"></i></div>
           </li>
          </ul> 
 
@@ -258,10 +262,15 @@
   transform: rotate(45deg);
 }
 
+.checkUpload {
+  margin-left: 10px;
+}
+
 //  Files listed
 .file-details{
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.5rem;
 }
 .file-details > div {   
@@ -337,7 +346,9 @@ declare interface BaseComponentData {
     /*files?:  FileList,*/
     /*error_msg?: string,*/
     uploads: Ref<Array<Upload>>,
-    showModal: boolean
+    showModal: boolean,
+    allSelected: boolean,
+    selected: Array<string>
 }
 
 declare interface Upload {
@@ -362,6 +373,8 @@ export default defineComponent({
         return { 
          showModal: false,
          uploads: ref([]),
+         allSelected: false,
+         selected: [] as Array<string>
         }  as BaseComponentData;
        
     },
@@ -369,6 +382,22 @@ export default defineComponent({
     props: {},
     emits: ["update-progress"],
     methods: {
+      selectAll: function() {
+       
+      if (!this.allSelected){
+        console.log('line 353', this.allSelected.valueOf())
+        console.log('select all pressed');
+        const selected = this.uploads.map((upload) => upload.key);
+        this.selected = selected;
+        console.log(selected);
+        console.log('line 358', this.allSelected.valueOf())
+       }
+      else if (this.allSelected) {
+        console.log('clicking');
+        this.selected = [];
+        this.allSelected = !this.allSelected;
+      }
+     },
       formatSize,
       sliceString,
     

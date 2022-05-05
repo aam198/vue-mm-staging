@@ -50,7 +50,7 @@ export default {
   background-color: var(--orange-light);
   font-family: var(--font-header);
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   color: var(--font-dark);
 }
 

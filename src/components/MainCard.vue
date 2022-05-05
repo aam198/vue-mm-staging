@@ -18,8 +18,8 @@
         <!-- Card Header -->
         <div class="card-header">  
           <label class="checkbox-container">
-            <input type="checkbox"  @click="selectAll()">
-            <span class="checkmark"></span>
+            <input type="checkbox"  @click="selectAll()" v-show="disable">
+            <span class="checkmark" v-show="disable"></span>
           </label>
 
           <h2 class="file-location-check">File Location</h2>
@@ -73,7 +73,6 @@ section{
   flex-shrink: 1;
   height: 55px;
   border-bottom: 1px solid var(--border-color);
-  padding-left: 10px;
   padding-right: 1rem;
   white-space: nowrap;
   color: var(--font-dark); 
@@ -262,8 +261,17 @@ export default defineComponent({
       this.$emit('selectAll');
       // Sending event up to Search.vue
     }
-
-   }
+   },
+  computed: {
+    disable(){
+      if(this.$route.path === '/search'){
+        return false
+      }
+      else {
+        return true
+      }
+    }
+  }
 })
 
 
