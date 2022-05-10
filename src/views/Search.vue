@@ -238,7 +238,7 @@ button.load-more{
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput } from "@aws-sdk/client-dynamodb";
+import {AttributeValue, DynamoDBClient, ScanCommand, ScanCommandInput, QueryCommand } from "@aws-sdk/client-dynamodb";
 import {Auth} from 'aws-amplify';
 import {Storage, S3ProviderPutConfig} from '@aws-amplify/storage';
 import HumanReadable from '../human-readable';
@@ -340,10 +340,6 @@ export default defineComponent({
         
         console.log(data.LastEvaluatedKey);
         
-        /* Handles if user scrolls to the bottom */
-        // window.addEventListener('scroll', this.monitorScroll);
-        
-      // console.log('Line 364: ', items);
      
       // return data;    
     },
@@ -369,11 +365,16 @@ export default defineComponent({
      
      },
       search: async function(term){
-        if(term != ' '){
+        if(term != ''){
           const params: ScanCommandInput = {
               TableName: "MediaArchive",
               ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
               Limit: RECORD_LIMIT,
+              FilterExpression: "filename = :f AND originalSourcePath = :p",
+              ExpressionAttributeValues: {
+                ':f': {S: "FileName"},
+                ':p': {S: "Path"}
+              }
           };
         
           let credentials = await Auth.currentCredentials();
@@ -384,7 +385,7 @@ export default defineComponent({
               
           const data = await ddbClient.send(new ScanCommand(params));
 
-          // console.log(data);
+          console.log(data);
 
       // TODO: TO SCAN MORE?
           // continue scanning if we have more items
@@ -395,22 +396,25 @@ export default defineComponent({
           //     ddbClient.scan(params, search);
           // }
       //TODO: END OF TODO 
+
           /* loads the items into the array */
           const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
           this.formatItem(items);
           
-          // console.log('Line 389:', items);
-          // console.log(term);
+          console.log(term);
 
-          items.forEach((item) => {
-           this.uploads.push(item)
-          });
+          // items.forEach((item) => {
+          //  this.uploads.push(item)
+          // });
 
         
         this.uploads = items.filter((upload) => {
           return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
         });
+      }
+      else if (term === '' || term == null) {
+        this.resetBatch();
       }
     //  Prints to console
       // this.uploads.forEach(upload => {
@@ -420,6 +424,31 @@ export default defineComponent({
       // });
 
       },
+    resetBatch: async function () {
+      const params: ScanCommandInput = {
+          TableName: "MediaArchive",
+          ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
+          Limit: RECORD_LIMIT,
+      };
+
+      let credentials = await Auth.currentCredentials();
+  
+      const ddbClient = new DynamoDBClient({ 
+          region: REGION,
+          credentials: Auth.essentialCredentials(credentials) });
+      
+      const data = await ddbClient.send(new ScanCommand(params));
+
+      /* loads the items into the array */
+      const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
+
+      this.formatItem(items);
+
+      this.uploads = this.uploads.concat(items);
+
+      /* store the last requestId */
+      this.nextToken = data.LastEvaluatedKey?.requestID.S || ""; 
+    },
     loadNextBatch: async function() {
       const params: ScanCommandInput = {
           TableName: "MediaArchive",
