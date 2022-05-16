@@ -31,17 +31,20 @@
           </li>
          </ul> 
 
-        <form class="uploadbox" id="drop-area" v-on:drop.stop v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.stop v-on:dragleave.stop :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
+        <form class="uploadbox" id="drop-area" :data-active="active" v-on:drop.prevent="performUpload" v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.prevent="setActive" v-on:dragover.prevent="setActive" v-on:dragleave.prevent="setInactive" :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
         
-           <div class="uploadbox__input drag-area">
+           <div :dropZoneActive="active" class="uploadbox__input drag-area">
               
             <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
             <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple  v-on:change="performUpload" accept=".mp3,.mp4,.png "  />
        
               <label for="uploadfile">
-                <h2 id="select-file">
+                <h2 id="select-file" v-if="active==false">
                   Drag & Drop Assets to Upload to Archive
+                </h2>
+                <h2 id="select-file" v-else>
+                  Release to Upload
                 </h2>
                 <span>or</span>
                 <div class="btn">Browse Files</div>
@@ -123,6 +126,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  
 }
 
 .uploadLabel{
@@ -178,11 +182,19 @@
   outline-offset: -10px;
   transition: outline-offset .15s ease-in-out, background-color .15s linear;
   width: 100%;
+  &[data-active=true]{
+    outline: 2px dashed var(--orange);
+    background: transparent;
+  }
 }
 
 .uploadbox.advanced .uploadbox__dragndrop {
   display: inline;
+  border: 2px dashed var(--orange);
+  background: transparent;
 }
+
+
 
 .uploadbox.advanced .uploadbox__icon {
   font-size: 4rem;
@@ -348,7 +360,8 @@ declare interface BaseComponentData {
     uploads: Ref<Array<Upload>>,
     showModal: boolean,
     allSelected: boolean,
-    selected: Array<string>
+    selected: Array<string>,
+    active: boolean
 }
 
 declare interface Upload {
@@ -367,6 +380,8 @@ declare interface FileUpload {
     file: File
 }
 
+
+
 export default defineComponent({
     name: "UploadBox",
     data: () => {
@@ -374,6 +389,7 @@ export default defineComponent({
          showModal: false,
          uploads: ref([]),
          allSelected: false,
+         active: false,
          selected: [] as Array<string>
         }  as BaseComponentData;
        
@@ -398,6 +414,13 @@ export default defineComponent({
         this.allSelected = !this.allSelected;
       }
      },
+    
+      setActive() {
+        this.active= true;
+      },
+      setInactive() {
+        this.active=false;
+      },
       formatSize,
       sliceString,
     
@@ -497,6 +520,7 @@ export default defineComponent({
 
         performUpload(event: Event): void {
             event.preventDefault();
+            this.setInactive();
             const input = event.target as HTMLInputElement;
             const files = input.files as FileList;
             // Uncomment 3 lines below to send files to upload function
