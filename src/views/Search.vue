@@ -12,7 +12,7 @@
    </transition>
    
    <section>
-   <MainCard v-model="allSelected" @selectAll = "selectAll()" :search="search">
+   <MainCard v-model="allSelected" @selectAll = "selectAll()" :search="search" :reset="resetBatch">
   <!-- <MainCard :search-text="searchText"> -->
     <div v-for="upload in uploads" :key="upload.key" class="upload">
       <label class="checkbox-container">
@@ -367,7 +367,7 @@ export default defineComponent({
       search: async function(term){
       
         const RECORD_LIMIT = 100;
-
+        
         if(term != ''){
           const params: ScanCommandInput = {
               TableName: "MediaArchive",
@@ -391,34 +391,31 @@ export default defineComponent({
           console.log(term);
           console.log(data);
 
-      // TODO: TO SCAN MORE?
-          // continue scanning if we have more items
-          // https://www.codegrepper.com/code-examples/javascript/dynamodb+nodejs+scan+filter+expression+startsWith
-          // if (typeof data.LastEvaluatedKey != "undefined") {
-          //     console.log("Scanning for more...");
-          //     params.ExclusiveStartKey = data.LastEvaluatedKey;
-          //     ddbClient.scan(params, search);
-          // }
-      //TODO: END OF TODO 
-
           /* loads the items into the array */
           const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
           this.formatItem(items);
           
-          
-
-          // items.forEach((item) => {
-          //  this.uploads.push(item)
-          // });
-
         
-        this.uploads = items.filter((upload) => {
-          return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
-        });
+          this.uploads = items.filter((upload) => {
+            return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
+          });
+
+
+       // TODO: TO SCAN MORE?
+          // continue scanning if we have more items
+          // https://www.codegrepper.com/code-examples/javascript/dynamodb+nodejs+scan+filter+expression+startsWith
+          // if (typeof data.LastEvaluatedKey != "undefined") {
+          //     console.log("Scanning for more...");
+          //     params.ExclusiveStartKey = data.LastEvaluatedKey;
+          //     ddbClient.send(params, search(term));
+          // }
+      //TODO: END OF TODO 
+  
+
       }
       else if (term === '' || term === null ) {
-        this.resetBatch();
+        this.resetBatch(term);
       }
     //  Prints to console
       // this.uploads.forEach(upload => {
@@ -428,31 +425,34 @@ export default defineComponent({
       // });
 
       },
-    resetBatch: async function () {
-      const params: ScanCommandInput = {
-          TableName: "MediaArchive",
-          ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
-          Limit: RECORD_LIMIT,
-      };
+    resetBatch: async function (term) {
+      if (term === '' || term === null){
+        const params: ScanCommandInput = {
+            TableName: "MediaArchive",
+            ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
+            Limit: RECORD_LIMIT,
+        };
 
-      let credentials = await Auth.currentCredentials();
-  
-      const ddbClient = new DynamoDBClient({ 
-          region: REGION,
-          credentials: Auth.essentialCredentials(credentials) });
-      
-      const data = await ddbClient.send(new ScanCommand(params));
+        let credentials = await Auth.currentCredentials();
 
-      /* loads the items into the array */
-      const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
+        const ddbClient = new DynamoDBClient({ 
+            region: REGION,
+            credentials: Auth.essentialCredentials(credentials) });
+        
+        const data = await ddbClient.send(new ScanCommand(params));
 
-      this.formatItem(items);
+        /* loads the items into the array */
+        const items: Array<ArchiveFile> = data.Items?.map(mapper) || [];
 
-      this.uploads = this.uploads.concat(items);
+        this.formatItem(items);
 
-      /* store the last requestId */
-      this.nextToken = data.LastEvaluatedKey?.requestID.S || ""; 
+        this.uploads = this.uploads.concat(items);
+
+        /* store the last requestId */
+        this.nextToken = data.LastEvaluatedKey?.requestID.S || ""; 
+      }
     },
+
     loadNextBatch: async function() {
       const params: ScanCommandInput = {
           TableName: "MediaArchive",
