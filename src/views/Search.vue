@@ -370,10 +370,9 @@ export default defineComponent({
               TableName: "MediaArchive",
               ProjectionExpression: "requestID, filename, originalSourcePath, filesize, filetype, storageclass, transferStatus",
               Limit: RECORD_LIMIT,
-              FilterExpression: "filename = :f AND originalSourcePath = :p",
+              FilterExpression: "contains (filename, :f) OR contains(originalSourcePath, :f)",
               ExpressionAttributeValues: {
-                ':f': {S: "FileName"},
-                ':p': {S: "Path"}
+                ':f': {S: term },
               }
           };
         
@@ -389,7 +388,7 @@ export default defineComponent({
 
       // TODO: TO SCAN MORE?
           // continue scanning if we have more items
-          // https://www.codegrepper.com/code-examples/javascript/frameworks/vue/dynamodb+get+all+items+js
+          // https://www.codegrepper.com/code-examples/javascript/dynamodb+nodejs+scan+filter+expression+startsWith
           // if (typeof data.LastEvaluatedKey != "undefined") {
           //     console.log("Scanning for more...");
           //     params.ExclusiveStartKey = data.LastEvaluatedKey;
