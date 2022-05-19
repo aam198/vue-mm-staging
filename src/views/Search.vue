@@ -365,6 +365,9 @@ export default defineComponent({
      
      },
       search: async function(term){
+      
+        const RECORD_LIMIT = 100;
+
         if(term != ''){
           const params: ScanCommandInput = {
               TableName: "MediaArchive",
@@ -384,6 +387,8 @@ export default defineComponent({
               
           const data = await ddbClient.send(new ScanCommand(params));
 
+
+          console.log(term);
           console.log(data);
 
       // TODO: TO SCAN MORE?
@@ -401,7 +406,7 @@ export default defineComponent({
 
           this.formatItem(items);
           
-          console.log(term);
+          
 
           // items.forEach((item) => {
           //  this.uploads.push(item)
@@ -412,7 +417,7 @@ export default defineComponent({
           return upload.name.toLowerCase().includes(term.toLowerCase()) || upload.path.toLowerCase().includes(term.toLowerCase());
         });
       }
-      else if (term === '' || term == null) {
+      else if (term === '' || term === null ) {
         this.resetBatch();
       }
     //  Prints to console

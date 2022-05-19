@@ -7,8 +7,8 @@
       
           <div class="search-bar">
             <input class="search" id="search" 
-           v-model="term" type="text" name="text" @keyup="search(term)"  
-            placeholder="Search files by prefix">
+           v-model="term" type="text" name="text" @keyup.enter="search(term)"  @keyup="search(term)"
+            placeholder="Search files by prefix - Hit [ Enter ] to start search">
             <!-- <input class="search" id="search" 
            v-model="term" type="text" name="text" @keyup="search(term)" @keyup.enter="$emit(search)" 
             placeholder="Search files by prefix - [Enter] to search"> -->
