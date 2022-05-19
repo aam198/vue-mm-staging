@@ -17,19 +17,22 @@
     <!-- End of Card Header -->
       <div class="card-content">
     
-        <form class="uploadbox" id="drop-area" v-on:drop.stop v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.stop v-on:dragleave.stop :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
+        <form class="uploadbox" id="drop-area" :data-active="active" v-on:drop.prevent="performUpload" v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.prevent="setActive" v-on:dragover.prevent="setActive" v-on:dragleave.prevent="setInactive" :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
         
           <div id="fileDetails" class="file-details" ref="fileDetails"></div>    
 
-           <div class="uploadbox__input drag-area">
+           <div :dropZoneActive="active" class="uploadbox__input drag-area">
               
             <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
             <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png " v-on:change="performUpload" />
        
               <label for="uploadfile">
-                <h2 id="select-file">
+                <h2 id="select-file" v-if="active==false">
                   Drag & Drop Assets to Upload to S3 Bucket
+                </h2>
+                <h2 id="select-file" v-else>
+                  Release to Add
                 </h2>
                 <span>or</span>
                 <div class="btn">Browse Files</div>
@@ -171,6 +174,10 @@
   outline-offset: -10px;
   transition: outline-offset .15s ease-in-out, background-color .15s linear;
   width: 100%;
+  &[data-active=true]{
+    outline: 2px dashed var(--orange);
+    background: transparent;
+  }
 }
 
 .uploadbox.advanced .uploadbox__dragndrop {
@@ -378,6 +385,7 @@ declare interface BaseComponentData {
     /*files?:  FileList,*/
     /*error_msg?: string,*/
     uploads: Ref<Array<Upload>>,
+    active: boolean
 }
 
 declare interface Upload {
@@ -390,6 +398,7 @@ export default defineComponent({
     name: "UploadBox",
     data: () => {
         return { uploads: ref([]),
+        active: false
         }  as BaseComponentData;
        
     },
@@ -405,6 +414,12 @@ export default defineComponent({
         isAdvanced(): boolean {
             const div = document.createElement('div');
             return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
+        },
+        setActive() {
+         this.active= true;
+         },
+        setInactive() {
+         this.active=false;
         },
         listFile(index: number, file: File): void{
           // Get File information
@@ -439,12 +454,13 @@ export default defineComponent({
             Storage.put(key,file,config);
         },
         performUpload(event: Event): void {
-            const input = event.target as HTMLInputElement;
-            const files = input.files as FileList;
+          this.setInactive();
+          const input = event.target as HTMLInputElement;
+          const files = input.files as FileList;
             // Uncomment 3 lines below to send files to upload function
-            for (let i=0; i< files.length; i++) {
+          for (let i=0; i< files.length; i++) {
             //     this.upload(i,files[i]);
-                  this.listFile(i, files[i]);
+            this.listFile(i, files[i]);
             }
         }, 
     }

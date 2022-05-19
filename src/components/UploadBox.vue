@@ -44,7 +44,7 @@
                   Drag & Drop Assets to Upload to Archive
                 </h2>
                 <h2 id="select-file" v-else>
-                  Release to Upload
+                  Release to Add
                 </h2>
                 <span>or</span>
                 <div class="btn">Browse Files</div>
