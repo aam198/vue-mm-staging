@@ -3,7 +3,7 @@
       <div class="container" id="headerContainer">
           <div class="header-login">
              <img class="profile-img" src="https://images.unsplash.com/photo-1488229297570-58520851e868?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MjJ8fGNvZGV8ZW58MHx8MHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60" alt="">
-             <div class="login-title" id="userLogin">User</div>
+             <!-- <div class="login-title" id="userLogin">{{ user.username }}</div> -->
             </div>
      </div>
     </header>
@@ -71,9 +71,41 @@
 </style>
 
 <script lang="ts">
-import {Vue} from 'vue-class-component';
+import { Options, Vue } from 'vue-class-component';
+import {Amplify,Auth,Storage} from 'aws-amplify';
+import config from '../amplify-config';
 
+Amplify.configure(config);
 
+Auth.currentAuthenticatedUser({bypassCache: false})
+  .then(user => {
+    console.log(user);
+    console.log(user.username);
+    Auth.currentCredentials().then(data=>{
+      console.log(data);
+    })
+    // Auth.currentCredentials().then(data=>{ 
+    //   AWS.config.credentials = data;})
+    // // Auth.currentCredentials().then(data=>{
+    // //   console.log(data);
+    // //   return data;
+    // // });
+  })
+  .catch(err => {
+    console.log(err);
+    Auth.federatedSignIn();
+  }
+);
 
-export default class Header extends Vue {}
+@Options({
+  props: {
+    user: String
+  }
+})
+
+export default class Header extends Vue {
+
+  user!: string
+  
+}
 </script>

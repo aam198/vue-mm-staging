@@ -76,7 +76,7 @@
     <transition name="fade" appear>
 
         <Modal v-if="showModal"
-        @confirmClick="confirm" 
+        @confirmClick="upload" 
       @closeClick="closeModal"  text="Archive">
           Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
             Would you like to continue to upload? 
@@ -438,9 +438,9 @@ export default defineComponent({
         // Uncomment 3 lines below to send files to upload function
          
         let uploads = this.uploads;
-        console.log(uploads);
+        console.log('uploads', uploads);
         const myTarget = JSON.parse(JSON.stringify(uploads));
-        console.log(myTarget[0]);
+        console.log('myTarget', myTarget[0]);
         // for (let i=0; i < files.length; i++) {
         //       this.upload(i, files[i]);
         //        console.log('Line 457', files[i]);
@@ -452,15 +452,16 @@ export default defineComponent({
         // {
         //   console.log(uploads[i].item);
         // }
-       
+    
 
-
-      //   //  this.upload(i, files[i]);
+      //  this.upload(i, files[i]);
       //  }
         console.log('confirm event is firing');
         // for (upload in this.uploads) {
         //   this.upload(i, upload.files);
         // }
+
+
 
         // Close modal after confirm
         this.showModal = !this.showModal;
@@ -494,8 +495,7 @@ export default defineComponent({
 
         const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file_type, file: file});
         let uindex = this.uploads.push(fileList);
-        console.log("this is file list", fileList.file)
-
+        console.log("this is file list", fileList.file);
         },
 
     upload(index: number, file: File): void {
@@ -515,7 +515,7 @@ export default defineComponent({
         };
          console.log('Will send to the s3!');
             // initiate the upload
-          // Storage.put(key,file,config);
+         Storage.put(key,fileList,config);
       },
 
         performUpload(event: Event): void {
