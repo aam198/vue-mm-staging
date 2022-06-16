@@ -455,18 +455,12 @@ export default defineComponent({
          Storage.put(myTarget[i].key, myTarget[i].file);
          }
 
-        
-      
-        console.log('confirm event is firing');
-        // for (upload in this.uploads) {
-        //   this.upload(i, upload.files);
-        // }
-
-      
 
         // Close modal after confirm
         this.showModal = !this.showModal;
         console.log(this.uploads.length);
+
+        // TODO: Add in if Progress is complete then clear 
         // Clear uploads in list
           this.uploads = []; 
       },
