@@ -76,7 +76,7 @@
     <transition name="fade" appear>
 
         <Modal v-if="showModal"
-        @confirmClick="upload" 
+        @confirmClick="confirm" 
       @closeClick="closeModal"  text="Archive">
           Files will be uploaded to <strong>Deep Archive</strong> storage class where they will not be instantly available.
             Would you like to continue to upload? 
@@ -368,7 +368,7 @@ declare interface Upload {
     loaded: number,
     total: number
     key: string,
-    type: string
+    type: string,
 }
 
 
@@ -441,33 +441,34 @@ export default defineComponent({
         console.log('uploads', uploads);
         const myTarget = JSON.parse(JSON.stringify(uploads));
         console.log('myTarget', myTarget[0]);
-        // for (let i=0; i < files.length; i++) {
-        //       this.upload(i, files[i]);
-        //        console.log('Line 457', files[i]);
-        //  }
 
-        // const target_copy = Object.assign({}, uploads)
-        // console.log(target_copy[1]);
-        // for(let i = 0; i < this.uploads.length; i++)
-        // {
-        //   console.log(uploads[i].item);
-        // }
-    
+        for (let i=0; i < this.uploads.length; i++) {
+           // this.upload(i, files[i]);
+           console.log('Line 447', myTarget[i]);
 
-      //  this.upload(i, files[i]);
-      //  }
+        // add the progress data to the array
+       
+        // on progress call back
+
+         console.log('Will send to the s3!', myTarget[i].key,  myTarget[i].file);
+            // initiate the upload
+         Storage.put(myTarget[i].key, myTarget[i].file);
+         }
+
+        
+      
         console.log('confirm event is firing');
         // for (upload in this.uploads) {
         //   this.upload(i, upload.files);
         // }
 
-
+      
 
         // Close modal after confirm
         this.showModal = !this.showModal;
         console.log(this.uploads.length);
         // Clear uploads in list
-        // this.uploads = []; 
+          this.uploads = []; 
       },
 
       // REMOVE FILE FUNCTION
