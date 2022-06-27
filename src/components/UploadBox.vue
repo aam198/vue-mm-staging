@@ -21,8 +21,7 @@
           <li id="fileDetails" class="file-details" ref="fileDetails" v-for="upload in uploads" :key="upload.key">
             <label class="checkbox-container">
               <input
-              :checked="checkValue == true"
-               type="checkbox" v-model="selected" :value="upload.key" >
+               type="checkbox" :checked="allSelected" :value="upload.key" >
               <span class="checkmark checkUpload"></span>
             </label>
             <div class="width-20"></div>
@@ -392,7 +391,7 @@ export default defineComponent({
          showModal: false,
          uploads: ref([]),
          allSelected: true,
-         checkValue: true,
+         checkValue: false,
          active: false,
          selected: [] as Array<string>
         }  as BaseComponentData;
@@ -415,7 +414,6 @@ export default defineComponent({
         console.log('clicking');
         this.selected = [];
         this.allSelected = !this.allSelected;
-        // this.checkValue= !this.checkValue;
        }
       },
     
