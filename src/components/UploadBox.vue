@@ -5,7 +5,7 @@
 
      <div class="card-header">          
        <label class="checkbox-container">
-        <input type="checkbox" v-model="allSelected" @click="selectAll()">
+        <input type="checkbox"  v-model="allSelected" @click="selectAll()">
          <span class="checkmark"></span>
        </label>
       <h2 class="file-location-check">File Location</h2>
@@ -20,7 +20,9 @@
          <ul>
           <li id="fileDetails" class="file-details" ref="fileDetails" v-for="upload in uploads" :key="upload.key">
             <label class="checkbox-container">
-              <input type="checkbox" v-model="selected" :value="upload.key">
+              <input
+              :checked="checkValue == true"
+               type="checkbox" v-model="selected" :value="upload.key" >
               <span class="checkmark checkUpload"></span>
             </label>
             <div class="width-20"></div>
@@ -360,6 +362,7 @@ declare interface BaseComponentData {
     uploads: Ref<Array<Upload>>,
     showModal: boolean,
     allSelected: boolean,
+    checkValue: boolean,
     selected: Array<string>,
     active: boolean
 }
@@ -388,7 +391,8 @@ export default defineComponent({
         return { 
          showModal: false,
          uploads: ref([]),
-         allSelected: false,
+         allSelected: true,
+         checkValue: true,
          active: false,
          selected: [] as Array<string>
         }  as BaseComponentData;
@@ -401,8 +405,7 @@ export default defineComponent({
       selectAll: function() {
        
       if (!this.allSelected){
-        console.log('line 353', this.allSelected.valueOf())
-        console.log('select all pressed');
+        console.log('select all pressed', this.allSelected.valueOf())
         const selected = this.uploads.map((upload) => upload.key);
         this.selected = selected;
         console.log(selected);
@@ -412,8 +415,9 @@ export default defineComponent({
         console.log('clicking');
         this.selected = [];
         this.allSelected = !this.allSelected;
-      }
-     },
+        // this.checkValue= !this.checkValue;
+       }
+      },
     
       setActive() {
         this.active= true;
@@ -435,21 +439,30 @@ export default defineComponent({
 
       confirm(): void{
        
-        // Uncomment 3 lines below to send files to upload function
-         
+        
         let uploads = this.uploads;
         console.log('uploads', uploads);
         const myTarget = JSON.parse(JSON.stringify(uploads));
         console.log('myTarget', myTarget[0]);
 
+
         for (let i=0; i < this.uploads.length; i++) {
            // this.upload(i, files[i]);
            console.log('Line 447', myTarget[i]);
 
-        // add the progress data to the array
-       
-        // on progress call back
+        //TODO: Add in ProgressBar Component
 
+        //const bar: typeof ProgressBar = new ProgressBar();
+        //let progress_data: Upload =  reactive({loaded: 0, total: myTarget.size, key: myTarget.name});
+        // add the progress data to the array
+         //let uindex = this.uploads.push(progress_data);
+        // on progress call back
+        //const config: S3ProviderPutConfig = {
+                    //progressCallback: (progress) => { 
+                       // progress_data.loaded = progress.loaded;
+                      //  console.log(progress);
+               // }
+          //  };
          console.log('Will send to the s3!', myTarget[i].key,  myTarget[i].file);
             // initiate the upload
          Storage.put(myTarget[i].key, myTarget[i].file);
@@ -460,7 +473,7 @@ export default defineComponent({
         this.showModal = !this.showModal;
         console.log(this.uploads.length);
 
-        // TODO: Add in if Progress is complete then clear 
+        // TODO: Add in if Progress Toast Message if complete then clear 
         // Clear uploads in list
           this.uploads = []; 
       },
@@ -518,11 +531,10 @@ export default defineComponent({
             this.setInactive();
             const input = event.target as HTMLInputElement;
             const files = input.files as FileList;
-            // Uncomment 3 lines below to send files to upload function
+            
             for (let i=0; i < files.length; i++) {
                 this.addFiles(i, files[i]);
                 console.log('Line 457', files[i]);
-                
                 // this.upload(i, files[i]);
             }
         }, 
