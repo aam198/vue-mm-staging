@@ -524,18 +524,18 @@ export default defineComponent({
          Storage.put(key,fileList,config);
       },
 
-        performUpload(event: Event): void {
-            event.preventDefault();
-            this.setInactive();
-            const input = event.target as HTMLInputElement;
-            const files = input.files as FileList;
-            
-            for (let i=0; i < files.length; i++) {
-                this.addFiles(i, files[i]);
-                console.log('Line 457', files[i]);
-                // this.upload(i, files[i]);
-            }
-        }, 
+      performUpload(event: Event): void {
+          event.preventDefault();
+          this.setInactive();
+          const input = event.target as HTMLInputElement;
+          const files = input.files as FileList;
+          
+          for (let i=0; i < files.length; i++) {
+              this.addFiles(i, files[i]);
+              console.log('Line 457', files[i]);
+              // this.upload(i, files[i]);
+          }
+      }, 
     }
 })
 
