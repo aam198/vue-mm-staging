@@ -379,13 +379,18 @@ import {Storage, S3ProviderPutConfig} from '@aws-amplify/storage';
 import ProgressBar from '@/components/ProgressBar.vue';
 import {defineComponent,ComponentPropsOptions,Ref,ref,reactive} from 'vue';
 import {PropType} from 'vue';
+import { formatSize, sliceString } from "../helpers.js"
 
 
 declare interface BaseComponentData {
     /*files?:  FileList,*/
     /*error_msg?: string,*/
     uploads: Ref<Array<Upload>>,
-    active: boolean
+    active: boolean,
+    showModal: boolean,
+    allSelected: boolean,
+    checkValue: boolean,
+    selected: Array<string>,
 }
 
 declare interface Upload {
@@ -397,11 +402,16 @@ declare interface Upload {
 export default defineComponent({
     name: "UploadBox",
     data: () => {
-        return { uploads: ref([]),
-        active: false
-        }  as BaseComponentData;
-       
+      return { 
+        showModal: false,
+        uploads: ref([]),
+        allSelected: true,
+        checkValue: false,
+        active: false,
+        selected: [] as Array<string>
+      }  as BaseComponentData;  
     },
+
     components: {'ProgressBar': ProgressBar},
     props: {},
     emits: ["update-progress"],
@@ -411,58 +421,72 @@ export default defineComponent({
       }
     },
     methods: {
-        isAdvanced(): boolean {
-            const div = document.createElement('div');
-            return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
+      selectAll: function() {
+        if (!this.allSelected){
+          console.log('select all pressed', this.allSelected.valueOf())
+          const selected = this.uploads.map((upload) => upload.key);
+          this.selected = selected;
+          console.log(selected);
+          console.log('line 358', this.allSelected.valueOf())
+        }
+        else if (this.allSelected) {
+          console.log('clicking');
+          this.selected = [];
+          this.allSelected = !this.allSelected;
+        }
+      },
+      isAdvanced(): boolean {
+        const div = document.createElement('div');
+          return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
         },
-        setActive() {
-         this.active= true;
-         },
-        setInactive() {
-         this.active=false;
-        },
-        listFile(index: number, file: File): void{
-          // Get File information
+      setActive() {
+        this.active= true;
+       },
+      setInactive() {
+        this.active=false;
+      },
+      listFile(index: number, file: File): void{
+        // Get File information
+        const key: string = file.name;
+        const size = file.size;
+        const file_name_array = key.split(".");
+        console.log(key, size, file_name_array)
+        const file_name= file_name_array[0];
+        const file_type = file_name_array[file_name_array.length-1];
+        console.log(file_name, file_type)
+        const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
+        let fSize = size;
+        var i=0;
+        while(fSize>900){fSize/=1024;i++;}
+        const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
+    
+      },
+      upload(index: number,file: File): void {
           const key: string = file.name;
-          const size = file.size;
-          const file_name_array = key.split(".");
-          console.log(key, size, file_name_array)
-          const file_name= file_name_array[0];
-          const file_type = file_name_array[file_name_array.length-1];
-          console.log(file_name, file_type)
-          const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
-          let fSize = size;
-          var i=0;
-          while(fSize>900){fSize/=1024;i++;}
-          const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-      
-        },
-        upload(index: number,file: File): void {
-            const key: string = file.name;
-            //const bar: ProgressBar = new ProgressBar();
-            let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name});
-            // add the progress data to the array
-            let uindex = this.uploads.push(progress_data);
-            // on progress call back
-            const config: S3ProviderPutConfig = {
-                    progressCallback: (progress) => { 
-                        progress_data.loaded = progress.loaded;
-                        console.log(progress);
-                }
-            };
-            // initiate the upload
-            Storage.put(key,file,config);
-        },
-        performUpload(event: Event): void {
-          this.setInactive();
-          const input = event.target as HTMLInputElement;
-          const files = input.files as FileList;
-            // Uncomment 3 lines below to send files to upload function
-          for (let i=0; i< files.length; i++) {
-            //     this.upload(i,files[i]);
-            this.listFile(i, files[i]);
-            }
-        }, 
+          //const bar: ProgressBar = new ProgressBar();
+          let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name});
+          // add the progress data to the array
+          let uindex = this.uploads.push(progress_data);
+          // on progress call back
+          const config: S3ProviderPutConfig = {
+                  progressCallback: (progress) => { 
+                      progress_data.loaded = progress.loaded;
+                      console.log(progress);
+              }
+          };
+          // initiate the upload
+          Storage.put(key,file,config);
+      },
+      performUpload(event: Event): void {
+        this.setInactive();
+        const input = event.target as HTMLInputElement;
+        const files = input.files as FileList;
+          // Uncomment 3 lines below to send files to upload function
+        for (let i=0; i< files.length; i++) {
+          //     this.upload(i,files[i]);
+          this.listFile(i, files[i]);
+          }
+      }, 
     }
 })
 

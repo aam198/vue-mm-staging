@@ -358,6 +358,8 @@ export default defineComponent({
             // initiate the upload
             Storage.put(key,file,config);
         },
+
+        
         performUpload(event: Event): void {
             const input = event.target as HTMLInputElement;
             const files = input.files as FileList;

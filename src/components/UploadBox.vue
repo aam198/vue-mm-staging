@@ -32,7 +32,7 @@
           </li>
          </ul> 
 
-        <form class="uploadbox" id="drop-area" :data-active="active" v-on:drop.prevent="performUpload" v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.prevent="setActive" v-on:dragover.prevent="setActive" v-on:dragleave.prevent="setInactive" :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
+        <form class="uploadbox" id="drop-area" :data-active="active" v-on:drop.prevent="onDrop" v-on:drag.stop v-on:dragstart.stop v-on:dragend.stop v-on:dragenter.prevent="setActive" v-on:dragover.prevent="setActive" v-on:dragleave.prevent="setInactive" :class="{advanced: isAdvanced}" method="post" action="" enctype="multipart/form-data">
         
            <div :dropZoneActive="active" class="uploadbox__input drag-area">
               
@@ -50,6 +50,10 @@
                 <span>or</span>
                 <div class="btn">Browse Files</div>
               </label>
+               <!-- Progress Bar -->
+               <div>
+                <ProgressBar ref="progress" v-for="(item,index) in uploads"  :key="item.key"  :index="index" :loaded="item.loaded" :total="item.total" />
+              </div>
 
             </div>
 
@@ -58,10 +62,7 @@
             <!-- <div class="uploadfile__error">{{errmsg}}</div> -->
           </form>
           <!-- Form End -->
-        <!-- Progress Bar -->
-          <div>
-              <ProgressBar ref="progress" v-for="(item,index) in uploads"  :key="item.key"  :index="index" :loaded="item.loaded" :total="item.total" />
-          </div>
+       
       </div>
      </div>
     </div>
@@ -387,16 +388,16 @@ declare interface FileUpload {
 export default defineComponent({
     name: "UploadBox",
     data: () => {
-        return { 
-         showModal: false,
-         uploads: ref([]),
-         allSelected: true,
-         checkValue: false,
-         active: false,
-         selected: [] as Array<string>
-        }  as BaseComponentData;
-       
+      return { 
+        showModal: false,
+        uploads: ref([]),
+        allSelected: true,
+        checkValue: false,
+        active: false,
+        selected: [] as Array<string>
+      }  as BaseComponentData;
     },
+
     components: {'ProgressBar': ProgressBar, Modal},
     props: {},
     emits: ["update-progress"],
@@ -440,32 +441,31 @@ export default defineComponent({
         
         let uploads = this.uploads;
         console.log('uploads', uploads);
-        const myTarget = JSON.parse(JSON.stringify(uploads));
-        console.log('myTarget', myTarget[0]);
+        const uploadFile = JSON.parse(JSON.stringify(uploads));
+        console.log('myTarget', uploadFile[0]);
 
 
         for (let i=0; i < this.uploads.length; i++) {
-           // this.upload(i, files[i]);
-           console.log('Line 447', myTarget[i]);
+          
+          console.log('Line 447', uploadFile[i]);
 
-        //TODO: Add in ProgressBar Component
+          //TODO: Add in ProgressBar Component
 
-        //const bar: typeof ProgressBar = new ProgressBar();
-        //let progress_data: Upload =  reactive({loaded: 0, total: myTarget.size, key: myTarget.name});
-        // add the progress data to the array
-         //let uindex = this.uploads.push(progress_data);
-        // on progress call back
-        //const config: S3ProviderPutConfig = {
-                    //progressCallback: (progress) => { 
-                       // progress_data.loaded = progress.loaded;
-                      //  console.log(progress);
-               // }
-          //  };
-         console.log('Will send to the s3!', myTarget[i].key,  myTarget[i].file);
-            // initiate the upload
-         Storage.put(myTarget[i].key, myTarget[i].file);
+          // const bar: typeof ProgressBar = new ProgressBar();
+          let progress_data: Upload =  reactive({loaded: 0, total: uploadFile.size, key: uploadFile.name, type: uploadFile.type});
+          // add the progress data to the array
+          let uindex = this.uploads.push(progress_data);
+          // on progress call back
+          const config: S3ProviderPutConfig = {
+            progressCallback: (progress) => { 
+              progress_data.loaded = progress.loaded;
+              console.log(progress);
+            }
+          };
+          console.log('Will send to the s3!', uploadFile[i].key,  uploadFile[i].file);
+              // initiate the upload
+          Storage.put(uploadFile[i].key, uploadFile[i].file);
          }
-
 
         // Close modal after confirm
         this.showModal = !this.showModal;
@@ -477,20 +477,20 @@ export default defineComponent({
       },
 
       // REMOVE FILE FUNCTION
-    removeFile(fileName) {
-      const index = this.uploads.findIndex(
-        file => file.key === fileName
-      );
-      // If file is in uploaded files remove it
-      if (index > -1) this.uploads.splice(index, 1); 
-    },
+      removeFile(fileName) {
+        const index = this.uploads.findIndex(
+          file => file.key === fileName
+        );
+        // If file is in uploaded files remove it
+        if (index > -1) this.uploads.splice(index, 1); 
+      },
 
-    isAdvanced(): boolean {
+      isAdvanced(): boolean {
         const div = document.createElement('div');
         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window; 
-        },
+      },
 
-    addFiles(index: number, file: File): void{
+      addFiles(index: number, file: File): void{
         // Get File information
         const key: string = file.name;
         const size: number = file.size;
@@ -504,9 +504,10 @@ export default defineComponent({
         console.log("this is file list", fileList.file);
         },
 
-    upload(index: number, file: File): void {
-      const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file.type, file: file});
-      console.log("Line 434", fileList.file)
+    // Do we still need this?
+      upload(index: number, file: File): void {
+        const fileList: FileUpload =  reactive({loaded:0, total: file.size, key: file.name, type: file.type, file: file});
+        console.log("Line 434", fileList.file)
         const key: string = file.name;
         //const bar: ProgressBar = new ProgressBar();
         let progress_data: Upload =  reactive({loaded: 0, total: file.size, key: file.name, type: ''});
@@ -522,6 +523,20 @@ export default defineComponent({
          console.log('Will send to the s3!');
             // initiate the upload
          Storage.put(key,fileList,config);
+      },
+
+      onDrop(event: DragEvent): void {
+        event.preventDefault();
+         this.setInactive();
+
+         if (event.dataTransfer) {
+          const files = event.dataTransfer.files;
+          let result: File[] = [];
+          for (var i = 0; i < files.length; i++) {
+            result.push(<File>files.item(i));
+            this.addFiles(i, files[i]);
+           }
+         }
       },
 
       performUpload(event: Event): void {
