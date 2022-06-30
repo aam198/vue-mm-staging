@@ -24,7 +24,7 @@
                type="checkbox" :checked="allSelected" :value="upload.key" >
               <span class="checkmark checkUpload"></span>
             </label>
-            <div class="width-20"></div>
+            <div class="width-20">COURSES/</div>
             <div class="width-25">{{sliceString(upload.key)}}</div>
             <div class="width-10">{{upload.type}}</div> 
             <div class="width-15">{{formatSize(upload.total)}}</div> 
@@ -452,18 +452,21 @@ export default defineComponent({
           //TODO: Add in ProgressBar Component
 
           // const bar: typeof ProgressBar = new ProgressBar();
-          let progress_data: Upload =  reactive({loaded: 0, total: uploadFile.size, key: uploadFile.name, type: uploadFile.type});
-          // add the progress data to the array
-          let uindex = this.uploads.push(progress_data);
+          //  let progress_data: Upload =  reactive({loaded: 0, total: uploadFile.size, key: uploadFile.name, type: uploadFile.type});
+          //  add the progress data to the array
+          //  let uindex = this.uploads.push(progress_data);
           // on progress call back
-          const config: S3ProviderPutConfig = {
-            progressCallback: (progress) => { 
-              progress_data.loaded = progress.loaded;
-              console.log(progress);
-            }
-          };
+          // const config: S3ProviderPutConfig = {
+          //    progressCallback: (progress) => { 
+          //      progress_data.loaded = progress.loaded;
+          //     console.log(progress);
+          //   }
+          //  };
+
+
           console.log('Will send to the s3!', uploadFile[i].key,  uploadFile[i].file);
               // initiate the upload
+
           Storage.put(uploadFile[i].key, uploadFile[i].file);
          }
 
