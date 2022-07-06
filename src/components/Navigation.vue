@@ -9,6 +9,7 @@
           <router-link to="/s3"><i class="fas fa-photo-video" aria-hidden="true"></i>S3 Bucket</router-link>
            <router-link to="/upload"><i class="fas fa-archive" aria-hidden="true"></i>Upload to Archive</router-link>
           <router-link to="/search"><i class="fas fa-search" aria-hidden="true"></i>Search Archive</router-link>
+          <router-link to="/s3search"><i class="fas fa-search" aria-hidden="true"></i>S3 Search</router-link>
          
       </aside>
     </nav>

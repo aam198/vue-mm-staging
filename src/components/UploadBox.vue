@@ -521,6 +521,7 @@ export default defineComponent({
                 progressCallback: (progress) => { 
                     progress_data.loaded = progress.loaded;
                     console.log(progress);
+                    console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
             }
         };
          console.log('Will send to the s3!');

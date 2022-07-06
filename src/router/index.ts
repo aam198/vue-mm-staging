@@ -40,7 +40,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/search',
     name: 'search',
     component: () => import('../views/Search.vue')
-  }
+  },
+  {
+    path:'/s3search',
+    name: 's3search',
+    component: () => import('../views/S3Search.vue')
+  },
   
 ]
 
