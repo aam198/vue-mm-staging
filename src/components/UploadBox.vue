@@ -38,7 +38,9 @@
               
             <div class="icon uploadbox__icon"><i class="fas fa-cloud-upload-alt"></i></div>
             
-            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" id="uploadfile" data-multiple-caption="{count} files selected" multiple  v-on:change="performUpload" accept=".mp3,.mp4,.png "  />
+            <input class="uploadbox__file" type="file" hidden name="upload_files[]" ref="file" v-on:change="performUpload" id="uploadfile" data-multiple-caption="{count} files selected" multiple accept=".mp3,.mp4,.png "  />
+
+        
        
               <label for="uploadfile">
                 <h2 id="select-file" v-if="active==false">
@@ -467,7 +469,18 @@ export default defineComponent({
           console.log('Will send to the s3!', uploadFile[i].key,  uploadFile[i].file);
               // initiate the upload
 
-          Storage.put(uploadFile[i].key, uploadFile[i].file);
+          Storage.put(uploadFile[i].key, uploadFile[i].file, {
+            // resumable: true,
+            // completeCallback: (event) => {
+            //   console.log(`Successfully uploaded ${uploadFile.key}`);
+            //   },
+            // progressCallback: (progress) => {
+            //   console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+            //  },
+            // errorCallback: (err) => {
+            //   console.error('Unexpected error while uploading', err);
+            // }
+          });
          }
 
         // Close modal after confirm

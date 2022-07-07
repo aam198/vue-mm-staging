@@ -265,7 +265,7 @@ export default defineComponent({
    },
   computed: {
     disable(){
-      if(this.$route.path === '/search'){
+      if(this.$route.path === '/search' || this.$route.path === '/s3search'){
         return false
       }
       else {
