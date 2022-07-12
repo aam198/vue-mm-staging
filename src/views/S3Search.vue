@@ -24,8 +24,8 @@
 
         
       <div class="width-20"> {{  }} </div>
-      <div class="width-25">{{item.key}}</div>
-      <div class="width-15">{{  }}</div>
+      <div class="width-25">{{ sliceString(item.key)}}</div>
+      <div class="width-15">{{ fileType(item.key) }}</div>
       <div class="width-15">{{ formatSize(item.size) }}</div>
       <div class="width-15">{{  }}</div>
       <!-- <div class="status"> <div :class="[upload.status === 'success' ? '' : 'circle' ]"></div></div> -->
@@ -41,6 +41,13 @@
       <button class="btn" id="restore-12">12-Hour Restore</button>
       <button class="btn" id="restore-48">48-Hour Restore</button>
     </div>
+
+    <h1>File List</h1>
+    <ul>
+      <li v-for="file in files" :key="file.key">
+        <File :name="file.Key" :date="file.LastModified" />
+      </li>
+    </ul>
     
    </section>
           <!-- <amplify-photo-picker
@@ -59,7 +66,8 @@ import {Storage, S3ProviderPutConfig} from '@aws-amplify/storage';
 import MainCard from '@/components/MainCard.vue';
 import InfoNote from '@/components/InfoNote.vue';
 import Button from '@/components/Button.vue';
-import { formatSize, sliceString } from "../helpers.js"
+import { formatSize, sliceString, fileType } from "../helpers.js"
+import S3 from '@aws-sdk/client-s3'
 
 
 export default defineComponent({
@@ -77,15 +85,11 @@ export default defineComponent({
       hideNote: true,
       allSelected: true,
       selected: [],
+      files: [],
+
     };
   },
-  computed: {
-    options() {
-      //retain for future use
-      const defaults = {}
-      return Object.assign(defaults, this.s3AlbumConfig || {})
-    },
-  },
+  
   
   setup(){
     const results = ref([])
@@ -103,6 +107,14 @@ export default defineComponent({
  mounted() {
     console.log('line 59', this.results)
     // this.processStorageList(items); 
+    // const s3 = new S3();
+    // const params = {
+    //   Bucket: process.env.AWS_S3_BUCKET_NAME,
+    // };
+    // s3.listObjectsV2(params, (err, data) => {
+    //   if (err) return console.error(err);
+    //   this.files = data.Contents.sort((a, b) => b.LastModified - a.LastModified);
+    // });
  },
 
 methods: {
@@ -137,6 +149,8 @@ methods: {
   },
   formatSize,
   sliceString,
+  fileType,
+
   
   selectAll: function() {
        
@@ -157,38 +171,16 @@ methods: {
       this.allSelected = !this.allSelected;
     }
   },
-formatItem(items) {
-  // Iterating through the array and formatting 
-  items.map(item => {
-    // Slice up the file path https://stackoverflow.com/questions/63216973/slice-url-to-get-the-file-name-in-vue
 
-    const fName= item.name;
-    const fArr= fName.split(".");
-    const file_name = fArr[0];
-    item.name = file_name; 
-    // console.log(item.name);
-    // Formatting file size Adding byte size
-    const file_byte = new Array('Bytes', 'KB', 'MB', 'GB');
-    // Parse fSize to Integer 
-    let fSize = parseInt(item.size);
-    var i=0;
-      while(fSize>900){fSize/=1024;i++;}
-    const file_size = (Math.round(fSize*100)/100)+' '+file_byte[i];
-    
-    
-    item.size = file_size;
-
-    const fPath = item.path;
-    const fArrPath= fPath.split("/");
-    // console.log(fArrPath);
-    const filePath = fArrPath[3] + '/' + fArrPath[4] + '/' + fArrPath[5];
-    item.path = filePath;
-  });
-  return items;
-  },
   },
    
-    
+  //   computed: {
+  //   options() {
+  //     //retain for future use
+  //     const defaults = {}
+  //     return Object.assign(defaults, this.s3AlbumConfig || {})
+  //   },
+  // },
 
   // mounted: {
     
