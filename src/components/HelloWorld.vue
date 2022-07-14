@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import {Amplify,Auth,Storage} from 'aws-amplify';
+import {Amplify,Auth, Storage} from 'aws-amplify';
 import config from '../amplify-config';
 import AWS from '@aws-sdk/client-s3';
 import { S3Client, ListBucketsCommand} from "@aws-sdk/client-s3";

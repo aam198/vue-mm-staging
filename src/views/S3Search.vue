@@ -63,11 +63,16 @@
 <script>
 import {defineComponent,ComponentPropsOptions,Ref,ref,reactive, onMounted} from 'vue';
 import {Storage, S3ProviderPutConfig} from '@aws-amplify/storage';
+import {Amplify} from 'aws-amplify';
 import MainCard from '@/components/MainCard.vue';
 import InfoNote from '@/components/InfoNote.vue';
 import Button from '@/components/Button.vue';
 import { formatSize, sliceString, fileType } from "../helpers.js"
 import S3 from '@aws-sdk/client-s3'
+import config from '../amplify-config';
+
+// Point to s3
+// console.log(config.Storage.AWSS3.bucket);
 
 
 export default defineComponent({
@@ -86,7 +91,6 @@ export default defineComponent({
       allSelected: true,
       selected: [],
       files: [],
-
     };
   },
   
@@ -96,20 +100,21 @@ export default defineComponent({
 
     onMounted(async () => {
         results.value = await Storage.list("");
-        console.log("called onMounted", results);    
+        console.log("called onMounted", results);     
       });
     return {
       results,
-    }
-    
+    }   
   },
 
  mounted() {
-    console.log('line 59', this.results)
+  
+    // console.log('line 59', this.results)
+    
     // this.processStorageList(items); 
     // const s3 = new S3();
     // const params = {
-    //   Bucket: process.env.AWS_S3_BUCKET_NAME,
+    //   Bucket: config.Storage.AWSS3.bucket,
     // };
     // s3.listObjectsV2(params, (err, data) => {
     //   if (err) return console.error(err);
@@ -134,24 +139,11 @@ methods: {
     })
     return {files, folders}
   },
-  getImages() {
-    if (!this.path) { 
-      this.setError('Album path not provided');
-      return; 
-    }
-    Storage.list(this.path, this.options)
-      .then(res => {
-        that.items = res.map(item => {
-          return { path: item.key };
-        });
-      })
-      .catch(e => this.setError(e));
-  },
+
   formatSize,
   sliceString,
   fileType,
 
-  
   selectAll: function() {
        
     if (this.allSelected){
