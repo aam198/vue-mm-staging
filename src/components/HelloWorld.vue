@@ -49,10 +49,38 @@ Auth.currentAuthenticatedUser({bypassCache: false})
 @Options({
   props: {
     msg: String
+  },
+    created () {
+    console.log(this.$store.state.toasts.length);
+    // To add a new toast
+    this.$store.commit('addToast', {
+      title: 'Success!',
+      type: 'success',
+      message: 'Successfully Processed!'
+    });
+    this.$store.commit('addToast', {
+      title: 'Error!',
+      type: 'error',
+      message: 'Process had been interrupted. Please try again!' 
+    });
+    this.$store.commit('addToast', {
+      title: 'Processing',
+      type: 'info',
+      message: 'Currently processing.'
+    });
+    this.$store.commit('addToast', {
+      title: 'Still Processing',
+      type: 'warning',
+      message: 'Little slow but still working!'
+    });
+    console.log(this.$store.state.toasts);
+    console.log(this.$store.state.toasts.length);
   }
 })
 export default class HelloWorld extends Vue {
+  
   msg!: string
+  
 }
 </script>
 
